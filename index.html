@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cheng Porchheng — Backend Developer</title>
+<meta name="description" content="Cheng Porchheng — Backend Developer building APIs, payment integrations, and secure systems." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F6F1E7;
+    --surface:#FCFAF4;
+    --ink:#181511;
+    --muted:#6B6355;
+    --accent:#2952E3;
+    --accent-soft:#EEF1FD;
+    --line:#E6DFCF;
+    --code-bg:#171410;
+    --code-text:#6EE7A6;
+    --sidebar-w:340px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter','Noto Sans JP',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:'Space Grotesk','Noto Sans JP',sans-serif;
+    margin:0;
+  }
+  .mono{
+    font-family:'JetBrains Mono','Noto Sans JP',monospace;
+  }
+  html[lang="ja"] h1, html[lang="ja"] .name{
+    letter-spacing:0;
+  }
+  a{color:inherit;text-decoration:none;}
+
+  /* ===== Layout ===== */
+  .wrap{
+    display:flex;
+    min-height:100vh;
+  }
+  .sidebar{
+    position:fixed;
+    top:0;left:0;
+    width:var(--sidebar-w);
+    height:100vh;
+    padding:56px 44px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    border-right:1px solid var(--line);
+    background:var(--surface);
+  }
+  .main{
+    margin-left:var(--sidebar-w);
+    width:calc(100% - var(--sidebar-w));
+    padding:56px 64px 120px;
+    max-width:860px;
+    position:relative;
+  }
+
+  /* ===== Sidebar content ===== */
+  .portrait{
+    width:88px;
+    height:88px;
+    border-radius:50%;
+    object-fit:cover;
+    border:1px solid var(--line);
+    box-shadow:0 6px 20px rgba(16,19,26,.08);
+    margin-bottom:20px;
+  }
+  .name{
+    font-size:34px;
+    font-weight:700;
+    line-height:1.15;
+    letter-spacing:-0.02em;
+  }
+  .role{
+    margin-top:10px;
+    font-size:15px;
+    color:var(--accent);
+    font-weight:600;
+  }
+  .lang-switch{
+    display:inline-flex;
+    padding:4px;
+    background:var(--accent-soft);
+    border-radius:10px;
+    gap:3px;
+  }
+  .lang-switch.floating{
+    position:fixed;
+    top:32px;
+    right:40px;
+    z-index:50;
+    box-shadow:0 6px 20px rgba(16,19,26,.10);
+  }
+  .lang-switch button{
+    border:none;
+    background:transparent;
+    padding:6px 10px;
+    border-radius:7px;
+    cursor:pointer;
+    transition:all .15s ease;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:10.5px;
+    font-weight:600;
+    color:var(--muted);
+    line-height:1;
+  }
+  .lang-switch button .flag{
+    font-size:17px;
+    line-height:1;
+  }
+  .lang-switch button .flag img{
+    width:20px;height:20px;
+    border-radius:50%;
+    object-fit:cover;
+    display:block;
+  }
+  .lang-switch button.active{
+    background:var(--surface);
+    color:var(--accent);
+    box-shadow:0 1px 3px rgba(24,21,17,.12);
+  }
+  .lang-switch button:hover:not(.active){color:var(--ink);}
+  .whoami{
+    margin-top:22px;
+    padding:14px 16px;
+    background:var(--code-bg);
+    border-radius:10px;
+    font-size:12.5px;
+    color:#9BA4B5;
+    line-height:1.6;
+  }
+  .whoami .prompt{color:var(--code-text);}
+  .whoami .cursor{
+    display:inline-block;
+    width:6px;height:12px;
+    background:var(--code-text);
+    margin-left:2px;
+    animation:blink 1.1s steps(1) infinite;
+    vertical-align:middle;
+  }
+  @keyframes blink{50%{opacity:0;}}
+
+  nav{margin-top:44px;}
+  nav ul{list-style:none;margin:0;padding:0;}
+  nav li{margin-bottom:2px;}
+  nav a{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:9px 0;
+    font-size:13px;
+    font-weight:500;
+    color:var(--muted);
+    transition:color .15s ease;
+  }
+  nav a .dash{
+    width:24px;height:1px;
+    background:var(--line);
+    transition:all .15s ease;
+  }
+  nav a:hover{color:var(--ink);}
+  nav a.active{color:var(--ink);}
+  nav a.active .dash{width:36px;background:var(--accent);}
+
+  .sidebar-foot{display:flex;flex-direction:column;gap:18px;}
+  .socials{display:flex;gap:18px;}
+  .socials a{
+    color:var(--muted);
+    transition:color .15s ease, transform .15s ease;
+  }
+  .socials a:hover{color:var(--accent);transform:translateY(-2px);}
+  .contact-line{font-size:12px;color:var(--muted);line-height:1.7;}
+  .contact-line a:hover{color:var(--accent);}
+
+  /* ===== Section route header (signature element) ===== */
+  .route{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:28px;
+  }
+  .route .verb{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    font-weight:600;
+    color:var(--accent);
+    background:var(--accent-soft);
+    padding:3px 8px;
+    border-radius:4px;
+    letter-spacing:.03em;
+  }
+  .route .path{
+    font-family:'JetBrains Mono',monospace;
+    font-size:14px;
+    color:var(--ink);
+    font-weight:500;
+  }
+  .route .status{
+    margin-left:auto;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    color:#1E9E6B;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .route .status::before{
+    content:'';
+    width:6px;height:6px;
+    border-radius:50%;
+    background:#1E9E6B;
+  }
+  .route .rule{
+    flex:1;
+    height:1px;
+    background:var(--line);
+    margin-left:4px;
+  }
+
+  section{
+    padding-top:100px;
+    margin-top:-64px;
+  }
+  section:first-of-type{padding-top:0;margin-top:0;}
+
+  .lede{
+    color:var(--muted);
+    font-size:15.5px;
+    line-height:1.8;
+    max-width:640px;
+  }
+  .lede b{color:var(--ink);font-weight:600;}
+
+  /* ===== Cards ===== */
+  .card{
+    padding:24px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .card:last-child{border-bottom:none;}
+  .card-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    flex-wrap:wrap;
+    gap:6px 16px;
+  }
+  .card-title{font-size:16px;font-weight:600;}
+  .card-title a:hover{color:var(--accent);}
+  .card-org{color:var(--accent);font-weight:500;font-size:14px;}
+  .card-date{
+    font-family:'JetBrains Mono','Noto Sans JP',monospace;
+    font-size:11.5px;
+    color:var(--muted);
+    white-space:nowrap;
+  }
+  .card-desc{margin-top:12px;color:var(--muted);font-size:14.5px;line-height:1.75;}
+  .card-desc ul{margin:0;padding-left:18px;}
+  .card-desc li{margin-bottom:7px;}
+  .card-desc b{color:var(--ink);font-weight:600;}
+  .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+  .tag{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    color:var(--accent);
+    background:var(--accent-soft);
+    padding:4px 9px;
+    border-radius:5px;
+  }
+
+  /* ===== Skills grid ===== */
+  .skills-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:28px 40px;
+  }
+  .skill-group h3{
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    color:var(--muted);
+    font-weight:600;
+    margin-bottom:12px;
+    font-family:'JetBrains Mono','Noto Sans JP',monospace;
+  }
+  .skill-chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{
+    font-size:13px;
+    padding:6px 12px;
+    border:1px solid var(--line);
+    border-radius:7px;
+    background:var(--surface);
+  }
+  .misc-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:32px;
+    margin-top:40px;
+    padding-top:32px;
+    border-top:1px solid var(--line);
+  }
+  .portrait {
+  width: 150px;
+  height: 150px;
+  zoom: 110%;
+  object-fit: cover;
+  border-radius: 50%; /* Makes it a clean circle */
+  border: 2px solid var(--line);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+  .misc-grid h3{
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    color:var(--muted);
+    font-weight:600;
+    margin-bottom:12px;
+    font-family:'JetBrains Mono','Noto Sans JP',monospace;
+  }
+  .cert-item, .lang-item{
+    font-size:13.5px;
+    color:var(--muted);
+    padding:7px 0;
+    border-bottom:1px dashed var(--line);
+    display:flex;
+    justify-content:space-between;
+  }
+  .cert-item a:hover{color:var(--accent);}
+  .lang-level{color:var(--accent);font-family:'JetBrains Mono','Noto Sans JP',monospace;font-size:11px;}
+
+  /* ===== Contact ===== */
+  .contact-box{
+    background:var(--code-bg);
+    border-radius:14px;
+    padding:36px 40px;
+    color:#fff;
+  }
+  .contact-box .req{
+    font-family:'JetBrains Mono','Noto Sans JP',monospace;
+    font-size:12px;
+    color:#8891A5;
+    margin-bottom:18px;
+  }
+  .contact-box .req .k{color:var(--code-text);}
+  .contact-box p{color:#C6CBD6;font-size:15px;line-height:1.7;max-width:520px;margin:0 0 24px;}
+  .send-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    background:var(--accent);
+    color:#fff;
+    font-weight:600;
+    font-size:14px;
+    padding:12px 22px;
+    border-radius:8px;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .send-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(41,82,227,.35);}
+
+  footer{
+    margin-top:80px;
+    color:var(--muted);
+    font-size:12px;
+    text-align:left;
+  }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 900px){
+    .sidebar{
+      position:relative;
+      width:100%;
+      height:auto;
+      border-right:none;
+      border-bottom:1px solid var(--line);
+      padding:36px 24px;
+    }
+    .main{margin-left:0;width:100%;padding:40px 24px 100px;}
+    nav{display:none;}
+    .skills-grid, .misc-grid{grid-template-columns:1fr;}
+    section{padding-top:40px;margin-top:0;}
+    .lang-switch.floating{
+      position:absolute;
+      top:24px;
+      right:24px;
+    }
+  }
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    .whoami .cursor{animation:none;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div>
+      <!-- <img class="portrait" src="_MG_2004.cr2" alt="Portrait of Cheng Porchheng" /> -->
+      <img class="portrait" src="pf.jpeg" alt="Portrait of Cheng Porchheng" />
+      <h1 class="name">Cheng<br/>Porchheng</h1>
+      <div class="role" id="i18n-role">Backend Developer</div>
+      <div class="whoami" id="i18n-whoami">
+        <span class="prompt">$</span> whoami<br/>
+        Junior backend developer · APIs, payments &amp; secure systems<span class="cursor"></span>
+      </div>
+
+      <nav>
+        <ul>
+          <li><a href="#about" class="nav-link active"><span class="dash"></span><span id="i18n-nav-about">About</span></a></li>
+          <li><a href="#experience" class="nav-link"><span class="dash"></span><span id="i18n-nav-experience">Experience</span></a></li>
+          <li><a href="#projects" class="nav-link"><span class="dash"></span><span id="i18n-nav-projects">Projects</span></a></li>
+          <li><a href="#skills" class="nav-link"><span class="dash"></span><span id="i18n-nav-skills">Skills</span></a></li>
+          <li><a href="#contact" class="nav-link"><span class="dash"></span><span id="i18n-nav-contact">Contact</span></a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="sidebar-foot">
+      <div class="contact-line" id="i18n-address">
+        st 247, Beong Salang, Toul Kok<br/>
+        Phnom Penh, Cambodia<br/>
+        <a href="mailto:porchheng914@gmail.com">porchheng914@gmail.com</a>
+      </div>
+      <div class="socials">
+        <a href="https://linkedin.com/in/porchheng" target="_blank" rel="noopener" aria-label="LinkedIn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.03-1.85-3.03-1.85 0-2.14 1.44-2.14 2.94v5.66H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"/></svg>
+        </a>
+        <a href="mailto:porchheng914@gmail.com" aria-label="Email">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M2 5.5A1.5 1.5 0 0 1 3.5 4h17A1.5 1.5 0 0 1 22 5.5v13a1.5 1.5 0 0 1-1.5 1.5h-17A1.5 1.5 0 0 1 2 18.5v-13zm2.2.5 7.8 5.6 7.8-5.6H4.2zM20 7.4l-7.5 5.4a1 1 0 0 1-1.16 0L4 7.4V18h16V7.4z"/></svg>
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- Floating language switch, top-right of content -->
+    <div class="lang-switch floating" role="group" aria-label="Language switch">
+      <button type="button" data-lang="en" class="active" onclick="setLang('en')">
+        <span class="flag">🇺🇸</span> EN
+      </button>
+      <button type="button" data-lang="ja" onclick="setLang('ja')">
+        <span class="flag">🇯🇵</span> JA
+      </button>
+    </div>
+
+    <!-- ABOUT -->
+    <section id="about">
+        <br>
+      <div class="route">
+        <span class="verb">GET</span>
+        <span class="path">/about</span>
+        <span class="rule"></span>
+        <span class="status">200 OK</span>
+      </div>
+      <p class="lede" id="i18n-about-lede">
+        I'm a <b>motivated junior backend developer</b> with a software engineering background and real-world
+        experience in server-side programming. I've built and deployed <b>production-grade APIs</b> for a mobile
+        e-commerce platform. I like working where clean architecture meets real business problems: payment flows,
+        real-time data, and systems that hold up under load.
+        <br/><br/>
+        I'm currently studying <b>Computer Science, specializing in Software Engineering</b>, at the
+        Cambodia Academy of Digital Technology (CADT), expected 2023–2026, while working as a backend developer
+        intern in Phnom Penh.
+      </p>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="experience">
+      <div class="route">
+        <span class="verb">GET</span>
+        <span class="path">/experience</span>
+        <span class="rule"></span>
+        <span class="status">200 OK</span>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title" id="i18n-exp0-title">Junior Web Developer · Biz Solution Co., Ltd.</div>
+          <div class="card-date" id="i18n-exp0-date">May 2026 — Present</div>
+        </div>
+        <div class="card-desc" id="i18n-exp0-list">
+          <ul>
+            <li>Engineered and scaled core backend services using <b>NestJS</b> to support high-throughput operations for the production e-commerce ecosystem.</li>
+            <li>Optimized database performance and structured data migrations in <b>MySQL</b>, resolving index bottlenecks and improving query execution times.</li>
+            <li>Served as the primary backend <b>maintainer</b> for the platform, proactively debugging legacy code, refactoring infrastructure, and ensuring 99.9% system uptime.</li>
+            <li>Collaborated closely with cross-functional teams to deploy critical hotfixes and feature updates directly to production environments.</li>
+          </ul>
+        </div>
+        <div class="tags">
+          <span class="tag">NestJS</span><span class="tag">MySQL</span><span class="tag">E-commerce</span><span class="tag">Backend Maintenance</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title" id="i18n-exp1-title">Backend Developer Intern · Biz Solution Co., Ltd.</div>
+          <div class="card-date" id="i18n-exp1-date">Jan 2026 — May</div>
+        </div>
+        <div class="card-desc" id="i18n-exp1-list">
+          <ul>
+            <li>Developed and customized <b>RESTful and GraphQL APIs</b> using the Vendure framework to power Easy Eazy, a Khmer-language multi-vendor mobile e-commerce platform.</li>
+            <li>Integrated the <b>KHQR payment gateway with ABA Bank</b>, implementing secure transaction flows and automated payment-status webhooks for seamless checkouts.</li>
+            <li>Extended the Vendure Admin Panel with custom <b>GraphQL mutations and queries</b>, improving internal data management.</li>
+            <li>Engineered a notification system using <b>Firebase Cloud Messaging</b> for real-time transactional alerts and promotional pushes.</li>
+            <li>Implemented <b>Redis distributed caching</b> and <b>AWS CloudWatch</b> monitoring, reducing API latency and improving reliability.</li>
+          </ul>
+        </div>
+        <div class="tags">
+          <span class="tag">GraphQL</span><span class="tag">Vendure</span><span class="tag">KHQR</span>
+          <span class="tag">Redis</span><span class="tag">AWS CloudWatch</span><span class="tag">FCM</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title" id="i18n-exp2-title">API &amp; Web Developer Intern · The Council for the Development of Cambodia (CDC)</div>
+          <div class="card-date" id="i18n-exp2-date">May 2025 — Aug 2025</div>
+        </div>
+        <div class="card-desc" id="i18n-exp2-list">
+          <ul>
+            <li>Engineered a robust <b>NestJS REST API</b> as the centralized backend for a cross-platform meeting scheduling system.</li>
+            <li>Architected multi-client support for <b>NextJS</b> web portals and mobile apps, ensuring seamless data synchronization across interfaces.</li>
+            <li>Developed a real-time NextJS web portal optimized for office-wide LCD displays, providing instant scheduling updates via live data integration.</li>
+          </ul>
+        </div>
+        <div class="tags">
+          <span class="tag">NestJS</span><span class="tag">NextJS</span><span class="tag">REST API</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects">
+      <div class="route">
+        <span class="verb">GET</span>
+        <span class="path">/projects</span>
+        <span class="rule"></span>
+        <span class="status">200 OK</span>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title" id="i18n-proj1-title">Post-Quantum Cryptography Messenger App</div>
+          <div class="card-date" id="i18n-proj1-date">Oct 2025 — Dec 2025</div>
+        </div>
+        <div class="card-desc" id="i18n-proj1-list">
+          <ul>
+            <li>Engineered a secure chat backend with a <b>polyglot microservices architecture</b> (NestJS + Python FastAPI) implementing <b>ML-KEM (Kyber)</b> for post-quantum end-to-end key exchange.</li>
+            <li>Ran a comparative security analysis showing ML-KEM's algorithmic hardness and performance versus classical RSA encryption.</li>
+            <li>Implemented <b>NIST FIPS 203 (ML-KEM/Kyber)</b> via a dedicated FastAPI microservice for quantum-resistant key encapsulation and session key exchange.</li>
+          </ul>
+        </div>
+        <div class="tags">
+          <span class="tag">NestJS</span><span class="tag">FastAPI</span><span class="tag">Post-Quantum Crypto</span><span class="tag">Microservices</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title" id="i18n-proj2-title">Researcher Fellowship · Angkor Social Innovation Park</div>
+          <div class="card-date" id="i18n-proj2-date">Apr 2024 — Jun 2024</div>
+        </div>
+        <div class="card-desc" id="i18n-proj2-list">
+          <ul>
+            <li>Authored a 15-page research paper analyzing the impact of blockchain technology on Cambodia's digital payment system.</li>
+            <li>Conducted a systematic literature review of 20+ research papers on blockchain trends and challenges.</li>
+            <li>Developed a conceptual framework for Bakong's blockchain, with recommendations for scalability and security.</li>
+          </ul>
+        </div>
+        <div class="tags">
+          <span class="tag">Research</span><span class="tag">Blockchain</span><span class="tag">FinTech</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills">
+      <div class="route">
+        <span class="verb">GET</span>
+        <span class="path">/skills</span>
+        <span class="rule"></span>
+        <span class="status">200 OK</span>
+      </div>
+
+      <div class="skills-grid">
+        <div class="skill-group">
+          <h3 id="i18n-skill-programming">Programming</h3>
+          <div class="skill-chips">
+            <span class="chip">TypeScript</span><span class="chip">JavaScript</span><span class="chip">Python</span>
+            <span class="chip">Dart</span><span class="chip">C++</span><span class="chip">Java</span><span class="chip">SQL</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h3 id="i18n-skill-frameworks">Frameworks</h3>
+          <div class="skill-chips">
+            <span class="chip">NestJS</span><span class="chip">Vendure</span><span class="chip">FastAPI</span>
+            <span class="chip">Node.js</span><span class="chip">Next.js</span><span class="chip">Flutter</span><span class="chip">Angular</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h3 id="i18n-skill-tools">Tools &amp; Platforms</h3>
+          <div class="skill-chips">
+            <span class="chip">Git</span><span class="chip">Docker</span><span class="chip">Postgres</span>
+            <span class="chip">Postman</span><span class="chip">Jira</span><span class="chip">GraphQL</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h3 id="i18n-skill-cloud">Cloud &amp; DevOps</h3>
+          <div class="skill-chips">
+            <span class="chip">AWS CloudWatch</span><span class="chip">Firebase (FCM)</span>
+            <span class="chip">Redis</span><span class="chip">Cloudflare</span><span class="chip">Digital Ocean</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h3 id="i18n-skill-fintech">FinTech</h3>
+          <div class="skill-chips">
+            <span class="chip">KHQR Integration</span><span class="chip">ABA Payment Gateway</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h3 id="i18n-skill-soft">Soft Skills</h3>
+          <div class="skill-chips" id="i18n-skill-soft-chips">
+            <span class="chip">Communication</span><span class="chip">Problem-Solving</span><span class="chip">Adaptability</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="misc-grid">
+        <div>
+          <h3 id="i18n-certs-title">Certifications</h3>
+          <div class="cert-item"><span id="i18n-cert-1">Introduction to Cyber Security — Cisco Networking Academy</span></div>
+          <div class="cert-item"><span id="i18n-cert-2">CyberObs Associate — Cisco Networking Academy</span></div>
+          <div class="cert-item"><span id="i18n-cert-3">Cybersecurity Essentials — Cisco Networking Academy</span></div>
+          <div class="cert-item"><span id="i18n-cert-4">Solid Edge Mechanical — Associate Level</span></div>
+        </div>
+        <div>
+          <h3 id="i18n-langs-title">Languages</h3>
+          <div class="lang-item"><span id="i18n-lang-km">Khmer</span><span class="lang-level" id="i18n-lang-km-level">NATIVE</span></div>
+          <div class="lang-item"><span id="i18n-lang-en">English</span><span class="lang-level" id="i18n-lang-en-level">ADVANCED</span></div>
+          <div class="lang-item"><span id="i18n-lang-ja">Japanese</span><span class="lang-level" id="i18n-lang-ja-level">BEGINNER</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <div class="route">
+        <span class="verb" style="color:#1E9E6B;background:#E7F8EF;">POST</span>
+        <span class="path">/contact</span>
+        <span class="rule"></span>
+      </div>
+
+      <div class="contact-box">
+        <div class="req" id="i18n-contact-req">
+          <span class="k">Content-Type:</span> application/human<br/>
+          <span class="k">Status:</span> open to internship &amp; junior backend roles
+        </div>
+        <p id="i18n-contact-p">
+          Have a backend role, an API that needs building, or a payment integration to figure out?
+          My inbox is always open — I'll get back to you as soon as I can.
+        </p>
+        <a class="send-btn" href="mailto:porchheng914@gmail.com">
+          <span id="i18n-contact-btn">Send request</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+
+      <footer id="i18n-footer">
+        Built by Cheng Porchheng · Phnom Penh, Cambodia
+      </footer>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  const links = document.querySelectorAll('.nav-link');
+  const sections = Array.from(links).map(l => document.querySelector(l.getAttribute('href')));
+
+  function onScroll(){
+    let idx = 0;
+    const y = window.scrollY + 140;
+    sections.forEach((sec, i) => { if (sec && sec.offsetTop <= y) idx = i; });
+    links.forEach((l, i) => l.classList.toggle('active', i === idx));
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  /* ===== i18n ===== */
+  const translations = {
+    ja: {
+      'i18n-role': 'バックエンド開発者',
+      'i18n-whoami': '<span class="prompt">$</span> whoami<br/>ジュニアバックエンド開発者 ・ API、決済、セキュアシステム<span class="cursor"></span>',
+      'i18n-nav-about': '概要',
+      'i18n-nav-experience': '職務経歴',
+      'i18n-nav-projects': 'プロジェクト',
+      'i18n-nav-skills': 'スキル',
+      'i18n-nav-contact': 'お問い合わせ',
+      'i18n-address': 'st 247, Beong Salang, Toul Kok<br/>プノンペン、カンボジア<br/><a href="mailto:porchheng914@gmail.com">porchheng914@gmail.com</a>',
+      'i18n-about-lede': '意欲的な<b>ジュニアバックエンド開発者</b>です。ソフトウェアエンジニアリングの知識と、サーバーサイドプログラミングの実務経験を持ち、モバイルECプラットフォーム向けに<b>本番環境レベルのAPI</b>を構築・運用してきました。決済フロー、リアルタイムデータ、負荷に耐えるシステムなど、クリーンなアーキテクチャと実際のビジネス課題が交わる領域で働くことが好きです。<br/><br/>現在、カンボジアデジタル技術アカデミー(CADT)にて<b>コンピュータサイエンス(ソフトウェアエンジニアリング専攻)</b>を専攻中(2023年〜2026年卒業予定)で、プノンペンにてバックエンド開発者インターンとして勤務しています。',
+      'i18n-exp1-title': 'バックエンド開発者インターン ・ Biz Solution Co., Ltd.',
+      'i18n-exp1-date': '2026年1月 — 現在',
+      'i18n-exp1-list': '<ul><li>Vendureフレームワークを用いて<b>RESTfulおよびGraphQL API</b>を開発・カスタマイズし、クメール語対応のマルチベンダー型モバイルECプラットフォーム「Easy Eazy」を支えた。</li><li><b>ABA銀行のKHQR決済ゲートウェイ</b>を統合し、安全な取引フローと決済ステータスの自動Webhookを実装してスムーズな決済体験を実現した。</li><li>カスタムの<b>GraphQL mutation・query</b>を実装してVendure管理パネルを拡張し、社内のデータ管理業務を効率化した。</li><li><b>Firebase Cloud Messaging</b>を用いた通知システムを構築し、リアルタイムの取引通知とプロモーション配信を実現した。</li><li><b>Redis分散キャッシュ</b>と<b>AWS CloudWatch</b>監視を導入し、APIのレイテンシ削減と信頼性向上を実現した。</li></ul>',
+      'i18n-exp2-title': 'API・Web開発者インターン ・ カンボジア開発評議会 (CDC)',
+      'i18n-exp2-date': '2025年5月 — 2025年8月',
+      'i18n-exp2-list': '<ul><li>堅牢な<b>NestJS製REST API</b>を構築し、クロスプラットフォーム対応の会議スケジューリングシステムの中核バックエンドとして提供した。</li><li><b>NextJS</b>製Webポータルとモバイルアプリの両方に対応するマルチクライアント構成を設計し、各インターフェース間のシームレスなデータ同期を実現した。</li><li>オフィス内のLCDディスプレイ向けに最適化されたリアルタイムNextJS Webポータルを開発し、ライブデータ連携による即時スケジュール更新を提供した。</li></ul>',
+      'i18n-proj1-title': '耐量子暗号メッセンジャーアプリ',
+      'i18n-proj1-date': '2025年10月 — 2025年12月',
+      'i18n-proj1-list': '<ul><li>NestJSとPython FastAPIによる<b>ポリグロットなマイクロサービスアーキテクチャ</b>でセキュアなチャットバックエンドを構築し、耐量子暗号のエンドツーエンド鍵交換に<b>ML-KEM(Kyber)</b>を実装した。</li><li>ML-KEMのアルゴリズム的強度と性能を従来のRSA暗号と比較するセキュリティ分析を実施した。</li><li><b>NIST FIPS 203(ML-KEM/Kyber)</b>を専用のFastAPIマイクロサービスとして実装し、耐量子鍵カプセル化とセッション鍵交換に対応した。</li></ul>',
+      'i18n-proj2-title': 'リサーチフェロー ・ Angkor Social Innovation Park',
+      'i18n-proj2-date': '2024年4月 — 2024年6月',
+      'i18n-proj2-list': '<ul><li>カンボジアのデジタル決済システムに対するブロックチェーン技術の影響を分析した15ページの研究論文を執筆した。</li><li>ブロックチェーンの動向と課題に関する20本以上の論文を対象に体系的文献レビューを実施した。</li><li>Bakongのブロックチェーンに関する概念的フレームワークを構築し、スケーラビリティとセキュリティ向上のための提言を行った。</li></ul>',
+      'i18n-skill-programming': 'プログラミング',
+      'i18n-skill-frameworks': 'フレームワーク',
+      'i18n-skill-tools': 'ツール・プラットフォーム',
+      'i18n-skill-cloud': 'クラウド・DevOps',
+      'i18n-skill-fintech': 'フィンテック',
+      'i18n-skill-soft': 'ソフトスキル',
+      'i18n-skill-soft-chips': '<span class="chip">コミュニケーション</span><span class="chip">問題解決力</span><span class="chip">適応力</span>',
+      'i18n-certs-title': '資格・認定',
+      'i18n-cert-1': 'サイバーセキュリティ入門 ― Cisco Networking Academy',
+      'i18n-cert-2': 'CyberObs Associate ― Cisco Networking Academy',
+      'i18n-cert-3': 'サイバーセキュリティ基礎 ― Cisco Networking Academy',
+      'i18n-cert-4': 'Solid Edge Mechanical ― アソシエイトレベル',
+      'i18n-langs-title': '言語',
+      'i18n-lang-km': 'クメール語', 'i18n-lang-km-level': '母語',
+      'i18n-lang-en': '英語', 'i18n-lang-en-level': '上級',
+      'i18n-lang-ja': '日本語', 'i18n-lang-ja-level': '初級',
+      'i18n-contact-req': '<span class="k">Content-Type:</span> application/human<br/><span class="k">Status:</span> インターンおよびジュニアバックエンド職を募集中',
+      'i18n-contact-p': 'バックエンドのポジション、構築が必要なAPI、決済連携のご相談など、お気軽にご連絡ください。できるだけ早くご返信します。',
+      'i18n-contact-btn': 'リクエストを送る',
+      'i18n-footer': 'Cheng Porchheng 制作 ・ プノンペン、カンボジア'
+    }
+  };
+
+  const originals = {};
+  document.querySelectorAll('[id^="i18n-"]').forEach(el => { originals[el.id] = el.innerHTML; });
+
+  function setLang(lang){
+    document.documentElement.lang = lang;
+    document.querySelectorAll('[id^="i18n-"]').forEach(el => {
+      el.innerHTML = lang === 'en' ? originals[el.id] : (translations.ja[el.id] || originals[el.id]);
+    });
+    document.querySelectorAll('.lang-switch button').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.lang === lang);
+    });
+  }
+</script>
+</body>
+</html>
