@@ -3,8 +3,15 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Cheng Porchheng — Backend Developer</title>
-<meta name="description" content="Cheng Porchheng — Backend Developer building APIs, payment integrations, and secure systems." />
+<script>
+  (function(){
+    var t = localStorage.getItem('theme');
+    if(!t) t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    document.documentElement.dataset.theme = t;
+  })();
+</script>
+<title>Cheng Porchheng | Backend Developer</title>
+<meta name="description" content="Cheng Porchheng, junior web developer building REST and GraphQL APIs for enterprise e-commerce, with a focus on testing and performance." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -21,6 +28,16 @@
     --code-text:#6EE7A6;
     --sidebar-w:340px;
   }
+  html[data-theme="dark"]{
+    --bg:#131211;
+    --surface:#1B1916;
+    --ink:#EDE8DF;
+    --muted:#A39B8E;
+    --accent:#7C96FF;
+    --accent-soft:#232B45;
+    --line:#2C2823;
+    --code-bg:#0E0D0B;
+  }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
   body{
@@ -29,6 +46,10 @@
     color:var(--ink);
     font-family:'Inter','Noto Sans JP',sans-serif;
     -webkit-font-smoothing:antialiased;
+    transition:background .25s ease, color .25s ease;
+  }
+  .sidebar, .chip, .lang-switch, .theme-btn, .tag, .card, .route .rule{
+    transition:background .25s ease, border-color .25s ease, color .25s ease;
   }
   h1,h2,h3{
     font-family:'Space Grotesk','Noto Sans JP',sans-serif;
@@ -69,11 +90,11 @@
 
   /* ===== Sidebar content ===== */
   .portrait{
-    width:88px;
-    height:88px;
+    width:120px;
+    height:120px;
     border-radius:50%;
     object-fit:cover;
-    border:1px solid var(--line);
+    border:2px solid var(--line);
     box-shadow:0 6px 20px rgba(16,19,26,.08);
     margin-bottom:20px;
   }
@@ -96,13 +117,34 @@
     border-radius:10px;
     gap:3px;
   }
-  .lang-switch.floating{
+  .top-controls{
     position:fixed;
     top:32px;
     right:40px;
     z-index:50;
+    display:flex;
+    align-items:stretch;
+    gap:10px;
+  }
+  .top-controls .lang-switch,
+  .theme-btn{
     box-shadow:0 6px 20px rgba(16,19,26,.10);
   }
+  .theme-btn{
+    border:none;
+    cursor:pointer;
+    background:var(--accent-soft);
+    border-radius:10px;
+    padding:6px 12px;
+    color:var(--muted);
+    display:flex;
+    align-items:center;
+  }
+  .theme-btn:hover{color:var(--accent);}
+  .theme-btn svg{display:block;}
+  .theme-btn .icon-sun{display:none;}
+  html[data-theme="dark"] .theme-btn .icon-sun{display:block;}
+  html[data-theme="dark"] .theme-btn .icon-moon{display:none;}
   .lang-switch button{
     border:none;
     background:transparent;
@@ -154,6 +196,26 @@
     vertical-align:middle;
   }
   @keyframes blink{50%{opacity:0;}}
+
+  .cv-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:9px;
+    margin-top:20px;
+    padding:10px 16px;
+    border:1.5px solid var(--accent);
+    color:var(--accent);
+    border-radius:9px;
+    font-size:13px;
+    font-weight:600;
+    transition:all .15s ease;
+  }
+  .cv-btn:hover{
+    background:var(--accent);
+    color:#fff;
+    transform:translateY(-1px);
+    box-shadow:0 6px 16px rgba(41,82,227,.25);
+  }
 
   nav{margin-top:44px;}
   nav ul{list-style:none;margin:0;padding:0;}
@@ -231,12 +293,14 @@
     background:var(--line);
     margin-left:4px;
   }
+  .route .verb.post{color:#1E9E6B;background:#E7F8EF;}
+  html[data-theme="dark"] .route .verb.post{background:#15271F;}
 
   section{
     padding-top:100px;
     margin-top:-64px;
   }
-  section:first-of-type{padding-top:0;margin-top:0;}
+  section:first-of-type{padding-top:28px;margin-top:0;}
 
   .lede{
     color:var(--muted);
@@ -313,16 +377,6 @@
     padding-top:32px;
     border-top:1px solid var(--line);
   }
-  .portrait {
-  width: 150px;
-  height: 150px;
-  zoom: 110%;
-  object-fit: cover;
-  border-radius: 50%; /* Makes it a clean circle */
-  border: 2px solid var(--line);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
-}
   .misc-grid h3{
     font-size:12px;
     text-transform:uppercase;
@@ -393,7 +447,8 @@
     nav{display:none;}
     .skills-grid, .misc-grid{grid-template-columns:1fr;}
     section{padding-top:40px;margin-top:0;}
-    .lang-switch.floating{
+    section:first-of-type{padding-top:56px;}
+    .top-controls{
       position:absolute;
       top:24px;
       right:24px;
@@ -418,8 +473,13 @@
       <div class="role" id="i18n-role">Backend Developer</div>
       <div class="whoami" id="i18n-whoami">
         <span class="prompt">$</span> whoami<br/>
-        Junior backend developer · APIs, payments &amp; secure systems<span class="cursor"></span>
+        Junior web developer · e-commerce APIs · REST &amp; GraphQL<span class="cursor"></span>
       </div>
+
+      <a class="cv-btn" href="CHHENG_PORCHHENG_CV.pdf" download>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0 4-4m-4 4-4-4"/><path d="M4 21h16"/></svg>
+        <span id="i18n-cv-btn">Download CV</span>
+      </a>
 
       <nav>
         <ul>
@@ -452,19 +512,24 @@
   <!-- MAIN -->
   <main class="main">
 
-    <!-- Floating language switch, top-right of content -->
-    <div class="lang-switch floating" role="group" aria-label="Language switch">
-      <button type="button" data-lang="en" class="active" onclick="setLang('en')">
-        <span class="flag">🇺🇸</span> EN
-      </button>
-      <button type="button" data-lang="ja" onclick="setLang('ja')">
-        <span class="flag">🇯🇵</span> JA
+    <!-- Floating controls: language switch + theme toggle, top-right of content -->
+    <div class="top-controls">
+      <div class="lang-switch" role="group" aria-label="Language switch">
+        <button type="button" data-lang="en" class="active" onclick="setLang('en')">
+          <span class="flag">🇺🇸</span> EN
+        </button>
+        <button type="button" data-lang="ja" onclick="setLang('ja')">
+          <span class="flag">🇯🇵</span> JA
+        </button>
+      </div>
+      <button type="button" class="theme-btn" onclick="toggleTheme()" aria-label="Toggle dark mode">
+        <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
       </button>
     </div>
 
     <!-- ABOUT -->
     <section id="about">
-        <br>
       <div class="route">
         <span class="verb">GET</span>
         <span class="path">/about</span>
@@ -472,14 +537,14 @@
         <span class="status">200 OK</span>
       </div>
       <p class="lede" id="i18n-about-lede">
-        I'm a <b>motivated junior backend developer</b> with a software engineering background and real-world
-        experience in server-side programming. I've built and deployed <b>production-grade APIs</b> for a mobile
-        e-commerce platform. I like working where clean architecture meets real business problems: payment flows,
-        real-time data, and systems that hold up under load.
+        I'm a <b>junior web developer focused on backend engineering</b>. My day-to-day work is
+        <b>API development for e-commerce</b> (REST and GraphQL), alongside maintaining existing production
+        e-commerce projects, with a strong emphasis on <b>automated testing and performance</b> for
+        enterprise-grade reliability.
         <br/><br/>
         I'm currently studying <b>Computer Science, specializing in Software Engineering</b>, at the
-        Cambodia Academy of Digital Technology (CADT), expected 2023–2026, while working as a backend developer
-        intern in Phnom Penh.
+        Cambodia Academy of Digital Technology (CADT), expected 2023–2026, while working as a junior web
+        developer in Phnom Penh.
       </p>
     </section>
 
@@ -495,34 +560,30 @@
       <div class="card">
         <div class="card-head">
           <div class="card-title" id="i18n-exp0-title">Junior Web Developer · Biz Solution Co., Ltd.</div>
-          <div class="card-date" id="i18n-exp0-date">May 2026 — Present</div>
+          <div class="card-date" id="i18n-exp0-date">May 2026 - Present</div>
         </div>
         <div class="card-desc" id="i18n-exp0-list">
           <ul>
-            <li>Engineered and maintained backend services powering a <b>multi-platform e-commerce ecosystem</b>, supporting both web and mobile clients.</li>
-            <li><b>Maintained legacy code</b> across existing production projects, ensuring stability while extending functionality.</li>
-            <li>Led <b>cross-team integration</b> with external systems such as <b>Odoo</b>, aligning data and business logic across departments.</li>
-            <li>Integrated external services including <b>push notifications</b>, the <b>PayWay</b> payment gateway, and <b>Redis</b> caching to extend platform capabilities.</li>
-            <li>Authored and maintained <b>technical documentation</b> to support onboarding and cross-team collaboration.</li>
+            <li>Develop <b>REST and GraphQL APIs</b> for enterprise e-commerce platforms serving web and mobile clients.</li>
+            <li>Maintain and extend <b>existing production e-commerce projects</b>, integrating services such as <b>Odoo</b>, the <b>PayWay</b> payment gateway, and <b>Redis</b> caching.</li>
+            <li>Keep releases <b>enterprise-grade</b> through thorough automated testing and performance tuning.</li>
           </ul>
         </div>
         <div class="tags">
-          <span class="tag">NestJS</span><span class="tag">Odoo</span><span class="tag">PayWay</span><span class="tag">Redis</span><span class="tag">Legacy Maintenance</span><span class="tag">Multi-platform</span>
+          <span class="tag">NestJS</span><span class="tag">REST</span><span class="tag">GraphQL</span><span class="tag">Odoo</span><span class="tag">PayWay</span><span class="tag">Redis</span>
         </div>
       </div>
 
       <div class="card">
         <div class="card-head">
           <div class="card-title" id="i18n-exp1-title">Backend Developer Intern · Biz Solution Co., Ltd.</div>
-          <div class="card-date" id="i18n-exp1-date">Jan 2026 — May</div>
+          <div class="card-date" id="i18n-exp1-date">Jan 2026 - May 2026</div>
         </div>
         <div class="card-desc" id="i18n-exp1-list">
           <ul>
-            <li>Developed and customized <b>RESTful and GraphQL APIs</b> using the Vendure framework to power Easy Eazy, a Khmer-language multi-vendor mobile e-commerce platform.</li>
-            <li>Integrated the <b>KHQR payment gateway with ABA Bank</b>, implementing secure transaction flows and automated payment-status webhooks for seamless checkouts.</li>
-            <li>Extended the Vendure Admin Panel with custom <b>GraphQL mutations and queries</b>, improving internal data management.</li>
-            <li>Engineered a notification system using <b>Firebase Cloud Messaging</b> for real-time transactional alerts and promotional pushes.</li>
-            <li>Implemented <b>Redis distributed caching</b> and <b>AWS CloudWatch</b> monitoring, reducing API latency and improving reliability.</li>
+            <li>Built <b>REST and GraphQL APIs</b> on the Vendure framework for Easy Eazy, a Khmer-language multi-vendor mobile e-commerce platform.</li>
+            <li>Integrated the <b>ABA Bank KHQR payment gateway</b> with secure transaction flows and automated payment-status webhooks.</li>
+            <li>Improved speed and reliability with <b>Redis caching</b>, <b>Firebase Cloud Messaging</b> notifications, and <b>AWS CloudWatch</b> monitoring.</li>
           </ul>
         </div>
         <div class="tags">
@@ -534,13 +595,12 @@
       <div class="card">
         <div class="card-head">
           <div class="card-title" id="i18n-exp2-title">API &amp; Web Developer Intern · The Council for the Development of Cambodia (CDC)</div>
-          <div class="card-date" id="i18n-exp2-date">May 2025 — Aug 2025</div>
+          <div class="card-date" id="i18n-exp2-date">May 2025 - Aug 2025</div>
         </div>
         <div class="card-desc" id="i18n-exp2-list">
           <ul>
-            <li>Engineered a robust <b>NestJS REST API</b> as the centralized backend for a cross-platform meeting scheduling system.</li>
-            <li>Architected multi-client support for <b>NextJS</b> web portals and mobile apps, ensuring seamless data synchronization across interfaces.</li>
-            <li>Developed a real-time NextJS web portal optimized for office-wide LCD displays, providing instant scheduling updates via live data integration.</li>
+            <li>Built a <b>NestJS REST API</b> powering a cross-platform meeting scheduling system for web and mobile clients.</li>
+            <li>Developed a real-time <b>Next.js</b> portal for office LCD displays with live scheduling updates.</li>
           </ul>
         </div>
         <div class="tags">
@@ -561,7 +621,7 @@
       <div class="card">
         <div class="card-head">
           <div class="card-title" id="i18n-proj1-title">Post-Quantum Cryptography Messenger App</div>
-          <div class="card-date" id="i18n-proj1-date">Oct 2025 — Dec 2025</div>
+          <div class="card-date" id="i18n-proj1-date">Oct 2025 - Dec 2025</div>
         </div>
         <div class="card-desc" id="i18n-proj1-list">
           <ul>
@@ -578,7 +638,7 @@
       <div class="card">
         <div class="card-head">
           <div class="card-title" id="i18n-proj2-title">Researcher Fellowship · Angkor Social Innovation Park</div>
-          <div class="card-date" id="i18n-proj2-date">Apr 2024 — Jun 2024</div>
+          <div class="card-date" id="i18n-proj2-date">Apr 2024 - Jun 2024</div>
         </div>
         <div class="card-desc" id="i18n-proj2-list">
           <ul>
@@ -622,6 +682,7 @@
           <div class="skill-chips">
             <span class="chip">Git</span><span class="chip">Docker</span><span class="chip">Postgres</span>
             <span class="chip">Postman</span><span class="chip">Jira</span><span class="chip">GraphQL</span>
+            <span class="chip">Jest</span><span class="chip">Automated Testing</span>
           </div>
         </div>
         <div class="skill-group">
@@ -648,10 +709,10 @@
       <div class="misc-grid">
         <div>
           <h3 id="i18n-certs-title">Certifications</h3>
-          <div class="cert-item"><span id="i18n-cert-1">Introduction to Cyber Security — Cisco Networking Academy</span></div>
-          <div class="cert-item"><span id="i18n-cert-2">CyberObs Associate — Cisco Networking Academy</span></div>
-          <div class="cert-item"><span id="i18n-cert-3">Cybersecurity Essentials — Cisco Networking Academy</span></div>
-          <div class="cert-item"><span id="i18n-cert-4">Solid Edge Mechanical — Associate Level</span></div>
+          <div class="cert-item"><span id="i18n-cert-1">Introduction to Cyber Security · Cisco Networking Academy</span></div>
+          <div class="cert-item"><span id="i18n-cert-2">CyberObs Associate · Cisco Networking Academy</span></div>
+          <div class="cert-item"><span id="i18n-cert-3">Cybersecurity Essentials · Cisco Networking Academy</span></div>
+          <div class="cert-item"><span id="i18n-cert-4">Solid Edge Mechanical · Associate Level</span></div>
         </div>
         <div>
           <h3 id="i18n-langs-title">Languages</h3>
@@ -665,7 +726,7 @@
     <!-- CONTACT -->
     <section id="contact">
       <div class="route">
-        <span class="verb" style="color:#1E9E6B;background:#E7F8EF;">POST</span>
+        <span class="verb post">POST</span>
         <span class="path">/contact</span>
         <span class="rule"></span>
       </div>
@@ -673,11 +734,11 @@
       <div class="contact-box">
         <div class="req" id="i18n-contact-req">
           <span class="k">Content-Type:</span> application/human<br/>
-          <span class="k">Status:</span> open to internship &amp; junior backend roles
+          <span class="k">Status:</span> open to backend &amp; API development opportunities
         </div>
         <p id="i18n-contact-p">
           Have a backend role, an API that needs building, or a payment integration to figure out?
-          My inbox is always open — I'll get back to you as soon as I can.
+          My inbox is always open, and I'll get back to you as soon as I can.
         </p>
         <a class="send-btn" href="mailto:porchheng914@gmail.com">
           <span id="i18n-contact-btn">Send request</span>
@@ -706,32 +767,40 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
+  /* ===== Theme toggle ===== */
+  function toggleTheme(){
+    const t = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = t;
+    localStorage.setItem('theme', t);
+  }
+
   /* ===== i18n ===== */
   const translations = {
     ja: {
       'i18n-role': 'バックエンド開発者',
-      'i18n-whoami': '<span class="prompt">$</span> whoami<br/>ジュニアバックエンド開発者 ・ API、決済、セキュアシステム<span class="cursor"></span>',
+      'i18n-whoami': '<span class="prompt">$</span> whoami<br/>ジュニアWeb開発者 ・ EC向けAPI開発(REST・GraphQL)<span class="cursor"></span>',
+      'i18n-cv-btn': '履歴書をダウンロード',
       'i18n-nav-about': '概要',
       'i18n-nav-experience': '職務経歴',
       'i18n-nav-projects': 'プロジェクト',
       'i18n-nav-skills': 'スキル',
       'i18n-nav-contact': 'お問い合わせ',
       'i18n-address': 'st 247, Beong Salang, Toul Kok<br/>プノンペン、カンボジア<br/><a href="mailto:porchheng914@gmail.com">porchheng914@gmail.com</a>',
-      'i18n-about-lede': '意欲的な<b>ジュニアバックエンド開発者</b>です。ソフトウェアエンジニアリングの知識と、サーバーサイドプログラミングの実務経験を持ち、モバイルECプラットフォーム向けに<b>本番環境レベルのAPI</b>を構築・運用してきました。決済フロー、リアルタイムデータ、負荷に耐えるシステムなど、クリーンなアーキテクチャと実際のビジネス課題が交わる領域で働くことが好きです。<br/><br/>現在、カンボジアデジタル技術アカデミー(CADT)にて<b>コンピュータサイエンス(ソフトウェアエンジニアリング専攻)</b>を専攻中(2023年〜2026年卒業予定)で、プノンペンにてバックエンド開発者インターンとして勤務しています。',
-      'i18n-exp0-title': 'ジュニアウェブ開発者 ・ Biz Solution Co., Ltd.',
-      'i18n-exp0-date': '2026年5月 — 現在',
-      'i18n-exp0-list': '<ul><li><b>マルチプラットフォームECエコシステム</b>を支えるバックエンドサービスを設計・保守し、Webおよびモバイルの両クライアントに対応した。</li><li>既存の本番プロジェクトにおける<b>レガシーコードの保守</b>を担当し、安定性を確保しながら機能拡張を行った。</li><li><b>Odoo</b>などの外部システムとの<b>部門横断統合</b>を主導し、部門間のデータおよびビジネスロジックの整合性を確保した。</li><li><b>プッシュ通知</b>、<b>PayWay決済ゲートウェイ</b>、<b>Redis</b>キャッシュなどの外部サービス連携を実装し、プラットフォームの機能を拡張した。</li><li>オンボーディングや部門横断の連携を支える<b>技術ドキュメント</b>の作成・維持を行った。</li></ul>',
+      'i18n-about-lede': 'バックエンドを軸とする<b>ジュニアWeb開発者</b>です。主な業務はECプラットフォーム向けの<b>API開発(REST・GraphQL)</b>と既存の本番ECプロジェクトの保守で、エンタープライズ品質を支える<b>自動テストとパフォーマンス</b>を重視しています。<br/><br/>現在、カンボジアデジタル技術アカデミー(CADT)にて<b>コンピュータサイエンス(ソフトウェアエンジニアリング専攻)</b>を専攻中(2023年〜2026年卒業予定)で、プノンペンにてジュニアWeb開発者として勤務しています。',
+      'i18n-exp0-title': 'ジュニアWeb開発者 ・ Biz Solution Co., Ltd.',
+      'i18n-exp0-date': '2026年5月 - 現在',
+      'i18n-exp0-list': '<ul><li>Web・モバイル両対応のエンタープライズ向けECプラットフォームの<b>REST・GraphQL API</b>を開発。</li><li><b>既存の本番ECプロジェクト</b>を保守・拡張し、<b>Odoo</b>連携、<b>PayWay</b>決済ゲートウェイ、<b>Redis</b>キャッシュなどを統合。</li><li>徹底した自動テストとパフォーマンスチューニングにより、<b>エンタープライズ品質</b>のリリースを維持。</li></ul>',
       'i18n-exp1-title': 'バックエンド開発者インターン ・ Biz Solution Co., Ltd.',
-      'i18n-exp1-date': '2026年1月 — 5月',
-      'i18n-exp1-list': '<ul><li>Vendureフレームワークを用いて<b>RESTfulおよびGraphQL API</b>を開発・カスタマイズし、クメール語対応のマルチベンダー型モバイルECプラットフォーム「Easy Eazy」を支えた。</li><li><b>ABA銀行のKHQR決済ゲートウェイ</b>を統合し、安全な取引フローと決済ステータスの自動Webhookを実装してスムーズな決済体験を実現した。</li><li>カスタムの<b>GraphQL mutation・query</b>を実装してVendure管理パネルを拡張し、社内のデータ管理業務を効率化した。</li><li><b>Firebase Cloud Messaging</b>を用いた通知システムを構築し、リアルタイムの取引通知とプロモーション配信を実現した。</li><li><b>Redis分散キャッシュ</b>と<b>AWS CloudWatch</b>監視を導入し、APIのレイテンシ削減と信頼性向上を実現した。</li></ul>',
+      'i18n-exp1-date': '2026年1月 - 2026年5月',
+      'i18n-exp1-list': '<ul><li>Vendureフレームワーク上で<b>REST・GraphQL API</b>を構築し、クメール語対応のマルチベンダー型モバイルECプラットフォーム「Easy Eazy」を支えた。</li><li><b>ABA銀行のKHQR決済ゲートウェイ</b>を統合し、安全な取引フローと決済ステータスの自動Webhookを実装。</li><li><b>Redisキャッシュ</b>、<b>Firebase Cloud Messaging</b>通知、<b>AWS CloudWatch</b>監視により、速度と信頼性を向上。</li></ul>',
       'i18n-exp2-title': 'API・Web開発者インターン ・ カンボジア開発評議会 (CDC)',
-      'i18n-exp2-date': '2025年5月 — 2025年8月',
-      'i18n-exp2-list': '<ul><li>堅牢な<b>NestJS製REST API</b>を構築し、クロスプラットフォーム対応の会議スケジューリングシステムの中核バックエンドとして提供した。</li><li><b>NextJS</b>製Webポータルとモバイルアプリの両方に対応するマルチクライアント構成を設計し、各インターフェース間のシームレスなデータ同期を実現した。</li><li>オフィス内のLCDディスプレイ向けに最適化されたリアルタイムNextJS Webポータルを開発し、ライブデータ連携による即時スケジュール更新を提供した。</li></ul>',
+      'i18n-exp2-date': '2025年5月 - 2025年8月',
+      'i18n-exp2-list': '<ul><li>クロスプラットフォーム対応の会議スケジューリングシステムを支える<b>NestJS製REST API</b>を構築し、Web・モバイル両クライアントに提供。</li><li>オフィスのLCDディスプレイ向けにリアルタイムの<b>Next.js</b>ポータルを開発し、スケジュールの即時更新を実現。</li></ul>',
       'i18n-proj1-title': '耐量子暗号メッセンジャーアプリ',
-      'i18n-proj1-date': '2025年10月 — 2025年12月',
+      'i18n-proj1-date': '2025年10月 - 2025年12月',
       'i18n-proj1-list': '<ul><li>NestJSとPython FastAPIによる<b>ポリグロットなマイクロサービスアーキテクチャ</b>でセキュアなチャットバックエンドを構築し、耐量子暗号のエンドツーエンド鍵交換に<b>ML-KEM(Kyber)</b>を実装した。</li><li>ML-KEMのアルゴリズム的強度と性能を従来のRSA暗号と比較するセキュリティ分析を実施した。</li><li><b>NIST FIPS 203(ML-KEM/Kyber)</b>を専用のFastAPIマイクロサービスとして実装し、耐量子鍵カプセル化とセッション鍵交換に対応した。</li></ul>',
       'i18n-proj2-title': 'リサーチフェロー ・ Angkor Social Innovation Park',
-      'i18n-proj2-date': '2024年4月 — 2024年6月',
+      'i18n-proj2-date': '2024年4月 - 2024年6月',
       'i18n-proj2-list': '<ul><li>カンボジアのデジタル決済システムに対するブロックチェーン技術の影響を分析した15ページの研究論文を執筆した。</li><li>ブロックチェーンの動向と課題に関する20本以上の論文を対象に体系的文献レビューを実施した。</li><li>Bakongのブロックチェーンに関する概念的フレームワークを構築し、スケーラビリティとセキュリティ向上のための提言を行った。</li></ul>',
       'i18n-skill-programming': 'プログラミング',
       'i18n-skill-frameworks': 'フレームワーク',
@@ -741,15 +810,15 @@
       'i18n-skill-soft': 'ソフトスキル',
       'i18n-skill-soft-chips': '<span class="chip">コミュニケーション</span><span class="chip">問題解決力</span><span class="chip">適応力</span>',
       'i18n-certs-title': '資格・認定',
-      'i18n-cert-1': 'サイバーセキュリティ入門 ― Cisco Networking Academy',
-      'i18n-cert-2': 'CyberObs Associate ― Cisco Networking Academy',
-      'i18n-cert-3': 'サイバーセキュリティ基礎 ― Cisco Networking Academy',
-      'i18n-cert-4': 'Solid Edge Mechanical ― アソシエイトレベル',
+      'i18n-cert-1': 'サイバーセキュリティ入門 ・ Cisco Networking Academy',
+      'i18n-cert-2': 'CyberObs Associate ・ Cisco Networking Academy',
+      'i18n-cert-3': 'サイバーセキュリティ基礎 ・ Cisco Networking Academy',
+      'i18n-cert-4': 'Solid Edge Mechanical ・ アソシエイトレベル',
       'i18n-langs-title': '言語',
       'i18n-lang-km': 'クメール語', 'i18n-lang-km-level': '母語',
       'i18n-lang-en': '英語', 'i18n-lang-en-level': '上級',
       'i18n-lang-ja': '日本語', 'i18n-lang-ja-level': '初級',
-      'i18n-contact-req': '<span class="k">Content-Type:</span> application/human<br/><span class="k">Status:</span> インターンおよびジュニアバックエンド職を募集中',
+      'i18n-contact-req': '<span class="k">Content-Type:</span> application/human<br/><span class="k">Status:</span> バックエンド・API開発の機会を歓迎',
       'i18n-contact-p': 'バックエンドのポジション、構築が必要なAPI、決済連携のご相談など、お気軽にご連絡ください。できるだけ早くご返信します。',
       'i18n-contact-btn': 'リクエストを送る',
       'i18n-footer': 'Cheng Porchheng 制作 ・ プノンペン、カンボジア'
