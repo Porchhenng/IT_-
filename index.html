@@ -47,8 +47,13 @@
     font-family:'Inter','Noto Sans JP',sans-serif;
     -webkit-font-smoothing:antialiased;
     transition:background .25s ease, color .25s ease;
+    animation:page-fade-in .7s cubic-bezier(.16,.8,.24,1) both;
   }
-  .sidebar, .chip, .lang-switch, .theme-btn, .tag, .card, .route .rule{
+  @keyframes page-fade-in{
+    from{opacity:0; transform:translateY(6px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+  .sidebar, .lang-switch{
     transition:background .25s ease, border-color .25s ease, color .25s ease;
   }
   h1,h2,h3{
@@ -80,7 +85,25 @@
     border-right:1px solid var(--line);
     background:var(--surface);
     overflow-y:auto;
+    overflow-x:hidden;
     scrollbar-width:thin;
+  }
+  .sidebar::before{
+    content:'';
+    position:absolute;
+    top:-90px;left:-90px;
+    width:280px;height:280px;
+    border-radius:50%;
+    background:radial-gradient(circle, var(--accent) 0%, transparent 70%);
+    opacity:.07;
+    filter:blur(40px);
+    pointer-events:none;
+    animation:glow-pulse 9s ease-in-out infinite;
+  }
+  .sidebar > div{position:relative;z-index:1;}
+  @keyframes glow-pulse{
+    0%,100%{opacity:.05; transform:scale(1);}
+    50%{opacity:.11; transform:scale(1.1);}
   }
   .main{
     margin-left:var(--sidebar-w);
@@ -99,6 +122,12 @@
     border:2px solid var(--line);
     box-shadow:0 6px 20px rgba(16,19,26,.08);
     margin-bottom:20px;
+    transition:transform .45s cubic-bezier(.16,.8,.24,1), box-shadow .45s ease, border-color .3s ease;
+  }
+  .portrait:hover{
+    transform:scale(1.045) rotate(-1.5deg);
+    box-shadow:0 10px 28px rgba(16,19,26,.16);
+    border-color:var(--accent);
   }
   .name{
     font-size:34px;
@@ -142,11 +171,19 @@
     display:flex;
     align-items:center;
   }
-  .theme-btn:hover{color:var(--accent);}
+  .theme-btn{transition:color .15s ease, transform .2s ease, background-color .25s ease;}
+  .theme-btn:hover{color:var(--accent);transform:scale(1.06);}
+  .theme-btn:active{transform:scale(.94);}
   .theme-btn svg{display:block;}
   .theme-btn .icon-sun{display:none;}
   html[data-theme="dark"] .theme-btn .icon-sun{display:block;}
   html[data-theme="dark"] .theme-btn .icon-moon{display:none;}
+  .theme-btn.spin{animation:theme-spin .45s cubic-bezier(.34,1.56,.64,1);}
+  @keyframes theme-spin{
+    from{transform:rotate(0deg) scale(1);}
+    50%{transform:rotate(160deg) scale(1.15);}
+    to{transform:rotate(360deg) scale(1);}
+  }
   .lang-switch button{
     border:none;
     background:transparent;
@@ -218,6 +255,9 @@
     transform:translateY(-1px);
     box-shadow:0 6px 16px rgba(41,82,227,.25);
   }
+  .cv-btn:active{transform:translateY(0) scale(.97);}
+  .cv-btn svg{transition:transform .3s cubic-bezier(.34,1.56,.64,1);}
+  .cv-btn:hover svg{transform:translateY(2px);}
 
   nav{margin-top:44px;}
   nav ul{list-style:none;margin:0;padding:0;}
@@ -235,21 +275,13 @@
   nav a .dash{
     width:24px;height:1px;
     background:var(--line);
-    transition:all .15s ease;
+    transition:width .35s cubic-bezier(.34,1.56,.64,1), background-color .2s ease;
   }
-  nav a:hover{color:var(--ink);}
+  nav a{transition:color .15s ease, padding-left .25s ease;}
+  nav a:hover{color:var(--ink);padding-left:3px;}
+  nav a:hover .dash{width:30px;}
   nav a.active{color:var(--ink);}
   nav a.active .dash{width:36px;background:var(--accent);}
-
-  .sidebar-skills{
-    margin-top:40px;
-    display:flex;
-    flex-direction:column;
-    gap:20px;
-  }
-  .sidebar-skills .skill-group h3{margin-bottom:9px;font-size:11px;}
-  .sidebar-skills .skill-chips{gap:6px;}
-  .sidebar-skills .chip{font-size:11px;padding:4px 9px;border-radius:6px;}
 
   .sidebar-foot{display:flex;flex-direction:column;gap:18px;margin-top:36px;}
   .socials{display:flex;gap:18px;}
@@ -298,15 +330,35 @@
     width:6px;height:6px;
     border-radius:50%;
     background:#1E9E6B;
+    animation:status-pulse 2.2s ease-in-out infinite;
+  }
+  @keyframes status-pulse{
+    0%,100%{box-shadow:0 0 0 0 rgba(30,158,107,.45);}
+    50%{box-shadow:0 0 0 5px rgba(30,158,107,0);}
   }
   .route .rule{
     flex:1;
     height:1px;
     background:var(--line);
     margin-left:4px;
+    transform-origin:left;
+    transform:scaleX(0);
+    transition:transform .8s cubic-bezier(.16,.8,.24,1) .1s, background-color .25s ease;
   }
+  .route.in-view .rule{transform:scaleX(1);}
   .route .verb.post{color:#1E9E6B;background:#E7F8EF;}
   html[data-theme="dark"] .route .verb.post{background:#15271F;}
+
+  /* ===== Reveal-on-scroll ===== */
+  .route, .lede, .card, .misc-grid > div, .skills-grid > div, .contact-box{
+    opacity:0;
+    transform:translateY(18px);
+    transition:opacity .7s cubic-bezier(.16,.8,.24,1), transform .7s cubic-bezier(.16,.8,.24,1);
+  }
+  .route.in-view, .lede.in-view, .card.in-view, .misc-grid > div.in-view, .skills-grid > div.in-view, .contact-box.in-view{
+    opacity:1;
+    transform:translateY(0);
+  }
 
   section{
     padding-top:100px;
@@ -324,10 +376,14 @@
 
   /* ===== Cards ===== */
   .card{
-    padding:24px 0;
+    padding:24px 20px;
+    margin:0 -20px;
+    border-radius:10px;
     border-bottom:1px solid var(--line);
   }
   .card:last-child{border-bottom:none;}
+  .card{transition:opacity .7s cubic-bezier(.16,.8,.24,1), transform .7s cubic-bezier(.16,.8,.24,1), background-color .3s ease, border-color .25s ease;}
+  .card:hover{background:var(--accent-soft);}
   .card-head{
     display:flex;
     justify-content:space-between;
@@ -356,6 +412,12 @@
     background:var(--accent-soft);
     padding:4px 9px;
     border-radius:5px;
+    transition:transform .2s cubic-bezier(.34,1.56,.64,1), background-color .2s ease, color .2s ease;
+  }
+  .tag:hover{
+    transform:translateY(-1.5px) scale(1.05);
+    background:var(--accent);
+    color:#fff;
   }
 
   /* ===== Skills ===== */
@@ -375,6 +437,17 @@
     border:1px solid var(--line);
     border-radius:7px;
     background:var(--surface);
+    transition:transform .2s cubic-bezier(.34,1.56,.64,1), border-color .2s ease, color .2s ease, background-color .25s ease;
+  }
+  .chip:hover{
+    transform:translateY(-1.5px);
+    border-color:var(--accent);
+    color:var(--accent);
+  }
+  .skills-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
+    gap:28px 36px;
   }
   .misc-grid{
     display:grid;
@@ -397,7 +470,9 @@
     border-bottom:1px dashed var(--line);
     display:flex;
     justify-content:space-between;
+    transition:padding-left .25s cubic-bezier(.16,.8,.24,1), border-color .25s ease;
   }
+  .cert-item:hover, .lang-item:hover{padding-left:5px;border-color:var(--accent);}
   .cert-item a:hover{color:var(--accent);}
   .lang-level{color:var(--accent);font-family:'JetBrains Mono','Noto Sans JP',monospace;font-size:11px;}
 
@@ -429,6 +504,9 @@
     transition:transform .15s ease, box-shadow .15s ease;
   }
   .send-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(41,82,227,.35);}
+  .send-btn:active{transform:translateY(0) scale(.97);}
+  .send-btn svg{transition:transform .3s cubic-bezier(.34,1.56,.64,1);}
+  .send-btn:hover svg{transform:translateX(3px);}
 
   footer{
     margin-top:80px;
@@ -462,6 +540,18 @@
   @media (prefers-reduced-motion: reduce){
     html{scroll-behavior:auto;}
     .whoami .cursor{animation:none;}
+    body{animation:none;}
+    .sidebar::before{animation:none;}
+    .route .status::before{animation:none;}
+    .theme-btn.spin{animation:none;}
+    .route, .lede, .card, .misc-grid > div, .skills-grid > div, .contact-box, .route .rule{
+      opacity:1!important;
+      transform:none!important;
+      transition:none!important;
+    }
+    .portrait, .chip, .tag, .cert-item, .lang-item, nav a, nav a .dash{
+      transition:none!important;
+    }
   }
 </style>
 </head>
@@ -490,54 +580,11 @@
           <li><a href="#about" class="nav-link active"><span class="dash"></span><span id="i18n-nav-about">About</span></a></li>
           <li><a href="#experience" class="nav-link"><span class="dash"></span><span id="i18n-nav-experience">Experience</span></a></li>
           <li><a href="#projects" class="nav-link"><span class="dash"></span><span id="i18n-nav-projects">Projects</span></a></li>
+          <li><a href="#skills" class="nav-link"><span class="dash"></span><span id="i18n-nav-skillset">Skills</span></a></li>
           <li><a href="#credentials" class="nav-link"><span class="dash"></span><span id="i18n-nav-skills">Credentials</span></a></li>
           <li><a href="#contact" class="nav-link"><span class="dash"></span><span id="i18n-nav-contact">Contact</span></a></li>
         </ul>
       </nav>
-
-      <div class="sidebar-skills">
-        <div class="skill-group">
-          <h3 id="i18n-skill-programming">Programming</h3>
-          <div class="skill-chips">
-            <span class="chip">TypeScript</span><span class="chip">JavaScript</span><span class="chip">Python</span>
-            <span class="chip">Dart</span><span class="chip">C++</span><span class="chip">Java</span><span class="chip">SQL</span>
-          </div>
-        </div>
-        <div class="skill-group">
-          <h3 id="i18n-skill-frameworks">Frameworks</h3>
-          <div class="skill-chips">
-            <span class="chip">NestJS</span><span class="chip">Vendure</span><span class="chip">FastAPI</span>
-            <span class="chip">Node.js</span><span class="chip">Next.js</span><span class="chip">Flutter</span><span class="chip">Angular</span>
-          </div>
-        </div>
-        <div class="skill-group">
-          <h3 id="i18n-skill-tools">Tools &amp; Platforms</h3>
-          <div class="skill-chips">
-            <span class="chip">Git</span><span class="chip">Docker</span><span class="chip">Postgres</span>
-            <span class="chip">Postman</span><span class="chip">Jira</span><span class="chip">GraphQL</span>
-            <span class="chip">Jest</span><span class="chip">Automated Testing</span>
-          </div>
-        </div>
-        <div class="skill-group">
-          <h3 id="i18n-skill-cloud">Cloud &amp; DevOps</h3>
-          <div class="skill-chips">
-            <span class="chip">AWS CloudWatch</span><span class="chip">Firebase (FCM)</span>
-            <span class="chip">Redis</span><span class="chip">Cloudflare</span><span class="chip">Digital Ocean</span>
-          </div>
-        </div>
-        <div class="skill-group">
-          <h3 id="i18n-skill-fintech">FinTech</h3>
-          <div class="skill-chips">
-            <span class="chip">KHQR Integration</span><span class="chip">ABA Payment Gateway</span>
-          </div>
-        </div>
-        <div class="skill-group">
-          <h3 id="i18n-skill-soft">Soft Skills</h3>
-          <div class="skill-chips" id="i18n-skill-soft-chips">
-            <span class="chip">Communication</span><span class="chip">Problem-Solving</span><span class="chip">Adaptability</span>
-          </div>
-        </div>
-      </div>
     </div>
 
     <div class="sidebar-foot">
@@ -701,6 +748,60 @@
       </div>
     </section>
 
+    <!-- SKILLS -->
+    <section id="skills">
+      <div class="route">
+        <span class="verb">GET</span>
+        <span class="path">/skills</span>
+        <span class="rule"></span>
+        <span class="status">200 OK</span>
+      </div>
+
+      <div class="skills-grid">
+        <div class="skill-group">
+          <h3 id="i18n-skill-programming">Programming</h3>
+          <div class="skill-chips">
+            <span class="chip">TypeScript</span><span class="chip">JavaScript</span><span class="chip">Python</span>
+            <span class="chip">Dart</span><span class="chip">C++</span><span class="chip">Java</span><span class="chip">SQL</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h3 id="i18n-skill-frameworks">Frameworks</h3>
+          <div class="skill-chips">
+            <span class="chip">NestJS</span><span class="chip">Vendure</span><span class="chip">FastAPI</span>
+            <span class="chip">Node.js</span><span class="chip">Next.js</span><span class="chip">Flutter</span><span class="chip">Angular</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h3 id="i18n-skill-tools">Tools &amp; Platforms</h3>
+          <div class="skill-chips">
+            <span class="chip">Git</span><span class="chip">Docker</span><span class="chip">Postgres</span>
+            <span class="chip">Postman</span><span class="chip">Jira</span><span class="chip">GraphQL</span>
+            <span class="chip">Jest</span><span class="chip">Automated Testing</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h3 id="i18n-skill-cloud">Cloud &amp; DevOps</h3>
+          <div class="skill-chips">
+            <span class="chip">AWS CloudWatch</span><span class="chip">Firebase (FCM)</span>
+            <span class="chip">Redis</span><span class="chip">Cloudflare</span><span class="chip">Digital Ocean</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h3 id="i18n-skill-fintech">FinTech</h3>
+          <div class="skill-chips">
+            <span class="chip">KHQR Integration</span><span class="chip">ABA Payment Gateway</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h3 id="i18n-skill-soft">Soft Skills</h3>
+          <div class="skill-chips" id="i18n-skill-soft-chips">
+            <span class="chip">Communication</span><span class="chip">Problem-Solving</span><span class="chip">Adaptability</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- CREDENTIALS -->
     <section id="credentials">
       <div class="route">
@@ -776,7 +877,38 @@
     const t = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
     document.documentElement.dataset.theme = t;
     localStorage.setItem('theme', t);
+    const btn = document.querySelector('.theme-btn');
+    btn.classList.remove('spin');
+    void btn.offsetWidth; // restart animation
+    btn.classList.add('spin');
   }
+
+  /* ===== Reveal-on-scroll ===== */
+  (function(){
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const targets = document.querySelectorAll('.route, .lede, .card, .misc-grid > div, .skills-grid > div, .contact-box');
+
+    if (prefersReduced){
+      targets.forEach(el => el.classList.add('in-view'));
+      return;
+    }
+
+    document.querySelectorAll('section').forEach(section => {
+      const items = section.querySelectorAll('.route, .lede, .card, .misc-grid > div, .skills-grid > div, .contact-box');
+      items.forEach((el, i) => { el.style.transitionDelay = Math.min(i * 70, 260) + 'ms'; });
+    });
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting){
+          entry.target.classList.add('in-view');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    targets.forEach(el => io.observe(el));
+  })();
 
   /* ===== i18n ===== */
   const translations = {
@@ -787,6 +919,7 @@
       'i18n-nav-about': '概要',
       'i18n-nav-experience': '職務経歴',
       'i18n-nav-projects': 'プロジェクト',
+      'i18n-nav-skillset': 'スキル',
       'i18n-nav-skills': '資格・言語',
       'i18n-nav-contact': 'お問い合わせ',
       'i18n-address': 'st 247, Beong Salang, Toul Kok<br/>プノンペン、カンボジア<br/><a href="mailto:porchheng914@gmail.com">porchheng914@gmail.com</a>',
