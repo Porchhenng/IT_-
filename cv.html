@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<!--
+  Print source for Cheng_Porchheng_CV.pdf.
+  Rendered to PDF with headless Chrome: see the build note at the foot of this file.
+  Every fact here traces to PRODUCT.md or index.html. Nothing is invented:
+  no metrics, no repositories, no visa or relocation claim, and nothing about
+  the NBC work beyond the public-information limit PRODUCT.md records.
+
+  Type: IBM Plex Sans and IBM Plex Mono, one superfamily.
+  Chosen over the site's Space Grotesk / Inter / JetBrains Mono for three
+  reasons, in order of how much they matter here:
+    1. IBM Plex Sans JP exists, so a Japanese CV is a font swap rather than
+       a redesign. The audience is Japanese employers.
+    2. Plex Sans is a text face, not a UI face, and holds at 8.75pt in print.
+       Space Grotesk is a display face and was doing body-adjacent work.
+    3. It reads engineered and institutional rather than trendy, which is the
+       right register for central-bank work under conservative HR review.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Cheng Porchheng - Backend Engineer - CV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* One page is the target. Every size below is tuned to that, so changing
+     the type scale or the margins will push the foot block onto a page 2. */
+  @page{
+    size:A4;
+    margin:11mm 13mm 9mm;
+  }
+
+  :root{
+    --ink:#000;
+    --body:#1a1a1a;
+    --muted:#565656;
+    --rule:#c8c8c8;
+    --hair:#e2e2e2;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'IBM Plex Sans',sans-serif;
+    font-size:8.75pt;
+    line-height:1.4;
+    color:var(--body);
+    -webkit-font-smoothing:antialiased;
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
+  }
+  .mono{
+    font-family:'IBM Plex Mono',monospace;
+    font-variant-numeric:tabular-nums;
+  }
+
+  /* ===== Masthead ===== */
+  header{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 26mm;
+    gap:9mm;
+    align-items:start;
+    padding-bottom:3.2mm;
+    border-bottom:1.6pt solid var(--ink);
+  }
+  h1{
+    margin:0;
+    font-family:'IBM Plex Sans',sans-serif;
+    font-size:24pt;
+    font-weight:700;
+    line-height:1;
+    letter-spacing:-0.035em;
+    color:var(--ink);
+  }
+  .title{
+    margin:2mm 0 0;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:8.8pt;
+    font-weight:500;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--ink);
+  }
+  .summary{
+    margin:2.8mm 0 0;
+    font-size:8.75pt;
+    line-height:1.46;
+    max-width:141mm;
+    color:var(--body);
+  }
+  .summary b{font-weight:600;color:var(--ink);}
+
+  /* Contact: one mono line, so it scans like the header of a record. */
+  .contact{
+    margin:2.9mm 0 0;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:8pt;
+    color:var(--muted);
+    display:flex;
+    flex-wrap:wrap;
+    gap:0 3.4mm;
+  }
+  .contact span{white-space:nowrap;}
+  .contact a{color:var(--muted);text-decoration:none;}
+  .contact .sep{color:var(--rule);}
+
+  .photo{
+    width:26mm;
+    height:33mm;
+    object-fit:cover;
+    object-position:center 12%;
+    border:0.5pt solid var(--rule);
+  }
+
+  /* ===== Sections ===== */
+  section{margin-top:3.6mm;}
+  h2{
+    margin:0 0 1.9mm;
+    padding-bottom:1mm;
+    border-bottom:0.5pt solid var(--rule);
+    font-family:'IBM Plex Mono',monospace;
+    font-size:8pt;
+    font-weight:500;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--ink);
+  }
+
+  /* ===== Experience ===== */
+  /* 3mm is the floor that still separates roles at a glance. */
+  .role{margin-bottom:2.5mm;break-inside:avoid;}
+  .role:last-child{margin-bottom:0;}
+  .role-head{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto;
+    align-items:baseline;
+    gap:5mm;
+  }
+  .role-title{
+    font-family:'IBM Plex Sans',sans-serif;
+    font-size:10.1pt;
+    font-weight:600;
+    letter-spacing:-0.012em;
+    color:var(--ink);
+  }
+  .role-dates{
+    font-family:'IBM Plex Mono',monospace;
+    font-variant-numeric:tabular-nums;
+    font-size:8.2pt;
+    color:var(--muted);
+    white-space:nowrap;
+  }
+  .role-org{
+    margin-top:0.7mm;
+    font-size:8.7pt;
+    font-weight:500;
+    color:var(--body);
+  }
+  .role-org .place{color:var(--muted);font-weight:400;}
+  ul.bullets{
+    margin:1.5mm 0 0;
+    padding:0;
+    list-style:none;
+  }
+  ul.bullets li{
+    position:relative;
+    padding-left:3.6mm;
+    margin-bottom:0.6mm;
+    line-height:1.4;
+  }
+  ul.bullets li:last-child{margin-bottom:0;}
+  /* A drawn rule, not a bullet glyph: it matches the portfolio's list mark. */
+  ul.bullets li::before{
+    content:'';
+    position:absolute;
+    left:0;
+    top:0.62em;
+    width:2.1mm;
+    height:0.5pt;
+    background:#8c8c8c;
+  }
+  b{font-weight:600;color:var(--ink);}
+
+  /* ===== Skills ===== */
+  .skills{
+    display:grid;
+    grid-template-columns:23mm minmax(0,1fr);
+    gap:0.8mm 4mm;
+  }
+  .skills dt{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:8pt;
+    color:var(--muted);
+    padding-top:0.25mm;
+  }
+  .skills dd{margin:0;font-size:8.7pt;color:var(--body);}
+
+  /* ===== Foot band: three columns, so it costs one block of height ===== */
+  .foot{
+    display:grid;
+    /* Education is the tallest column, so it gets the width: enough for
+       "Cambodia Academy of Digital Technology (CADT)" on one line, which is
+       what keeps the whole document on one page. */
+    grid-template-columns:1.35fr 1fr 0.75fr;
+    gap:0 7mm;
+    align-items:start;
+  }
+  .foot section{margin-top:3.6mm;}
+  .edu-degree{
+    margin:0;
+    font-family:'IBM Plex Sans',sans-serif;
+    font-size:9.4pt;
+    font-weight:600;
+    line-height:1.28;
+    color:var(--ink);
+  }
+  .edu-major{margin:0.4mm 0 0;font-size:8.6pt;color:var(--muted);}
+  .edu-next{margin-top:2.2mm;}
+  /* Balanced, or "Technology (CADT)" orphans onto a line of its own and the
+     long line crowds the certifications column beside it. */
+  .edu-school{margin:1.1mm 0 0;font-size:8.6pt;text-wrap:balance;}
+  /* Two named institutions, one per line: the explicit break beats balancing. */
+  .edu-partners{text-wrap:normal;line-height:1.34;}
+  .edu-meta{
+    margin:0.8mm 0 0;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:8pt;
+    color:var(--muted);
+  }
+  ul.plain{margin:0;padding:0;list-style:none;}
+  ul.plain li{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    gap:4mm;
+    padding:0.85mm 0;
+    border-bottom:0.5pt solid var(--hair);
+  }
+  ul.plain li:last-child{border-bottom:none;}
+  ul.plain .lvl{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:7.5pt;
+    letter-spacing:.09em;
+    color:var(--muted);
+    white-space:nowrap;
+  }
+  /* The three Cisco certificates share an issuer, so it is named once. */
+  .issuer{
+    margin:0 0 0.6mm;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:7.6pt;
+    color:var(--muted);
+  }
+  ul.certs{margin:0;padding:0;list-style:none;font-size:8.6pt;}
+  ul.certs li{padding:0.35mm 0;}
+  ul.certs li .lvl{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:7.5pt;
+    color:var(--muted);
+  }
+  .certs-standalone{margin-top:1.7mm;}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Cheng Porchheng</h1>
+    <p class="title">Backend Engineer</p>
+    <p class="summary">
+      Backend engineer at the <b>National Bank of Cambodia</b>, the country's central bank, working on
+      <b>Bakong</b>, Cambodia's national payment system: load-testing applications for its public API and
+      Appium-based automated tests for its mobile app. Previously built <b>payment and e-commerce APIs</b>
+      in REST and GraphQL, including <b>ABA Bank KHQR</b> integration.
+    </p>
+    <p class="contact">
+      <span>porchheng914@gmail.com</span><span class="sep">/</span>
+      <span>linkedin.com/in/porchheng</span><span class="sep">/</span>
+      <span>Phnom Penh, Cambodia</span>
+    </p>
+  </div>
+  <!-- 622x800 prints at 26x33mm = ~600dpi, double what print needs, at an
+       eighth the file size of the 1050x1350 original. -->
+  <img class="photo" src="cv-photo-print.jpg" alt="Cheng Porchheng" />
+</header>
+
+<section>
+  <h2>Experience</h2>
+
+  <div class="role">
+    <div class="role-head">
+      <span class="role-title">Backend Engineer</span>
+      <span class="role-dates">Aug 2026 &ndash; Present</span>
+    </div>
+    <p class="role-org">National Bank of Cambodia (NBC) <span class="place">&middot; Phnom Penh, Cambodia</span></p>
+    <ul class="bullets">
+      <li>Test and performance engineering for <b>Bakong</b>, Cambodia's national payment system, operated by the central bank.</li>
+      <li>Build <b>load-testing applications</b> for the <b>Bakong public API</b> to measure how it behaves under sustained traffic.</li>
+      <li>Build <b>Appium</b>-based automated testing for the <b>Bakong mobile application</b>.</li>
+    </ul>
+  </div>
+
+  <div class="role">
+    <div class="role-head">
+      <span class="role-title">Junior Web Developer</span>
+      <span class="role-dates">May 2026 &ndash; Jul 2026</span>
+    </div>
+    <p class="role-org">Biz Solution Co., Ltd. <span class="place">&middot; Phnom Penh, Cambodia</span></p>
+    <ul class="bullets">
+      <li>Developed <b>REST and GraphQL APIs</b> for e-commerce platforms serving web and mobile clients.</li>
+      <li>Maintained and extended existing production e-commerce projects, integrating <b>Odoo</b>, the <b>PayWay</b> payment gateway and <b>Redis</b> caching.</li>
+      <li>Kept releases stable through thorough automated testing and performance tuning.</li>
+    </ul>
+  </div>
+
+  <div class="role">
+    <div class="role-head">
+      <span class="role-title">Backend Developer Intern</span>
+      <span class="role-dates">Jan 2026 &ndash; May 2026</span>
+    </div>
+    <p class="role-org">Biz Solution Co., Ltd. <span class="place">&middot; Phnom Penh, Cambodia</span></p>
+    <ul class="bullets">
+      <li>Built <b>REST and GraphQL APIs</b> on the <b>Vendure</b> framework for a Khmer-language multi-vendor mobile e-commerce platform.</li>
+      <li>Integrated the <b>ABA Bank KHQR</b> payment gateway with secure transaction flows and automated payment-status webhooks.</li>
+      <li>Improved speed and reliability with <b>Redis</b> caching, <b>Firebase Cloud Messaging</b> notifications and <b>AWS CloudWatch</b> monitoring.</li>
+    </ul>
+  </div>
+
+  <div class="role">
+    <div class="role-head">
+      <span class="role-title">API &amp; Web Developer Intern</span>
+      <span class="role-dates">May 2025 &ndash; Aug 2025</span>
+    </div>
+    <p class="role-org">The Council for the Development of Cambodia (CDC) <span class="place">&middot; Phnom Penh, Cambodia</span></p>
+    <ul class="bullets">
+      <li>Built a <b>NestJS REST API</b> powering a meeting scheduling system, serving the mobile application.</li>
+      <li>Developed a real-time <b>Next.js</b> web portal with live scheduling updates, shown on office LCD displays.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2>Technical Skills</h2>
+  <dl class="skills">
+    <dt>languages</dt><dd>TypeScript, JavaScript, Python, Java, C++, Dart, SQL</dd>
+    <dt>backend</dt><dd>NestJS, FastAPI, Node.js, Vendure, REST, GraphQL</dd>
+    <dt>frontend</dt><dd>Next.js, Angular, Flutter</dd>
+    <dt>data &amp; infra</dt><dd>PostgreSQL, Redis, Docker, AWS CloudWatch, Firebase (FCM), Cloudflare, DigitalOcean</dd>
+    <dt>testing</dt><dd>Load testing, Appium, Jest, automated testing, Postman</dd>
+    <dt>payments</dt><dd>KHQR integration, ABA payment gateway, PayWay, Odoo</dd>
+    <dt>tools</dt><dd>Git, Jira</dd>
+  </dl>
+</section>
+
+<div class="foot">
+  <section>
+    <h2>Education</h2>
+    <!-- Degree title as awarded, confirmed by the owner: "Bachelor of Computer
+         Science". Written out, never abbreviated to "BSc": that expands to
+         Bachelor of Science, a different award. BCompSc is the correct
+         abbreviation but is not widely recognised, so full is safer for a
+         reader who may verify the CV against the diploma.
+         The major is parenthesised so it reads as subordinate to the degree
+         rather than as a second qualification. -->
+    <p class="edu-degree">Bachelor of Computer Science</p>
+    <p class="edu-major">(Software Engineering)</p>
+    <p class="edu-school">Cambodia Academy of Digital Technology (CADT)</p>
+    <p class="edu-meta">2023 &ndash; 2026 &middot; Completed</p>
+
+    <!-- Ongoing, and the most directly relevant credential for a Japanese
+         employer, so it sits in Education rather than under certifications. -->
+    <p class="edu-degree edu-next">Japanese IT Pathway Program</p>
+    <p class="edu-school edu-partners">American University of Phnom Penh (AUPP)<br/>and NEXTMAKE Inc.</p>
+    <p class="edu-meta">2025 &ndash; 2027 &middot; Ongoing</p>
+  </section>
+
+  <section>
+    <h2>Certifications</h2>
+    <p class="issuer">Cisco Networking Academy</p>
+    <ul class="certs certs-group">
+      <li>Introduction to Cyber Security</li>
+      <li>CyberObs Associate</li>
+      <li>Cybersecurity Essentials</li>
+    </ul>
+    <ul class="certs certs-standalone">
+      <li>Solid Edge Mechanical <span class="lvl">&middot; Associate Level</span></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Languages</h2>
+    <ul class="plain">
+      <li><span>Khmer</span><span class="lvl">NATIVE</span></li>
+      <li><span>English</span><span class="lvl">ADVANCED</span></li>
+      <li><span>Japanese</span><span class="lvl">INTERMEDIATE</span></li>
+    </ul>
+  </section>
+</div>
+
+</body>
+</html>
+<!--
+  Build:  node /tmp/pdf.mjs   (headless Chrome Page.printToPDF, A4, no margins
+          beyond @page, printBackground on so the rules and photo border survive)
+-->

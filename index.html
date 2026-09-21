@@ -8,10 +8,11 @@
     var t = localStorage.getItem('theme');
     if(!t) t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     document.documentElement.dataset.theme = t;
+    document.documentElement.classList.add('js');
   })();
 </script>
-<title>Cheng Porchheng | Backend Developer</title>
-<meta name="description" content="Cheng Porchheng, junior web developer building REST and GraphQL APIs for enterprise e-commerce, with a focus on testing and performance." />
+<title>Cheng Porchheng | Backend Engineer</title>
+<meta name="description" content="Cheng Porchheng, backend engineer at the National Bank of Cambodia, working on load testing and automated testing for Bakong, Cambodia's national payment system, with a background in KHQR payment and e-commerce APIs." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -23,10 +24,16 @@
     --muted:#6B6355;
     --accent:#2952E3;
     --accent-soft:#EEF1FD;
+    --on-accent:#FFFFFF;
+    --ok:#147A52;
     --line:#E6DFCF;
     --code-bg:#171410;
     --code-text:#6EE7A6;
-    --sidebar-w:340px;
+    --record-key:#8B94A6;
+    --record-val:#E6E9EF;
+    --rail-w:302px;
+    --res-w:330px;
+    --ease:cubic-bezier(.16,1,.3,1);
   }
   html[data-theme="dark"]{
     --bg:#131211;
@@ -35,561 +42,744 @@
     --muted:#A39B8E;
     --accent:#7C96FF;
     --accent-soft:#232B45;
+    --on-accent:#0E1330;
+    --ok:#3FBE8B;
     --line:#2C2823;
     --code-bg:#0E0D0B;
   }
   *{box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
   body{
     margin:0;
     background:var(--bg);
     color:var(--ink);
     font-family:'Inter','Noto Sans JP',sans-serif;
+    font-size:16px;
     -webkit-font-smoothing:antialiased;
     transition:background .25s ease, color .25s ease;
-    animation:page-fade-in .7s cubic-bezier(.16,.8,.24,1) both;
   }
-  @keyframes page-fade-in{
-    from{opacity:0; transform:translateY(6px);}
-    to{opacity:1; transform:translateY(0);}
-  }
-  .sidebar, .lang-switch{
-    transition:background .25s ease, border-color .25s ease, color .25s ease;
-  }
-  h1,h2,h3{
-    font-family:'Space Grotesk','Noto Sans JP',sans-serif;
-    margin:0;
-  }
-  .mono{
-    font-family:'JetBrains Mono','Noto Sans JP',monospace;
-  }
-  html[lang="ja"] h1, html[lang="ja"] .name{
-    letter-spacing:0;
-  }
+  h1,h2,h3{font-family:'Space Grotesk','Noto Sans JP',sans-serif;margin:0;font-weight:600;}
+  html[lang="ja"] h1, html[lang="ja"] h2{letter-spacing:0;}
   a{color:inherit;text-decoration:none;}
+  ::selection{background:var(--accent);color:var(--on-accent);}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px;}
+  .mono, .endpoint, .record, .rail-group-title, .res-label, .field-date{
+    font-family:'JetBrains Mono','Noto Sans JP',monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .skip{
+    position:absolute;left:-9999px;top:0;z-index:100;
+    padding:12px 18px;background:var(--accent);color:var(--on-accent);
+    font-size:14px;font-weight:600;border-radius:0 0 8px 0;
+  }
+  .skip:focus{left:0;}
 
-  /* ===== Layout ===== */
-  .wrap{
-    display:flex;
+  /* ===== Shell: rail | request pane | response pane ===== */
+  .app{
+    display:grid;
+    grid-template-columns:var(--rail-w) minmax(0,1fr);
     min-height:100vh;
   }
-  .sidebar{
-    position:fixed;
-    top:0;left:0;
-    width:var(--sidebar-w);
+  .rail{
+    position:sticky;
+    top:0;
+    align-self:start;
     height:100vh;
-    padding:56px 44px;
     display:flex;
     flex-direction:column;
-    justify-content:space-between;
+    gap:34px;
+    padding:34px 26px 26px;
     border-right:1px solid var(--line);
     background:var(--surface);
     overflow-y:auto;
-    overflow-x:hidden;
     scrollbar-width:thin;
+    scrollbar-color:var(--line) transparent;
+    transition:background .25s ease, border-color .25s ease;
   }
-  .sidebar::before{
-    content:'';
-    position:absolute;
-    top:-90px;left:-90px;
-    width:280px;height:280px;
-    border-radius:50%;
-    background:radial-gradient(circle, var(--accent) 0%, transparent 70%);
-    opacity:.07;
-    filter:blur(40px);
-    pointer-events:none;
-    animation:glow-pulse 9s ease-in-out infinite;
-  }
-  .sidebar > div{position:relative;z-index:1;}
-  @keyframes glow-pulse{
-    0%,100%{opacity:.05; transform:scale(1);}
-    50%{opacity:.11; transform:scale(1.1);}
-  }
-  .main{
-    margin-left:var(--sidebar-w);
-    width:calc(100% - var(--sidebar-w));
-    padding:56px 64px 120px;
-    max-width:860px;
-    position:relative;
-  }
+  .rail::-webkit-scrollbar{width:10px;}
+  .rail::-webkit-scrollbar-thumb{background:var(--line);border-radius:6px;border:3px solid var(--surface);}
 
-  /* ===== Sidebar content ===== */
-  .portrait{
-    width:120px;
-    height:120px;
+  /* ===== Rail header: the name is a byline, not a hero ===== */
+  .byline{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-size:15px;
+    line-height:1.25;
+  }
+  .byline img{
+    width:40px;height:40px;
     border-radius:50%;
     object-fit:cover;
-    border:2px solid var(--line);
-    box-shadow:0 6px 20px rgba(16,19,26,.08);
-    margin-bottom:20px;
-    transition:transform .45s cubic-bezier(.16,.8,.24,1), box-shadow .45s ease, border-color .3s ease;
+    border:1px solid var(--line);
+    flex:none;
   }
-  .portrait:hover{
-    transform:scale(1.045) rotate(-1.5deg);
-    box-shadow:0 10px 28px rgba(16,19,26,.16);
-    border-color:var(--accent);
-  }
-  .name{
-    font-size:34px;
-    font-weight:700;
-    line-height:1.15;
-    letter-spacing:-0.02em;
-  }
-  .role{
-    margin-top:10px;
-    font-size:15px;
-    color:var(--accent);
+  .byline-name{display:block;font-weight:600;letter-spacing:-0.01em;}
+  .byline-role{display:block;font-size:12px;font-weight:500;color:var(--muted);margin-top:2px;}
+  .cv-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:9px;
+    margin-top:18px;
+    padding:0 14px;
+    min-height:44px;
+    width:100%;
+    border:1px solid var(--line);
+    border-radius:9px;
+    background:var(--bg);
+    font-size:13.5px;
     font-weight:600;
+    transition:border-color .2s ease, background-color .2s ease;
+  }
+  .cv-btn:hover{border-color:var(--ink);}
+  .cv-btn svg{flex:none;}
+
+  /* ===== Rail navigation ===== */
+  .rail-nav{flex:1;}
+  .rail-group + .rail-group{margin-top:26px;}
+  .rail-group-title{
+    margin:0 0 8px;
+    padding-left:11px;
+    font-size:12px;
+    font-weight:500;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+  .rail-list{list-style:none;margin:0;padding:0;}
+  /* One icon grid, one stroke weight, sized optically for each context. */
+  .ico{
+    width:17px;height:17px;
+    flex:none;
+    fill:none;
+    stroke:currentColor;
+    stroke-width:1.7;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+  }
+  .rail-link{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    padding:9px 11px;
+    min-height:40px;
+    border-radius:8px;
+    font-size:14px;
+    color:var(--muted);
+    transition:color .18s ease, background-color .18s ease;
+  }
+  .rail-link .verb{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    font-weight:500;
+    letter-spacing:.02em;
+    flex:none;
+  }
+  .rail-link:hover{color:var(--ink);}
+  /* The one reserved accent: spent only on the resource under load. */
+  .rail-link[aria-current="true"]{
+    background:var(--accent-soft);
+    color:var(--accent);
+    font-weight:500;
+  }
+
+  .rail-foot{
+    font-size:12.5px;
+    line-height:1.7;
+    color:var(--muted);
+    border-top:1px solid var(--line);
+    padding-top:20px;
+  }
+  /* Links announce themselves: underline everywhere, an icon where it leaves the page. */
+  .rail-foot a, .prose a{
+    color:var(--ink);
+    text-decoration:underline;
+    text-decoration-thickness:1px;
+    text-underline-offset:3px;
+    text-decoration-color:var(--muted);
+    transition:text-decoration-color .18s ease;
+  }
+  .rail-foot a:hover, .prose a:hover{text-decoration-color:var(--ink);}
+  .socials{display:flex;gap:2px;margin:8px 0 0 -11px;}
+  .socials a{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:44px;height:44px;
+    color:var(--muted);
+    transition:color .18s ease;
+  }
+  .socials a:hover{color:var(--ink);}
+
+  /* ===== Floating controls ===== */
+  .controls{
+    position:fixed;
+    top:24px;
+    /* Clear of the response pane: these are page controls, not part of the record. */
+    right:calc(var(--res-w) + 32px);
+    z-index:60;
+    display:flex;
+    gap:8px;
   }
   .lang-switch{
     display:inline-flex;
-    padding:4px;
-    background:var(--accent-soft);
+    padding:3px;
+    gap:2px;
+    background:var(--surface);
+    border:1px solid var(--line);
     border-radius:10px;
-    gap:3px;
   }
-  .top-controls{
-    position:fixed;
-    top:32px;
-    right:40px;
-    z-index:50;
-    display:flex;
-    align-items:stretch;
-    gap:10px;
-  }
-  .top-controls .lang-switch,
-  .theme-btn{
-    box-shadow:0 6px 20px rgba(16,19,26,.10);
-  }
-  .theme-btn{
+  .lang-switch button, .theme-btn{
     border:none;
     cursor:pointer;
-    background:var(--accent-soft);
-    border-radius:10px;
-    padding:6px 12px;
+    background:transparent;
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    font-weight:500;
     color:var(--muted);
+    border-radius:7px;
+    min-height:38px;
+    padding:0 12px;
     display:flex;
     align-items:center;
+    justify-content:center;
+    gap:7px;
+    transition:color .18s ease, background-color .18s ease;
   }
-  .theme-btn{transition:color .15s ease, transform .2s ease, background-color .25s ease;}
-  .theme-btn:hover{color:var(--accent);transform:scale(1.06);}
-  .theme-btn:active{transform:scale(.94);}
+  .lang-globe{align-self:center;margin:0 3px 0 9px;color:var(--muted);}
+  .lang-switch button:hover, .theme-btn:hover{color:var(--ink);}
+  .lang-switch button[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent);}
+  .lang-switch button .flag{font-size:15px;line-height:1;}
+  .theme-btn{
+    background:var(--surface);
+    border:1px solid var(--line);
+    min-width:46px;
+    padding:0;
+  }
   .theme-btn svg{display:block;}
   .theme-btn .icon-sun{display:none;}
   html[data-theme="dark"] .theme-btn .icon-sun{display:block;}
   html[data-theme="dark"] .theme-btn .icon-moon{display:none;}
-  .theme-btn.spin{animation:theme-spin .45s cubic-bezier(.34,1.56,.64,1);}
-  @keyframes theme-spin{
-    from{transform:rotate(0deg) scale(1);}
-    50%{transform:rotate(160deg) scale(1.15);}
-    to{transform:rotate(360deg) scale(1);}
+
+  /* ===== Resource: request pane (centre) + response pane (right) ===== */
+  .panes{min-width:0;}
+  .resource{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) var(--res-w);
+    align-items:stretch;
+    min-height:100vh;
   }
-  .lang-switch button{
-    border:none;
-    background:transparent;
-    padding:6px 10px;
-    border-radius:7px;
-    cursor:pointer;
-    transition:all .15s ease;
+  html.js .resource{display:none;}
+  html.js .resource.active{display:grid;}
+
+  .req{
+    padding:78px 64px 96px;
+    min-width:0;
+  }
+  .endpoint{
     display:flex;
     align-items:center;
-    gap:6px;
-    font-family:'JetBrains Mono',monospace;
-    font-size:10.5px;
-    font-weight:600;
+    gap:10px;
+    margin:0 0 18px;
+    font-size:13px;
     color:var(--muted);
-    line-height:1;
   }
-  .lang-switch button .flag{
-    font-size:17px;
-    line-height:1;
+  .endpoint .verb{
+    font-weight:600;
+    letter-spacing:.04em;
+    color:var(--ink);
   }
-  .lang-switch button .flag img{
-    width:20px;height:20px;
-    border-radius:50%;
-    object-fit:cover;
-    display:block;
+  .pane-title{
+    font-size:30px;
+    line-height:1.22;
+    letter-spacing:-0.025em;
+    text-wrap:balance;
+    max-width:24ch;
   }
-  .lang-switch button.active{
-    background:var(--surface);
-    color:var(--accent);
-    box-shadow:0 1px 3px rgba(24,21,17,.12);
+  html[lang="ja"] .pane-title{max-width:26ch;font-size:27px;}
+  .prose{
+    margin:26px 0 0;
+    max-width:66ch;
+    font-size:16px;
+    line-height:1.78;
+    color:var(--muted);
   }
-  .lang-switch button:hover:not(.active){color:var(--ink);}
-  .whoami{
-    margin-top:22px;
-    padding:14px 16px;
-    background:var(--code-bg);
-    border-radius:10px;
-    font-size:12.5px;
-    color:#9BA4B5;
-    line-height:1.6;
+  .prose b{color:var(--ink);font-weight:600;}
+  .prose p{margin:0 0 1.1em;}
+  .prose p:last-child{margin-bottom:0;}
+  /* Justified, with hyphenation so the Latin text does not open rivers. */
+  .prose p, .work li{
+    text-align:justify;
+    text-justify:inter-word;
+    -webkit-hyphens:auto;
+    hyphens:auto;
   }
-  .whoami .prompt{color:var(--code-text);}
-  .whoami .cursor{
-    display:inline-block;
-    width:6px;height:12px;
-    background:var(--code-text);
-    margin-left:2px;
-    animation:blink 1.1s steps(1) infinite;
-    vertical-align:middle;
+  html[lang="ja"] .prose p, html[lang="ja"] .work li{-webkit-hyphens:none;hyphens:none;}
+  .work{
+    margin:30px 0 0;
+    padding:0;
+    list-style:none;
+    max-width:66ch;
   }
-  @keyframes blink{50%{opacity:0;}}
+  .work li{
+    position:relative;
+    padding-left:22px;
+    margin-bottom:15px;
+    font-size:15.5px;
+    line-height:1.72;
+    color:var(--muted);
+  }
+  .work li::before{
+    content:'';
+    position:absolute;
+    left:0;top:.72em;
+    width:9px;height:1px;
+    background:var(--line);
+  }
+  .work b{color:var(--ink);font-weight:600;}
 
-  .cv-btn{
+  h3.sub{
+    margin:52px 0 16px;
+    font-size:12px;
+    font-weight:500;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--muted);
+    font-family:'JetBrains Mono','Noto Sans JP',monospace;
+  }
+  h3.sub:first-child{margin-top:0;}
+
+  /* ===== Response pane: the resource as a record ===== */
+  .res{
+    background:var(--code-bg);
+    padding:78px 30px 96px;
+    transition:background .25s ease;
+  }
+  .res-inner{position:sticky;top:78px;}
+  .res-label{
+    margin:0 0 20px;
+    font-size:12px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--record-key);
+  }
+  .record{margin:0;font-size:12.5px;line-height:1.6;}
+  .record > div{
+    display:grid;
+    grid-template-columns:78px minmax(0,1fr);
+    gap:10px;
+    padding:9px 0;
+    border-bottom:1px solid rgba(255,255,255,.07);
+  }
+  .record > div:last-child{border-bottom:none;}
+  .record dt{color:var(--record-key);}
+  .record dd{margin:0;color:var(--record-val);overflow-wrap:anywhere;}
+  .record dd a{
     display:inline-flex;
     align-items:center;
-    gap:9px;
-    margin-top:20px;
-    padding:10px 16px;
-    border:1.5px solid var(--accent);
-    color:var(--accent);
-    border-radius:9px;
-    font-size:13px;
-    font-weight:600;
-    transition:all .15s ease;
+    gap:5px;
+    text-decoration:underline;
+    text-decoration-thickness:1px;
+    text-underline-offset:3px;
+    text-decoration-color:rgba(255,255,255,.4);
+    transition:text-decoration-color .18s ease, color .18s ease;
   }
-  .cv-btn:hover{
-    background:var(--accent);
-    color:#fff;
-    transform:translateY(-1px);
-    box-shadow:0 6px 16px rgba(41,82,227,.25);
-  }
-  .cv-btn:active{transform:translateY(0) scale(.97);}
-  .cv-btn svg{transition:transform .3s cubic-bezier(.34,1.56,.64,1);}
-  .cv-btn:hover svg{transform:translateY(2px);}
-
-  nav{margin-top:44px;}
-  nav ul{list-style:none;margin:0;padding:0;}
-  nav li{margin-bottom:2px;}
-  nav a{
+  .record dd a:hover{color:#fff;text-decoration-color:#fff;}
+  .record dd a .ico{width:13px;height:13px;stroke-width:1.9;}
+  .avail{
     display:flex;
-    align-items:center;
-    gap:12px;
-    padding:9px 0;
-    font-size:13px;
-    font-weight:500;
-    color:var(--muted);
-    transition:color .15s ease;
+    align-items:baseline;
+    gap:8px;
+    margin-top:22px;
+    font-size:12.5px;
+    line-height:1.6;
+    color:var(--code-text);
   }
-  nav a .dash{
-    width:24px;height:1px;
-    background:var(--line);
-    transition:width .35s cubic-bezier(.34,1.56,.64,1), background-color .2s ease;
-  }
-  nav a{transition:color .15s ease, padding-left .25s ease;}
-  nav a:hover{color:var(--ink);padding-left:3px;}
-  nav a:hover .dash{width:30px;}
-  nav a.active{color:var(--ink);}
-  nav a.active .dash{width:36px;background:var(--accent);}
-
-  .sidebar-foot{display:flex;flex-direction:column;gap:18px;margin-top:36px;}
-  .socials{display:flex;gap:18px;}
-  .socials a{
-    color:var(--muted);
-    transition:color .15s ease, transform .15s ease;
-  }
-  .socials a:hover{color:var(--accent);transform:translateY(-2px);}
-  .contact-line{font-size:12px;color:var(--muted);line-height:1.7;}
-  .contact-line a:hover{color:var(--accent);}
-
-  /* ===== Section route header (signature element) ===== */
-  .route{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    margin-bottom:28px;
-  }
-  .route .verb{
-    font-family:'JetBrains Mono',monospace;
-    font-size:11px;
-    font-weight:600;
-    color:var(--accent);
-    background:var(--accent-soft);
-    padding:3px 8px;
-    border-radius:4px;
-    letter-spacing:.03em;
-  }
-  .route .path{
-    font-family:'JetBrains Mono',monospace;
-    font-size:14px;
-    color:var(--ink);
-    font-weight:500;
-  }
-  .route .status{
-    margin-left:auto;
-    font-family:'JetBrains Mono',monospace;
-    font-size:11px;
-    color:#1E9E6B;
-    display:flex;
-    align-items:center;
-    gap:6px;
-  }
-  .route .status::before{
+  .avail::before{
     content:'';
+    flex:none;
     width:6px;height:6px;
     border-radius:50%;
-    background:#1E9E6B;
-    animation:status-pulse 2.2s ease-in-out infinite;
-  }
-  @keyframes status-pulse{
-    0%,100%{box-shadow:0 0 0 0 rgba(30,158,107,.45);}
-    50%{box-shadow:0 0 0 5px rgba(30,158,107,0);}
-  }
-  .route .rule{
-    flex:1;
-    height:1px;
-    background:var(--line);
-    margin-left:4px;
-    transform-origin:left;
-    transform:scaleX(0);
-    transition:transform .8s cubic-bezier(.16,.8,.24,1) .1s, background-color .25s ease;
-  }
-  .route.in-view .rule{transform:scaleX(1);}
-  .route .verb.post{color:#1E9E6B;background:#E7F8EF;}
-  html[data-theme="dark"] .route .verb.post{background:#15271F;}
-
-  /* ===== Reveal-on-scroll ===== */
-  .route, .lede, .card, .misc-grid > div, .skills-grid > div, .contact-box{
-    opacity:0;
-    transform:translateY(18px);
-    transition:opacity .7s cubic-bezier(.16,.8,.24,1), transform .7s cubic-bezier(.16,.8,.24,1);
-  }
-  .route.in-view, .lede.in-view, .card.in-view, .misc-grid > div.in-view, .skills-grid > div.in-view, .contact-box.in-view{
-    opacity:1;
-    transform:translateY(0);
+    background:var(--code-text);
+    transform:translateY(-1px);
   }
 
-  section{
-    padding-top:100px;
-    margin-top:-64px;
-  }
-  section:first-of-type{padding-top:28px;margin-top:0;}
-
-  .lede{
-    color:var(--muted);
-    font-size:15.5px;
-    line-height:1.8;
-    max-width:640px;
-  }
-  .lede b{color:var(--ink);font-weight:600;}
-
-  /* ===== Cards ===== */
-  .card{
-    padding:24px 20px;
-    margin:0 -20px;
-    border-radius:10px;
-    border-bottom:1px solid var(--line);
-  }
-  .card:last-child{border-bottom:none;}
-  .card{transition:opacity .7s cubic-bezier(.16,.8,.24,1), transform .7s cubic-bezier(.16,.8,.24,1), background-color .3s ease, border-color .25s ease;}
-  .card:hover{background:var(--accent-soft);}
-  .card-head{
-    display:flex;
-    justify-content:space-between;
-    align-items:baseline;
-    flex-wrap:wrap;
-    gap:6px 16px;
-  }
-  .card-title{font-size:16px;font-weight:600;}
-  .card-title a:hover{color:var(--accent);}
-  .card-org{color:var(--accent);font-weight:500;font-size:14px;}
-  .card-date{
-    font-family:'JetBrains Mono','Noto Sans JP',monospace;
-    font-size:11.5px;
-    color:var(--muted);
-    white-space:nowrap;
-  }
-  .card-desc{margin-top:12px;color:var(--muted);font-size:14.5px;line-height:1.75;}
-  .card-desc ul{margin:0;padding-left:18px;}
-  .card-desc li{margin-bottom:7px;}
-  .card-desc b{color:var(--ink);font-weight:600;}
-  .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
-  .tag{
-    font-family:'JetBrains Mono',monospace;
-    font-size:11px;
-    color:var(--accent);
-    background:var(--accent-soft);
-    padding:4px 9px;
-    border-radius:5px;
-    transition:transform .2s cubic-bezier(.34,1.56,.64,1), background-color .2s ease, color .2s ease;
-  }
-  .tag:hover{
-    transform:translateY(-1.5px) scale(1.05);
-    background:var(--accent);
-    color:#fff;
-  }
-
-  /* ===== Skills ===== */
-  .skill-group h3{
-    font-size:12px;
-    text-transform:uppercase;
-    letter-spacing:.06em;
-    color:var(--muted);
-    font-weight:600;
-    margin-bottom:12px;
-    font-family:'JetBrains Mono','Noto Sans JP',monospace;
-  }
-  .skill-chips{display:flex;flex-wrap:wrap;gap:8px;}
+  /* ===== Skills / credentials / contact ===== */
+  .groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:34px 40px;max-width:66ch;}
+  .chips{display:flex;flex-wrap:wrap;gap:7px;}
   .chip{
     font-size:13px;
-    padding:6px 12px;
+    padding:6px 11px;
     border:1px solid var(--line);
     border-radius:7px;
     background:var(--surface);
-    transition:transform .2s cubic-bezier(.34,1.56,.64,1), border-color .2s ease, color .2s ease, background-color .25s ease;
+    color:var(--ink);
   }
-  .chip:hover{
-    transform:translateY(-1.5px);
-    border-color:var(--accent);
-    color:var(--accent);
-  }
-  .skills-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
-    gap:28px 36px;
-  }
-  .misc-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:32px;
-  }
-  .misc-grid h3{
-    font-size:12px;
-    text-transform:uppercase;
-    letter-spacing:.06em;
-    color:var(--muted);
-    font-weight:600;
-    margin-bottom:12px;
-    font-family:'JetBrains Mono','Noto Sans JP',monospace;
-  }
-  .cert-item, .lang-item{
-    font-size:13.5px;
-    color:var(--muted);
-    padding:7px 0;
-    border-bottom:1px dashed var(--line);
+  .rows{margin:0;padding:0;list-style:none;max-width:66ch;}
+  .rows li{
     display:flex;
     justify-content:space-between;
-    transition:padding-left .25s cubic-bezier(.16,.8,.24,1), border-color .25s ease;
+    align-items:baseline;
+    gap:20px;
+    padding:12px 0;
+    border-bottom:1px solid var(--line);
+    font-size:14.5px;
+    color:var(--muted);
   }
-  .cert-item:hover, .lang-item:hover{padding-left:5px;border-color:var(--accent);}
-  .cert-item a:hover{color:var(--accent);}
-  .lang-level{color:var(--accent);font-family:'JetBrains Mono','Noto Sans JP',monospace;font-size:11px;}
-
-  /* ===== Contact ===== */
-  .contact-box{
-    background:var(--code-bg);
-    border-radius:14px;
-    padding:36px 40px;
-    color:#fff;
-  }
-  .contact-box .req{
+  .rows li:last-child{border-bottom:none;}
+  .rows .val{
     font-family:'JetBrains Mono','Noto Sans JP',monospace;
     font-size:12px;
-    color:#8891A5;
-    margin-bottom:18px;
+    color:var(--ink);
+    white-space:nowrap;
   }
-  .contact-box .req .k{color:var(--code-text);}
-  .contact-box p{color:#C6CBD6;font-size:15px;line-height:1.7;max-width:520px;margin:0 0 24px;}
   .send-btn{
     display:inline-flex;
     align-items:center;
     gap:10px;
+    margin-top:30px;
+    padding:0 22px;
+    min-height:48px;
     background:var(--accent);
-    color:#fff;
+    color:var(--on-accent);
+    font-size:14.5px;
     font-weight:600;
-    font-size:14px;
-    padding:12px 22px;
-    border-radius:8px;
-    transition:transform .15s ease, box-shadow .15s ease;
+    border-radius:9px;
+    transition:filter .18s ease;
   }
-  .send-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(41,82,227,.35);}
-  .send-btn:active{transform:translateY(0) scale(.97);}
-  .send-btn svg{transition:transform .3s cubic-bezier(.34,1.56,.64,1);}
-  .send-btn:hover svg{transform:translateX(3px);}
-
+  .send-btn:hover{filter:brightness(1.08);}
   footer{
-    margin-top:80px;
+    margin-top:64px;
+    padding-top:22px;
+    border-top:1px solid var(--line);
+    font-size:12.5px;
     color:var(--muted);
+    max-width:66ch;
+  }
+
+  /* Every reference page ends by pointing at the next one. */
+  .next{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto;
+    align-items:center;
+    column-gap:20px;
+    margin-top:58px;
+    padding-top:22px;
+    border-top:1px solid var(--line);
+    max-width:66ch;
+  }
+  .next-arrow{
+    grid-column:2;
+    grid-row:1 / 4;
+    width:24px;height:24px;
+    color:var(--muted);
+    transition:transform .3s var(--ease), color .18s ease;
+  }
+  .next:hover .next-arrow{transform:translateX(5px);color:var(--ink);}
+  .next-label{
+    display:block;
+    font-family:'JetBrains Mono','Noto Sans JP',monospace;
     font-size:12px;
-    text-align:left;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+  .next-name{
+    display:block;
+    margin-top:7px;
+    font-family:'Space Grotesk','Noto Sans JP',sans-serif;
+    font-size:19px;
+    font-weight:600;
+    letter-spacing:-0.015em;
+  }
+  .next-path{
+    display:block;
+    margin-top:4px;
+    font-family:'JetBrains Mono','Noto Sans JP',monospace;
+    font-size:12.5px;
+    color:var(--muted);
+  }
+  .next:hover .next-name{text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:1px;}
+
+  /* ===== The one authored moment: the request completing ===== */
+  @keyframes pane-in{
+    from{opacity:0;transform:translateY(10px);}
+    to{opacity:1;transform:none;}
+  }
+  html.js .resource.swap .req > *{animation:pane-in .55s var(--ease) both;}
+  html.js .resource.swap .req > *:nth-child(2){animation-delay:.05s;}
+  html.js .resource.swap .req > *:nth-child(3){animation-delay:.1s;}
+  html.js .resource.swap .req > *:nth-child(n+4){animation-delay:.14s;}
+
+  /* The request pane answers instantly; the record is what arrives over the wire. */
+
+  /* Status line: the response reports its own code and its own measured time. */
+  .res-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:16px;
+    margin:0 0 20px;
+    min-height:17px;
+  }
+  .res-head .res-label{margin:0;}
+  .status{
+    display:inline-flex;
+    align-items:baseline;
+    gap:9px;
+    font-family:'JetBrains Mono',monospace;
+    font-variant-numeric:tabular-nums;
+    font-size:12px;
+    white-space:nowrap;
+  }
+  .status-dot{
+    align-self:center;
+    width:6px;height:6px;
+    flex:none;
+    border-radius:50%;
+    background:var(--code-text);
+    transition:background-color .2s ease;
+  }
+  .status-code{color:var(--code-text);font-weight:500;}
+  .status-note, .status-time{color:var(--record-key);}
+  .status[data-state="pending"] .status-dot{
+    background:#E3A53C;
+    animation:status-pulse 1s ease-in-out infinite;
+  }
+  .status[data-state="pending"] .status-code{color:var(--record-key);}
+  @keyframes status-pulse{
+    0%,100%{opacity:1;}
+    50%{opacity:.25;}
+  }
+
+  /* The record arriving: one line sweeps the pane as the fields land. */
+  .scan{
+    position:absolute;
+    left:-30px;right:-30px;
+    top:0;
+    height:1px;
+    background:linear-gradient(90deg,transparent,var(--code-text),transparent);
+    opacity:0;
+    pointer-events:none;
+  }
+
+  /* Session log: the reviewer's own reading, kept as a request record. */
+  .log{
+    margin-top:34px;
+    padding-top:17px;
+    border-top:1px solid rgba(255,255,255,.07);
+  }
+  .log-label{
+    margin:0 0 11px;
+    font-family:'JetBrains Mono','Noto Sans JP',monospace;
+    font-size:12px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--record-key);
+  }
+  .log-list{
+    margin:0;padding:0;
+    list-style:none;
+    font-family:'JetBrains Mono',monospace;
+    font-variant-numeric:tabular-nums;
+    font-size:12px;
+    line-height:1.5;
+  }
+  .log-list li{
+    display:grid;
+    grid-template-columns:auto minmax(0,1fr) auto auto;
+    align-items:baseline;
+    gap:9px;
+    padding:3.5px 0;
+    color:var(--record-key);
+  }
+  .log-list .l-verb{color:var(--record-val);}
+  .log-list .l-path{
+    color:var(--record-key);
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  /* Each row is its own grid, so the two right-hand columns are sized rather
+     than fitted: otherwise a 28ms entry shifts its status out of the column. */
+  .log-list .l-code{color:var(--code-text);width:3ch;text-align:right;}
+  .log-list .l-ms{width:6ch;text-align:right;}
+  .log-list li[data-latest="true"] .l-path{color:var(--record-val);}
+  .log-list li[data-latest="true"]{animation:log-in .45s var(--ease) both;}
+  @keyframes log-in{
+    from{opacity:0;transform:translateY(-3px);}
+    to{opacity:1;transform:none;}
+  }
+
+  /* View Transitions: the verb flies from the rail into the header it addresses.
+     The root snap is deliberate; only the object that moved should animate. */
+  @media (prefers-reduced-motion: no-preference){
+    ::view-transition-old(root),
+    ::view-transition-new(root){animation:none;mix-blend-mode:normal;}
+    ::view-transition-group(vt-verb){
+      animation-duration:.42s;
+      animation-timing-function:var(--ease);
+    }
   }
 
   /* ===== Responsive ===== */
+  @media (max-width: 1180px){
+    .controls{right:30px;}
+    .resource{grid-template-columns:minmax(0,1fr);min-height:0;}
+    .req{padding:72px 48px 56px;}
+    .res{padding:32px 48px 72px;}
+    /* Relative, not static, so .scan has a containing block; top:auto undoes
+       the sticky offset that relative positioning would otherwise apply. */
+    .res-inner{position:relative;top:auto;}
+    .record, .log{max-width:520px;}
+    .scan{left:0;right:0;}
+  }
   @media (max-width: 900px){
-    .sidebar{
-      position:relative;
-      width:100%;
+    .app{grid-template-columns:minmax(0,1fr);padding-top:64px;}
+    .rail{
+      position:static;
       height:auto;
+      gap:0;
+      padding:26px 20px 0;
       border-right:none;
       border-bottom:1px solid var(--line);
-      padding:36px 24px;
     }
-    .main{margin-left:0;width:100%;padding:40px 24px 100px;}
-    nav{display:none;}
-    .misc-grid{grid-template-columns:1fr;}
-    section{padding-top:40px;margin-top:0;}
-    section:first-of-type{padding-top:56px;}
-    .top-controls{
-      position:absolute;
-      top:24px;
-      right:24px;
+    .byline{font-size:16px;}
+    .cv-btn{width:auto;}
+    .rail-nav{
+      position:sticky;
+      top:64px;
+      z-index:40;
+      margin:22px -20px 0;
+      padding:0;
+      background:var(--surface);
+      border-top:1px solid var(--line);
     }
+    .rail-group + .rail-group{margin-top:0;}
+    .rail-group{flex:none;}
+    .rail-group-title{display:none;}
+    .rail-nav{display:flex;overflow-x:auto;scrollbar-width:none;}
+    .rail-nav::-webkit-scrollbar{display:none;}
+    .rail-list{display:flex;}
+    .rail-link{
+      min-height:50px;
+      align-items:center;
+      border-radius:0;
+      padding:0 13px;
+      white-space:nowrap;
+    }
+    .rail-link .verb{display:none;}
+    .rail-link[aria-current="true"]{
+      background:transparent;
+      box-shadow:inset 0 -2px 0 var(--accent);
+    }
+    .rail-foot{display:none;}
+    .controls{
+      top:0;left:0;right:0;
+      padding:8px 14px;
+      justify-content:flex-end;
+      background:var(--bg);
+      border-bottom:1px solid var(--line);
+    }
+    .lang-switch button, .theme-btn{min-height:44px;}
+    .theme-btn{min-width:48px;}
+    .req{padding:40px 20px 44px;}
+    .res{padding:26px 20px 56px;}
+    .pane-title{font-size:26px;max-width:none;}
+    html[lang="ja"] .pane-title{font-size:23px;max-width:none;}
+    .prose{font-size:15.5px;}
+    .record > div{grid-template-columns:72px minmax(0,1fr);}
+    .res-head{flex-wrap:wrap;gap:6px 14px;}
+    .groups{gap:28px;}
+    footer{margin-top:48px;}
   }
-  :focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
   @media (prefers-reduced-motion: reduce){
-    html{scroll-behavior:auto;}
-    .whoami .cursor{animation:none;}
-    body{animation:none;}
-    .sidebar::before{animation:none;}
-    .route .status::before{animation:none;}
-    .theme-btn.spin{animation:none;}
-    .route, .lede, .card, .misc-grid > div, .skills-grid > div, .contact-box, .route .rule{
-      opacity:1!important;
-      transform:none!important;
-      transition:none!important;
-    }
-    .portrait, .chip, .tag, .cert-item, .lang-item, nav a, nav a .dash{
-      transition:none!important;
-    }
+    html.js .resource.swap .req > *{animation:none;}
+    .log-list li[data-latest="true"]{animation:none;}
+    .status[data-state="pending"] .status-dot{animation:none;}
+    .scan{display:none;}
+    *{transition-duration:.01ms!important;}
   }
 </style>
 </head>
 <body>
-<div class="wrap">
+<a class="skip" href="#panes" id="i18n-skip">Skip to content</a>
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
+<!-- Icon set: one stroke weight, one grid, referenced with <use>. -->
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+  <defs>
+    <symbol id="i-about" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4"/><path d="M4.8 20a7.4 7.4 0 0 1 14.4 0"/></symbol>
+    <symbol id="i-nbc" viewBox="0 0 24 24"><path d="M3 9.6 12 4l9 5.6"/><path d="M5.5 9.9v8.6M12 9.9v8.6M18.5 9.9v8.6"/><path d="M3.4 20h17.2"/></symbol>
+    <symbol id="i-ecommerce" viewBox="0 0 24 24"><path d="M5 7.5h14l-1.1 12a1.5 1.5 0 0 1-1.5 1.4H7.6a1.5 1.5 0 0 1-1.5-1.4z"/><path d="M8.8 10V6.9a3.2 3.2 0 0 1 6.4 0V10"/></symbol>
+    <symbol id="i-biz" viewBox="0 0 24 24"><path d="M8.6 8.4 4.4 12l4.2 3.6"/><path d="M15.4 8.4 19.6 12l-4.2 3.6"/><path d="M13.4 5.6l-2.8 12.8"/></symbol>
+    <symbol id="i-cdc" viewBox="0 0 24 24"><rect x="4" y="5.6" width="16" height="14.4" rx="2"/><path d="M4 10h16M8.8 3.6v4M15.2 3.6v4"/></symbol>
+    <symbol id="i-skills" viewBox="0 0 24 24"><path d="M4.4 8.4 12 4.4l7.6 4-7.6 4z"/><path d="M4.4 12.8 12 16.8l7.6-4"/><path d="M4.4 17.2 12 21.2l7.6-4"/></symbol>
+    <symbol id="i-credentials" viewBox="0 0 24 24"><circle cx="12" cy="9.6" r="5.2"/><path d="M8.6 14.2 7.6 21l4.4-2.4L16.4 21l-1-6.8"/></symbol>
+    <symbol id="i-contact" viewBox="0 0 24 24"><rect x="3.6" y="5.6" width="16.8" height="12.8" rx="2"/><path d="m4.4 7.2 7.6 5.6 7.6-5.6"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h13.4"/><path d="m13 6.6 5.4 5.4-5.4 5.4"/></symbol>
+    <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4.8h5.2V10"/><path d="M19.2 4.8 11.4 12.6"/><path d="M18 14.6v3.8a1.8 1.8 0 0 1-1.8 1.8H5.8A1.8 1.8 0 0 1 4 18.4V8a1.8 1.8 0 0 1 1.8-1.8h3.8"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M4 12h16"/><path d="M12 4a12.4 12.4 0 0 1 0 16 12.4 12.4 0 0 1 0-16z"/></symbol>
+  </defs>
+</svg>
+
+<div class="controls">
+  <div class="lang-switch" role="group" aria-label="Language">
+    <svg class="ico lang-globe" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-globe"/></svg>
+    <button type="button" data-lang="en" aria-pressed="true" onclick="setLang('en')">EN</button>
+    <button type="button" data-lang="ja" aria-pressed="false" onclick="setLang('ja')">JA</button>
+  </div>
+  <button type="button" class="theme-btn" onclick="toggleTheme()" aria-label="Toggle dark mode">
+    <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+  </button>
+</div>
+
+<div class="app">
+
+  <!-- ===== RAIL ===== -->
+  <aside class="rail">
     <div>
-      <!-- <img class="portrait" src="_MG_2004.cr2" alt="Portrait of Cheng Porchheng" /> -->
-      <img class="portrait" src="pf.jpeg" alt="Portrait of Cheng Porchheng" />
-      <h1 class="name">Cheng<br/>Porchheng</h1>
-      <div class="role" id="i18n-role">Backend Developer</div>
-      <div class="whoami" id="i18n-whoami">
-        <span class="prompt">$</span> whoami<br/>
-        Junior web developer · e-commerce APIs · REST &amp; GraphQL<span class="cursor"></span>
-      </div>
-
-      <a class="cv-btn" href="CHHENG_PORCHHENG_CV.pdf" download>
+      <h1 class="byline">
+        <img src="pf.jpeg" width="40" height="40" alt="" />
+        <span>
+          <span class="byline-name" id="i18n-name">Cheng Porchheng</span>
+          <span class="byline-role" id="i18n-role">Backend Engineer</span>
+        </span>
+      </h1>
+      <a class="cv-btn" href="Cheng_Porchheng_CV.pdf" download>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0 4-4m-4 4-4-4"/><path d="M4 21h16"/></svg>
-        <span id="i18n-cv-btn">Download CV</span>
+        <span id="i18n-cv">Download CV</span>
       </a>
-
-      <nav>
-        <ul>
-          <li><a href="#about" class="nav-link active"><span class="dash"></span><span id="i18n-nav-about">About</span></a></li>
-          <li><a href="#experience" class="nav-link"><span class="dash"></span><span id="i18n-nav-experience">Experience</span></a></li>
-          <li><a href="#projects" class="nav-link"><span class="dash"></span><span id="i18n-nav-projects">Projects</span></a></li>
-          <li><a href="#skills" class="nav-link"><span class="dash"></span><span id="i18n-nav-skillset">Skills</span></a></li>
-          <li><a href="#credentials" class="nav-link"><span class="dash"></span><span id="i18n-nav-skills">Credentials</span></a></li>
-          <li><a href="#contact" class="nav-link"><span class="dash"></span><span id="i18n-nav-contact">Contact</span></a></li>
-        </ul>
-      </nav>
     </div>
 
-    <div class="sidebar-foot">
-      <div class="contact-line" id="i18n-address">
-        st 247, Beong Salang, Toul Kok<br/>
+    <nav class="rail-nav" aria-label="Resources">
+      <div class="rail-group">
+        <p class="rail-group-title" id="grp-intro"><span id="i18n-grp-intro">Introduction</span></p>
+        <ul class="rail-list" aria-labelledby="grp-intro">
+          <li><a class="rail-link" href="#about" data-target="about"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-about"/></svg><span class="verb">GET</span><span id="i18n-rail-about">About</span></a></li>
+        </ul>
+      </div>
+      <div class="rail-group">
+        <p class="rail-group-title" id="grp-work"><span id="i18n-grp-work">Work</span></p>
+        <ul class="rail-list" aria-labelledby="grp-work">
+          <li><a class="rail-link" href="#nbc" data-target="nbc"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-nbc"/></svg><span class="verb">GET</span><span id="i18n-rail-nbc">NBC / Bakong</span></a></li>
+          <li><a class="rail-link" href="#ecommerce" data-target="ecommerce"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ecommerce"/></svg><span class="verb">GET</span><span id="i18n-rail-ecommerce">E-commerce / KHQR</span></a></li>
+          <li><a class="rail-link" href="#biz" data-target="biz"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-biz"/></svg><span class="verb">GET</span><span id="i18n-rail-biz">Biz Solution</span></a></li>
+          <li><a class="rail-link" href="#cdc" data-target="cdc"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-cdc"/></svg><span class="verb">GET</span><span id="i18n-rail-cdc">CDC</span></a></li>
+        </ul>
+      </div>
+      <div class="rail-group">
+        <p class="rail-group-title" id="grp-ref"><span id="i18n-grp-ref">Reference</span></p>
+        <ul class="rail-list" aria-labelledby="grp-ref">
+          <li><a class="rail-link" href="#skills" data-target="skills"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-skills"/></svg><span class="verb">GET</span><span id="i18n-rail-skills">Skills</span></a></li>
+          <li><a class="rail-link" href="#credentials" data-target="credentials"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-credentials"/></svg><span class="verb">GET</span><span id="i18n-rail-credentials">Credentials</span></a></li>
+          <li><a class="rail-link" href="#contact" data-target="contact"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-contact"/></svg><span class="verb">POST</span><span id="i18n-rail-contact">Contact</span></a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="rail-foot">
+      <div id="i18n-address">
         Phnom Penh, Cambodia<br/>
         <a href="mailto:porchheng914@gmail.com">porchheng914@gmail.com</a>
       </div>
@@ -604,341 +794,595 @@
     </div>
   </aside>
 
-  <!-- MAIN -->
-  <main class="main">
+  <!-- ===== PANES ===== -->
+  <main class="panes" id="panes">
 
-    <!-- Floating controls: language switch + theme toggle, top-right of content -->
-    <div class="top-controls">
-      <div class="lang-switch" role="group" aria-label="Language switch">
-        <button type="button" data-lang="en" class="active" onclick="setLang('en')">
-          <span class="flag">🇺🇸</span> EN
-        </button>
-        <button type="button" data-lang="ja" onclick="setLang('ja')">
-          <span class="flag">🇯🇵</span> JA
-        </button>
-      </div>
-      <button type="button" class="theme-btn" onclick="toggleTheme()" aria-label="Toggle dark mode">
-        <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-        <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-      </button>
-    </div>
-
-    <!-- ABOUT -->
-    <section id="about">
-      <div class="route">
-        <span class="verb">GET</span>
-        <span class="path">/about</span>
-        <span class="rule"></span>
-        <span class="status">200 OK</span>
-      </div>
-      <p class="lede" id="i18n-about-lede">
-        I'm a <b>junior web developer focused on backend engineering</b>. My day-to-day work is
-        <b>API development for e-commerce</b> (REST and GraphQL), alongside maintaining existing production
-        e-commerce projects, with a strong emphasis on <b>automated testing and performance</b> for
-        enterprise-grade reliability.
-        <br/><br/>
-        I'm currently studying <b>Computer Science, specializing in Software Engineering</b>, at the
-        Cambodia Academy of Digital Technology (CADT), expected 2023–2026, while working as a junior web
-        developer in Phnom Penh.
-      </p>
-    </section>
-
-    <!-- EXPERIENCE -->
-    <section id="experience">
-      <div class="route">
-        <span class="verb">GET</span>
-        <span class="path">/experience</span>
-        <span class="rule"></span>
-        <span class="status">200 OK</span>
-      </div>
-
-      <div class="card">
-        <div class="card-head">
-          <div class="card-title" id="i18n-exp0-title">Junior Web Developer · Biz Solution Co., Ltd.</div>
-          <div class="card-date" id="i18n-exp0-date">May 2026 - Present</div>
-        </div>
-        <div class="card-desc" id="i18n-exp0-list">
-          <ul>
-            <li>Develop <b>REST and GraphQL APIs</b> for enterprise e-commerce platforms serving web and mobile clients.</li>
-            <li>Maintain and extend <b>existing production e-commerce projects</b>, integrating services such as <b>Odoo</b>, the <b>PayWay</b> payment gateway, and <b>Redis</b> caching.</li>
-            <li>Keep releases <b>enterprise-grade</b> through thorough automated testing and performance tuning.</li>
-          </ul>
-        </div>
-        <div class="tags">
-          <span class="tag">NestJS</span><span class="tag">REST</span><span class="tag">GraphQL</span><span class="tag">Odoo</span><span class="tag">PayWay</span><span class="tag">Redis</span>
+    <!-- GET /about -->
+    <article class="resource" id="about" data-resource="about">
+      <div class="req">
+        <p class="endpoint"><span class="verb">GET</span> <span class="path">/about</span></p>
+        <h2 class="pane-title" id="i18n-about-title">Introduction</h2>
+        <div class="prose" id="i18n-about-body">
+          <p>I'm a <b>backend engineer at the National Bank of Cambodia</b>, the country's central bank, working on
+          <b>Bakong</b>, Cambodia's national payment system. I build <b>load-testing applications for its public API</b>
+          and <b>Appium-based automated tests</b> for its mobile app.</p>
+          <p>Before the bank I built <b>payment and e-commerce APIs</b> in REST and GraphQL, including
+          <b>ABA Bank KHQR</b> integration. I hold a Bachelor of Computer Science (Software Engineering) from the
+          Cambodia Academy of Digital Technology (CADT), 2023–2026, and work from Phnom Penh.</p>
         </div>
       </div>
+      <aside class="res">
+        <div class="res-inner">
+          <p class="res-label" id="i18n-res-label-1">Response</p>
+          <dl class="record" id="i18n-about-record">
+            <div><dt>name</dt><dd>Cheng Porchheng</dd></div>
+            <div><dt>role</dt><dd>Backend Engineer</dd></div>
+            <div><dt>employer</dt><dd>National Bank of Cambodia</dd></div>
+            <div><dt>location</dt><dd>Phnom Penh, Cambodia</dd></div>
+            <div><dt>email</dt><dd><a href="mailto:porchheng914@gmail.com">porchheng914@gmail.com</a></dd></div>
+          </dl>
+          <p class="avail" id="i18n-avail-1">Open to backend &amp; API development roles</p>
+        </div>
+      </aside>
+    </article>
 
-      <div class="card">
-        <div class="card-head">
-          <div class="card-title" id="i18n-exp1-title">Backend Developer Intern · Biz Solution Co., Ltd.</div>
-          <div class="card-date" id="i18n-exp1-date">Jan 2026 - May 2026</div>
-        </div>
-        <div class="card-desc" id="i18n-exp1-list">
-          <ul>
-            <li>Built <b>REST and GraphQL APIs</b> on the Vendure framework for Easy Eazy, a Khmer-language multi-vendor mobile e-commerce platform.</li>
-            <li>Integrated the <b>ABA Bank KHQR payment gateway</b> with secure transaction flows and automated payment-status webhooks.</li>
-            <li>Improved speed and reliability with <b>Redis caching</b>, <b>Firebase Cloud Messaging</b> notifications, and <b>AWS CloudWatch</b> monitoring.</li>
-          </ul>
-        </div>
-        <div class="tags">
-          <span class="tag">GraphQL</span><span class="tag">Vendure</span><span class="tag">KHQR</span>
-          <span class="tag">Redis</span><span class="tag">AWS CloudWatch</span><span class="tag">FCM</span>
-        </div>
+    <!-- GET /experience/nbc -->
+    <article class="resource" id="nbc" data-resource="nbc">
+      <div class="req">
+        <p class="endpoint"><span class="verb">GET</span> <span class="path">/experience/nbc</span></p>
+        <h2 class="pane-title" id="i18n-nbc-title">Bakong test and performance engineering</h2>
+        <ul class="work" id="i18n-nbc-body">
+          <li>Test and performance engineering for <b>Bakong</b>, Cambodia's national payment system, operated by the central bank.</li>
+          <li>Build <b>load-testing applications</b> for the <b>Bakong public API</b> to measure how it behaves under sustained traffic.</li>
+          <li>Build <b>Appium</b>-based automated testing for the <b>Bakong mobile application</b>.</li>
+        </ul>
       </div>
+      <aside class="res">
+        <div class="res-inner">
+          <p class="res-label" id="i18n-res-label-2">Response</p>
+          <dl class="record" id="i18n-nbc-record">
+            <div><dt>employer</dt><dd>National Bank of Cambodia (NBC)</dd></div>
+            <div><dt>role</dt><dd>Backend Engineer</dd></div>
+            <div><dt>period</dt><dd>Aug 2026 – present</dd></div>
+            <div><dt>system</dt><dd>Bakong, Cambodia's national payment system</dd></div>
+            <div><dt>surface</dt><dd>public API, mobile application</dd></div>
+            <div><dt>stack</dt><dd>Load testing, Appium, test automation</dd></div>
+          </dl>
+        </div>
+      </aside>
+    </article>
 
-      <div class="card">
-        <div class="card-head">
-          <div class="card-title" id="i18n-exp2-title">API &amp; Web Developer Intern · The Council for the Development of Cambodia (CDC)</div>
-          <div class="card-date" id="i18n-exp2-date">May 2025 - Aug 2025</div>
-        </div>
-        <div class="card-desc" id="i18n-exp2-list">
-          <ul>
-            <li>Built a <b>NestJS REST API</b> powering a cross-platform meeting scheduling system for web and mobile clients.</li>
-            <li>Developed a real-time <b>Next.js</b> portal for office LCD displays with live scheduling updates.</li>
-          </ul>
-        </div>
-        <div class="tags">
-          <span class="tag">NestJS</span><span class="tag">NextJS</span><span class="tag">REST API</span>
-        </div>
+    <!-- GET /experience/ecommerce -->
+    <article class="resource" id="ecommerce" data-resource="ecommerce">
+      <div class="req">
+        <p class="endpoint"><span class="verb">GET</span> <span class="path">/experience/ecommerce</span></p>
+        <h2 class="pane-title" id="i18n-ecommerce-title">Multi-vendor e-commerce platform and KHQR payments</h2>
+        <ul class="work" id="i18n-ecommerce-body">
+          <li>Built <b>REST and GraphQL APIs</b> on the Vendure framework for a Khmer-language multi-vendor mobile e-commerce platform.</li>
+          <li>Integrated the <b>ABA Bank KHQR payment gateway</b> with secure transaction flows and automated payment-status webhooks.</li>
+          <li>Improved speed and reliability with <b>Redis caching</b>, <b>Firebase Cloud Messaging</b> notifications, and <b>AWS CloudWatch</b> monitoring.</li>
+        </ul>
       </div>
-    </section>
+      <aside class="res">
+        <div class="res-inner">
+          <p class="res-label" id="i18n-res-label-3">Response</p>
+          <dl class="record" id="i18n-ecommerce-record">
+            <div><dt>employer</dt><dd>Biz Solution Co., Ltd.</dd></div>
+            <div><dt>role</dt><dd>Backend Developer Intern</dd></div>
+            <div><dt>period</dt><dd>Jan 2026 – May 2026</dd></div>
+            <div><dt>product</dt><dd>Khmer-language multi-vendor e-commerce platform</dd></div>
+            <div><dt>payments</dt><dd>ABA Bank KHQR</dd></div>
+            <div><dt>stack</dt><dd>Vendure, GraphQL, REST, Redis, FCM, AWS CloudWatch</dd></div>
+          </dl>
+        </div>
+      </aside>
+    </article>
 
-    <!-- PROJECTS -->
-    <section id="projects">
-      <div class="route">
-        <span class="verb">GET</span>
-        <span class="path">/projects</span>
-        <span class="rule"></span>
-        <span class="status">200 OK</span>
+    <!-- GET /experience/biz-solution -->
+    <article class="resource" id="biz" data-resource="biz">
+      <div class="req">
+        <p class="endpoint"><span class="verb">GET</span> <span class="path">/experience/biz-solution</span></p>
+        <h2 class="pane-title" id="i18n-biz-title">E-commerce APIs, Odoo and PayWay integration</h2>
+        <ul class="work" id="i18n-biz-body">
+          <li>Developed <b>REST and GraphQL APIs</b> for e-commerce platforms serving web and mobile clients.</li>
+          <li>Maintained and extended <b>existing production e-commerce projects</b>, integrating services such as <b>Odoo</b>, the <b>PayWay</b> payment gateway, and <b>Redis</b> caching.</li>
+          <li>Kept releases stable through thorough automated testing and performance tuning.</li>
+        </ul>
       </div>
+      <aside class="res">
+        <div class="res-inner">
+          <p class="res-label" id="i18n-res-label-5">Response</p>
+          <dl class="record" id="i18n-biz-record">
+            <div><dt>employer</dt><dd>Biz Solution Co., Ltd.</dd></div>
+            <div><dt>role</dt><dd>Junior Web Developer</dd></div>
+            <div><dt>period</dt><dd>May 2026 – July 2026</dd></div>
+            <div><dt>payments</dt><dd>PayWay</dd></div>
+            <div><dt>stack</dt><dd>NestJS, REST, GraphQL, Odoo, Redis</dd></div>
+          </dl>
+        </div>
+      </aside>
+    </article>
 
-      <div class="card">
-        <div class="card-head">
-          <div class="card-title" id="i18n-proj1-title">Post-Quantum Cryptography Messenger App</div>
-          <div class="card-date" id="i18n-proj1-date">Oct 2025 - Dec 2025</div>
-        </div>
-        <div class="card-desc" id="i18n-proj1-list">
-          <ul>
-            <li>Engineered a secure chat backend with a <b>polyglot microservices architecture</b> (NestJS + Python FastAPI) implementing <b>ML-KEM (Kyber)</b> for post-quantum end-to-end key exchange.</li>
-            <li>Ran a comparative security analysis showing ML-KEM's algorithmic hardness and performance versus classical RSA encryption.</li>
-            <li>Implemented <b>NIST FIPS 203 (ML-KEM/Kyber)</b> via a dedicated FastAPI microservice for quantum-resistant key encapsulation and session key exchange.</li>
-          </ul>
-        </div>
-        <div class="tags">
-          <span class="tag">NestJS</span><span class="tag">FastAPI</span><span class="tag">Post-Quantum Crypto</span><span class="tag">Microservices</span>
-        </div>
+    <!-- GET /experience/cdc -->
+    <article class="resource" id="cdc" data-resource="cdc">
+      <div class="req">
+        <p class="endpoint"><span class="verb">GET</span> <span class="path">/experience/cdc</span></p>
+        <h2 class="pane-title" id="i18n-cdc-title">Meeting scheduling API and web portal</h2>
+        <ul class="work" id="i18n-cdc-body">
+          <li>Built a <b>NestJS REST API</b> powering a meeting scheduling system, serving the <b>mobile application</b>.</li>
+          <li>Developed a real-time <b>Next.js web portal</b> with live scheduling updates, shown on office LCD displays.</li>
+        </ul>
       </div>
-
-      <div class="card">
-        <div class="card-head">
-          <div class="card-title" id="i18n-proj2-title">Researcher Fellowship · Angkor Social Innovation Park</div>
-          <div class="card-date" id="i18n-proj2-date">Apr 2024 - Jun 2024</div>
+      <aside class="res">
+        <div class="res-inner">
+          <p class="res-label" id="i18n-res-label-6">Response</p>
+          <dl class="record" id="i18n-cdc-record">
+            <div><dt>employer</dt><dd>The Council for the Development of Cambodia (CDC)</dd></div>
+            <div><dt>role</dt><dd>API &amp; Web Developer Intern</dd></div>
+            <div><dt>period</dt><dd>May 2025 – Aug 2025</dd></div>
+            <div><dt>clients</dt><dd>mobile application, web portal</dd></div>
+            <div><dt>stack</dt><dd>NestJS, Next.js, REST</dd></div>
+          </dl>
         </div>
-        <div class="card-desc" id="i18n-proj2-list">
-          <ul>
-            <li>Authored a 15-page research paper analyzing the impact of blockchain technology on Cambodia's digital payment system.</li>
-            <li>Conducted a systematic literature review of 20+ research papers on blockchain trends and challenges.</li>
-            <li>Developed a conceptual framework for Bakong's blockchain, with recommendations for scalability and security.</li>
-          </ul>
-        </div>
-        <div class="tags">
-          <span class="tag">Research</span><span class="tag">Blockchain</span><span class="tag">FinTech</span>
-        </div>
-      </div>
-    </section>
+      </aside>
+    </article>
 
-    <!-- SKILLS -->
-    <section id="skills">
-      <div class="route">
-        <span class="verb">GET</span>
-        <span class="path">/skills</span>
-        <span class="rule"></span>
-        <span class="status">200 OK</span>
-      </div>
-
-      <div class="skills-grid">
-        <div class="skill-group">
-          <h3 id="i18n-skill-programming">Programming</h3>
-          <div class="skill-chips">
-            <span class="chip">TypeScript</span><span class="chip">JavaScript</span><span class="chip">Python</span>
-            <span class="chip">Dart</span><span class="chip">C++</span><span class="chip">Java</span><span class="chip">SQL</span>
+    <!-- GET /skills -->
+    <article class="resource" id="skills" data-resource="skills">
+      <div class="req">
+        <p class="endpoint"><span class="verb">GET</span> <span class="path">/skills</span></p>
+        <h2 class="pane-title" id="i18n-skills-title">Skills</h2>
+        <div class="groups">
+          <div>
+            <h3 class="sub" id="i18n-skill-programming">Programming</h3>
+            <div class="chips">
+              <span class="chip">TypeScript</span><span class="chip">JavaScript</span><span class="chip">Python</span>
+              <span class="chip">Dart</span><span class="chip">C++</span><span class="chip">Java</span><span class="chip">SQL</span>
+            </div>
           </div>
-        </div>
-        <div class="skill-group">
-          <h3 id="i18n-skill-frameworks">Frameworks</h3>
-          <div class="skill-chips">
-            <span class="chip">NestJS</span><span class="chip">Vendure</span><span class="chip">FastAPI</span>
-            <span class="chip">Node.js</span><span class="chip">Next.js</span><span class="chip">Flutter</span><span class="chip">Angular</span>
+          <div>
+            <h3 class="sub" id="i18n-skill-frameworks">Frameworks</h3>
+            <div class="chips">
+              <span class="chip">NestJS</span><span class="chip">Vendure</span><span class="chip">FastAPI</span>
+              <span class="chip">Node.js</span><span class="chip">Next.js</span><span class="chip">Flutter</span><span class="chip">Angular</span>
+            </div>
           </div>
-        </div>
-        <div class="skill-group">
-          <h3 id="i18n-skill-tools">Tools &amp; Platforms</h3>
-          <div class="skill-chips">
-            <span class="chip">Git</span><span class="chip">Docker</span><span class="chip">Postgres</span>
-            <span class="chip">Postman</span><span class="chip">Jira</span><span class="chip">GraphQL</span>
-            <span class="chip">Jest</span><span class="chip">Automated Testing</span>
+          <div>
+            <h3 class="sub" id="i18n-skill-tools">Tools &amp; Platforms</h3>
+            <div class="chips">
+              <span class="chip">Git</span><span class="chip">Docker</span><span class="chip">Postgres</span>
+              <span class="chip">Postman</span><span class="chip">Jira</span><span class="chip">GraphQL</span>
+              <span class="chip">Jest</span><span class="chip">Automated Testing</span><span class="chip">Appium</span>
+              <span class="chip">Load Testing</span>
+            </div>
           </div>
-        </div>
-        <div class="skill-group">
-          <h3 id="i18n-skill-cloud">Cloud &amp; DevOps</h3>
-          <div class="skill-chips">
-            <span class="chip">AWS CloudWatch</span><span class="chip">Firebase (FCM)</span>
-            <span class="chip">Redis</span><span class="chip">Cloudflare</span><span class="chip">Digital Ocean</span>
+          <div>
+            <h3 class="sub" id="i18n-skill-cloud">Cloud &amp; DevOps</h3>
+            <div class="chips">
+              <span class="chip">AWS CloudWatch</span><span class="chip">Firebase (FCM)</span>
+              <span class="chip">Redis</span><span class="chip">Cloudflare</span><span class="chip">Digital Ocean</span>
+            </div>
           </div>
-        </div>
-        <div class="skill-group">
-          <h3 id="i18n-skill-fintech">FinTech</h3>
-          <div class="skill-chips">
-            <span class="chip">KHQR Integration</span><span class="chip">ABA Payment Gateway</span>
+          <div>
+            <h3 class="sub" id="i18n-skill-fintech">FinTech</h3>
+            <div class="chips">
+              <span class="chip">KHQR Integration</span><span class="chip">ABA Payment Gateway</span>
+            </div>
           </div>
-        </div>
-        <div class="skill-group">
-          <h3 id="i18n-skill-soft">Soft Skills</h3>
-          <div class="skill-chips" id="i18n-skill-soft-chips">
-            <span class="chip">Communication</span><span class="chip">Problem-Solving</span><span class="chip">Adaptability</span>
+          <div>
+            <h3 class="sub" id="i18n-skill-soft">Soft Skills</h3>
+            <div class="chips" id="i18n-skill-soft-chips">
+              <span class="chip">Communication</span><span class="chip">Problem-Solving</span><span class="chip">Adaptability</span>
+            </div>
           </div>
         </div>
       </div>
-    </section>
-
-    <!-- CREDENTIALS -->
-    <section id="credentials">
-      <div class="route">
-        <span class="verb">GET</span>
-        <span class="path">/credentials</span>
-        <span class="rule"></span>
-        <span class="status">200 OK</span>
-      </div>
-
-      <div class="misc-grid">
-        <div>
-          <h3 id="i18n-certs-title">Certifications</h3>
-          <div class="cert-item"><span id="i18n-cert-1">Introduction to Cyber Security · Cisco Networking Academy</span></div>
-          <div class="cert-item"><span id="i18n-cert-2">CyberObs Associate · Cisco Networking Academy</span></div>
-          <div class="cert-item"><span id="i18n-cert-3">Cybersecurity Essentials · Cisco Networking Academy</span></div>
-          <div class="cert-item"><span id="i18n-cert-4">Solid Edge Mechanical · Associate Level</span></div>
+      <aside class="res">
+        <div class="res-inner">
+          <p class="res-label" id="i18n-res-label-7">Response</p>
+          <dl class="record" id="i18n-skills-record">
+            <div><dt>primary</dt><dd>TypeScript, NestJS, PostgreSQL</dd></div>
+            <div><dt>focus</dt><dd>backend APIs, payment integration, testing</dd></div>
+            <div><dt>apis</dt><dd>REST, GraphQL</dd></div>
+            <div><dt>testing</dt><dd>Jest, Appium, load testing</dd></div>
+          </dl>
         </div>
-        <div>
-          <h3 id="i18n-langs-title">Languages</h3>
-          <div class="lang-item"><span id="i18n-lang-km">Khmer</span><span class="lang-level" id="i18n-lang-km-level">NATIVE</span></div>
-          <div class="lang-item"><span id="i18n-lang-en">English</span><span class="lang-level" id="i18n-lang-en-level">ADVANCED</span></div>
-          <div class="lang-item"><span id="i18n-lang-ja">Japanese</span><span class="lang-level" id="i18n-lang-ja-level">BEGINNER</span></div>
-        </div>
-      </div>
-    </section>
+      </aside>
+    </article>
 
-    <!-- CONTACT -->
-    <section id="contact">
-      <div class="route">
-        <span class="verb post">POST</span>
-        <span class="path">/contact</span>
-        <span class="rule"></span>
+    <!-- GET /credentials -->
+    <article class="resource" id="credentials" data-resource="credentials">
+      <div class="req">
+        <p class="endpoint"><span class="verb">GET</span> <span class="path">/credentials</span></p>
+        <h2 class="pane-title" id="i18n-credentials-title">Credentials</h2>
+        <h3 class="sub" id="i18n-edu-title">Education</h3>
+        <ul class="rows" id="i18n-edu-body">
+          <li><span>Bachelor of Computer Science (Software Engineering) · CADT</span><span class="val">2023 – 2026</span></li>
+          <li><span>Japanese IT Pathway Program · American University of Phnom Penh (AUPP) and NEXTMAKE Inc.</span><span class="val">2025 – 2027</span></li>
+        </ul>
+        <h3 class="sub" id="i18n-certs-title">Certifications</h3>
+        <ul class="rows" id="i18n-certs-body">
+          <li><span>Introduction to Cyber Security · Cisco Networking Academy</span></li>
+          <li><span>CyberObs Associate · Cisco Networking Academy</span></li>
+          <li><span>Cybersecurity Essentials · Cisco Networking Academy</span></li>
+          <li><span>Solid Edge Mechanical · Associate Level</span></li>
+        </ul>
+        <h3 class="sub" id="i18n-langs-title">Languages</h3>
+        <ul class="rows" id="i18n-langs-body">
+          <li><span>Khmer</span><span class="val">NATIVE</span></li>
+          <li><span>English</span><span class="val">ADVANCED</span></li>
+          <li><span>Japanese</span><span class="val">INTERMEDIATE</span></li>
+        </ul>
       </div>
-
-      <div class="contact-box">
-        <div class="req" id="i18n-contact-req">
-          <span class="k">Content-Type:</span> application/human<br/>
-          <span class="k">Status:</span> open to backend &amp; API development opportunities
+      <aside class="res">
+        <div class="res-inner">
+          <p class="res-label" id="i18n-res-label-8">Response</p>
+          <dl class="record" id="i18n-credentials-record">
+            <div><dt>degree</dt><dd>Bachelor of Computer Science (Software Engineering)</dd></div>
+            <div><dt>institution</dt><dd>Cambodia Academy of Digital Technology (CADT)</dd></div>
+            <div><dt>graduated</dt><dd>2026</dd></div>
+            <div><dt>program</dt><dd>Japanese IT Pathway Program</dd></div>
+            <div><dt>partners</dt><dd>American University of Phnom Penh (AUPP), NEXTMAKE Inc.</dd></div>
+            <div><dt>enrolled</dt><dd>2025 – 2027, ongoing</dd></div>
+          </dl>
         </div>
-        <p id="i18n-contact-p">
-          Have a backend role, an API that needs building, or a payment integration to figure out?
-          My inbox is always open, and I'll get back to you as soon as I can.
-        </p>
+      </aside>
+    </article>
+
+    <!-- POST /contact -->
+    <article class="resource" id="contact" data-resource="contact">
+      <div class="req">
+        <p class="endpoint"><span class="verb">POST</span> <span class="path">/contact</span></p>
+        <h2 class="pane-title" id="i18n-contact-title">Contact</h2>
+        <div class="prose" id="i18n-contact-body">
+          <p>Have a backend role, an API that needs building, or a payment integration to figure out?
+          My inbox is always open, and I'll get back to you as soon as I can.</p>
+        </div>
         <a class="send-btn" href="mailto:porchheng914@gmail.com">
           <span id="i18n-contact-btn">Send request</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>
+        <footer id="i18n-footer">Built by Cheng Porchheng · Phnom Penh, Cambodia</footer>
       </div>
-
-      <footer id="i18n-footer">
-        Built by Cheng Porchheng · Phnom Penh, Cambodia
-      </footer>
-    </section>
+      <aside class="res">
+        <div class="res-inner">
+          <p class="res-label" id="i18n-res-label-9">Response</p>
+          <dl class="record" id="i18n-contact-record">
+            <div><dt>email</dt><dd><a href="mailto:porchheng914@gmail.com">porchheng914@gmail.com</a></dd></div>
+            <div><dt>linkedin</dt><dd><a href="https://linkedin.com/in/porchheng" target="_blank" rel="noopener">linkedin.com/in/porchheng<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-external"/></svg></a></dd></div>
+            <div><dt>location</dt><dd>Phnom Penh, Cambodia</dd></div>
+          </dl>
+          <p class="avail" id="i18n-avail-2">Open to backend &amp; API development roles</p>
+        </div>
+      </aside>
+    </article>
 
   </main>
 </div>
 
 <script>
-  const links = document.querySelectorAll('.nav-link');
-  const sections = Array.from(links).map(l => document.querySelector(l.getAttribute('href')));
-
-  function onScroll(){
-    let idx = 0;
-    const y = window.scrollY + 140;
-    sections.forEach((sec, i) => { if (sec && sec.offsetTop <= y) idx = i; });
-    links.forEach((l, i) => l.classList.toggle('active', i === idx));
-  }
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
-
-  /* ===== Theme toggle ===== */
+  /* ===== Theme ===== */
   function toggleTheme(){
     const t = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
     document.documentElement.dataset.theme = t;
     localStorage.setItem('theme', t);
-    const btn = document.querySelector('.theme-btn');
-    btn.classList.remove('spin');
-    void btn.offsetWidth; // restart animation
-    btn.classList.add('spin');
   }
 
-  /* ===== Reveal-on-scroll ===== */
-  (function(){
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const targets = document.querySelectorAll('.route, .lede, .card, .misc-grid > div, .skills-grid > div, .contact-box');
+  /* ===== Resource selection: the rail drives both panes ===== */
+  const resources = Array.from(document.querySelectorAll('.resource'));
+  const railLinks = Array.from(document.querySelectorAll('.rail-link'));
+  const ids = resources.map(r => r.id);
+  const DEFAULT_RESOURCE = 'nbc';
+  let current = null;
 
-    if (prefersReduced){
-      targets.forEach(el => el.classList.add('in-view'));
+  function select(id, opts){
+    if (!ids.includes(id)) id = DEFAULT_RESOURCE;
+    if (id === current) return false;
+    const animate = !!(opts && opts.animate);
+    resources.forEach(r => {
+      const on = r.id === id;
+      r.classList.toggle('active', on);
+      r.classList.remove('swap');
+      if (on && animate){
+        void r.offsetWidth;          // restart the one authored moment
+        r.classList.add('swap');
+      }
+    });
+    railLinks.forEach(l => l.setAttribute('aria-current', String(l.dataset.target === id)));
+    current = id;
+    if (animate) window.scrollTo({ top: 0, behavior: 'auto' });
+    return true;
+  }
+
+  /* ===================================================================
+     The request lifecycle.
+
+     Selecting a resource is a request, and the response pane reports it
+     the way a client would: a status, a real elapsed time, and a log.
+
+     Every number here is measured, never authored. The latency is
+     performance.now() from the click to the frame where the last field
+     of the record has finished painting, so it moves with the machine,
+     the field count and the browser. Nothing on this page invents data.
+     =================================================================== */
+  const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const canMorph = typeof document.startViewTransition === 'function';
+  const served = new Set();          // resources already fetched this session
+  const sessionLog = [];             // {verb, path, code, ms, cached}
+  const LOG_MAX = 6;
+
+  const LOG_COPY = {
+    en: { label: 'Session log', cached: 'cached' },
+    ja: { label: 'セッションログ', cached: 'キャッシュ' }
+  };
+  const copy = () => LOG_COPY[document.documentElement.lang === 'ja' ? 'ja' : 'en'];
+
+  /* Build the status line and log shell once per pane. The i18n pass rewrites
+     the innerHTML of [id^="i18n-"] nodes, so nothing here may live inside one. */
+  function shellFor(res){
+    const inner = res.querySelector('.res-inner');
+    let head = inner.querySelector('.res-head');
+    if (!head){
+      const label = inner.querySelector('.res-label');
+      head = document.createElement('div');
+      head.className = 'res-head';
+      label.parentNode.insertBefore(head, label);
+      head.appendChild(label);
+      head.insertAdjacentHTML('beforeend',
+        '<span class="status" role="status"><span class="status-dot"></span>' +
+        '<span class="status-code"></span><span class="status-note"></span>' +
+        '<span class="status-time"></span></span>');
+      inner.insertAdjacentHTML('beforeend', '<div class="log"><p class="log-label"></p><ul class="log-list"></ul></div>');
+      inner.insertAdjacentHTML('afterbegin', '<span class="scan" aria-hidden="true"></span>');
+    }
+    return {
+      inner,
+      status: inner.querySelector('.status'),
+      code: inner.querySelector('.status-code'),
+      note: inner.querySelector('.status-note'),
+      time: inner.querySelector('.status-time'),
+      scan: inner.querySelector('.scan'),
+      logLabel: inner.querySelector('.log-label'),
+      logList: inner.querySelector('.log-list')
+    };
+  }
+
+  function setStatus(ui, state, code, ms, cached){
+    ui.status.dataset.state = state;
+    ui.code.textContent = code;
+    ui.note.textContent = cached ? '· ' + copy().cached : '';
+    ui.time.textContent = ms == null ? '' : ms + 'ms';
+  }
+
+  function renderLog(ui){
+    ui.logLabel.textContent = copy().label;
+    const rows = sessionLog.slice(-LOG_MAX);
+    ui.logList.innerHTML = rows.map((e, i) =>
+      '<li' + (i === rows.length - 1 ? ' data-latest="true"' : '') + '>' +
+      '<span class="l-verb">' + e.verb + '</span>' +
+      '<span class="l-path">' + e.path + '</span>' +
+      '<span class="l-code">' + e.code + '</span>' +
+      '<span class="l-ms">' + e.ms + 'ms</span></li>'
+    ).join('');
+  }
+
+  /* Repaint every pane's log so switching back shows the same history. */
+  function renderAllLogs(){ resources.forEach(r => renderLog(shellFor(r))); }
+
+  /* A language switch must not strand English labels in a Japanese pane. */
+  const lastStatus = {};
+  function relabelLifecycle(){
+    if (!served.size) return;
+    renderAllLogs();
+    Object.keys(lastStatus).forEach(id => {
+      const s = lastStatus[id];
+      setStatus(shellFor(document.getElementById(id)), 'ok', s.code, s.ms, s.cached);
+    });
+  }
+
+  /* The record arriving field by field, with one line sweeping the pane.
+     Resolves on the frame the last field is actually painted. */
+  function streamRecord(res, ui){
+    const rows = Array.from(res.querySelectorAll('.record > div'))
+      .concat(Array.from(ui.inner.querySelectorAll('.avail')));
+    if (!rows.length) return Promise.resolve();
+    const step = 38;
+    const anims = rows.map((row, i) => row.animate(
+      [{ opacity: 0, transform: 'translateY(5px)' }, { opacity: 1, transform: 'none' }],
+      { duration: 230, delay: i * step, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'both' }
+    ));
+    const span = rows.length * step + 230;
+    ui.scan.animate(
+      [{ opacity: 0, transform: 'translateY(0)' },
+       { opacity: .85, offset: .12 },
+       { opacity: 0, transform: 'translateY(' + Math.max(ui.inner.offsetHeight - 2, 40) + 'px)' }],
+      { duration: span, easing: 'cubic-bezier(.33,0,.2,1)' }
+    );
+    /* A language switch replaces the record's nodes and cancels these; the
+       race keeps the lifecycle from stalling if that happens mid-flight. */
+    return Promise.race([
+      Promise.all(anims.map(a => a.finished.catch(() => {}))),
+      new Promise(r => setTimeout(r, span + 400))
+    ]).then(() => new Promise(r => requestAnimationFrame(() => r())));
+  }
+
+  function request(id, opts){
+    const t0 = (opts && opts.t0 != null) ? opts.t0 : performance.now();
+    const res = document.getElementById(ids.includes(id) ? id : DEFAULT_RESOURCE);
+    const ui = shellFor(res);
+    const endpoint = res.querySelector('.endpoint');
+    const verb = endpoint.querySelector('.verb').textContent.trim();
+    const path = endpoint.querySelector('.path').textContent.trim();
+    const cached = served.has(res.id);
+    const still = motionQuery.matches;
+
+    if (!cached && !still) setStatus(ui, 'pending', '···', null, false);
+
+    const settle = () => {
+      const ms = Math.max(1, Math.round(performance.now() - t0));
+      setStatus(ui, 'ok', '200 OK', ms, cached);
+      lastStatus[res.id] = { code: '200 OK', ms, cached };
+      served.add(res.id);
+      sessionLog.push({ verb, path, code: '200', ms, cached });
+      renderAllLogs();
+    };
+
+    if (cached || still){
+      /* Already fetched, or motion is off: the response is simply there. */
+      requestAnimationFrame(settle);
+    } else {
+      streamRecord(res, ui).then(settle);
+    }
+  }
+
+  /* The verb flies from the rail item into the header it addresses. Only one
+     element may hold a view-transition-name at a time, so the name is handed
+     from the rail to the endpoint inside the update callback. */
+  function morphTo(id, update){
+    const link = document.querySelector('.rail-link[data-target="' + id + '"]');
+    const from = link && link.querySelector('.verb');
+    /* Below 900px the rail verb is display:none, so there is nothing to fly. */
+    if (!canMorph || motionQuery.matches || !from || !from.offsetParent){ update(); return; }
+    const to = document.getElementById(id).querySelector('.endpoint .verb');
+    from.style.viewTransitionName = 'vt-verb';
+    const t = document.startViewTransition(() => {
+      from.style.viewTransitionName = '';
+      update();
+      to.style.viewTransitionName = 'vt-verb';
+    });
+    t.finished.catch(() => {}).then(() => { to.style.viewTransitionName = ''; });
+  }
+
+  /* No blur() here: focus stays on the activated link so keyboard users keep
+     their place in the rail. :focus-visible already hides the ring for mice. */
+  function go(id){
+    const t0 = performance.now();
+    morphTo(id, () => {
+      select(id, { animate: true });
+      request(id, { t0 });   // re-requesting the open resource still logs a hit
+    });
+    /* replaceState throws on file:// in some browsers, and this page is opened that way. */
+    try { history.replaceState(null, '', '#' + id); } catch (err) { /* no-op */ }
+  }
+
+  railLinks.forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      go(link.dataset.target);
+    });
+  });
+
+  document.querySelector('.panes').addEventListener('click', e => {
+    const next = e.target.closest('.next');
+    if (next){
+      e.preventDefault();
+      go(next.dataset.target);
       return;
     }
-
-    document.querySelectorAll('section').forEach(section => {
-      const items = section.querySelectorAll('.route, .lede, .card, .misc-grid > div, .skills-grid > div, .contact-box');
-      items.forEach((el, i) => { el.style.transitionDelay = Math.min(i * 70, 260) + 'ms'; });
-    });
-
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting){
-          entry.target.classList.add('in-view');
-          io.unobserve(entry.target);
-        }
+    /* Handing the message off to the mail client is a real accepted request,
+       and 202 is the honest code: taken, not yet known to have been read. */
+    if (e.target.closest('.send-btn')){
+      const t0 = performance.now();
+      const entry = { verb: 'POST', path: '/contact', code: '202', ms: 1, cached: false };
+      sessionLog.push(entry);
+      requestAnimationFrame(() => {
+        entry.ms = Math.max(1, Math.round(performance.now() - t0));
+        lastStatus.contact = { code: '202 Accepted', ms: entry.ms, cached: false };
+        setStatus(shellFor(document.getElementById('contact')), 'ok', '202 Accepted', entry.ms, false);
+        renderAllLogs();
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    }
+  });
 
-    targets.forEach(el => io.observe(el));
-  })();
+  /* Build the "next resource" link from the rail, so it follows the active language. */
+  function renderNextLinks(lang){
+    const label = lang === 'ja' ? '次のリソース' : 'Next resource';
+    resources.forEach((res, i) => {
+      const nextId = ids[i + 1];
+      const host = res.querySelector('.req');
+      let el = res.querySelector('.next');
+      if (!nextId){ if (el) el.remove(); return; }
+      const link = document.querySelector('.rail-link[data-target="' + nextId + '"]');
+      const name = link.lastElementChild.textContent;
+      const path = document.getElementById(nextId).querySelector('.endpoint').textContent.trim();
+      if (!el){
+        el = document.createElement('a');
+        el.className = 'next';
+        el.href = '#' + nextId;
+        el.dataset.target = nextId;
+        host.appendChild(el);
+      }
+      el.innerHTML = '<span class="next-label"></span><span class="next-name"></span><span class="next-path"></span>'
+        + '<svg class="ico next-arrow" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg>';
+      el.children[0].textContent = label;
+      el.children[1].textContent = name;
+      el.children[2].textContent = path;
+    });
+  }
+
+  /* Only resource hashes drive the panes: #panes from the skip link must not reset the view. */
+  window.addEventListener('hashchange', () => {
+    const id = location.hash.slice(1);
+    if (ids.includes(id)) go(id);
+  });
+
+  /* The first request is the page load itself. performance.now() is measured
+     from navigation start, so t0 = 0 makes the opening number the real time
+     from opening the link to the first record being fully painted. */
+  select(location.hash.slice(1), { animate: false });
 
   /* ===== i18n ===== */
+  const meta = {
+    en: {
+      title: 'Cheng Porchheng | Backend Engineer',
+      description: "Cheng Porchheng, backend engineer at the National Bank of Cambodia, working on load testing and automated testing for Bakong, Cambodia's national payment system, with a background in KHQR payment and e-commerce APIs."
+    },
+    ja: {
+      title: 'チェン・ポーチェン (Cheng Porchheng) | バックエンドエンジニア',
+      description: 'チェン・ポーチェン。カンボジア国立銀行のバックエンドエンジニア。国家決済システムBakongの負荷テストとAppiumによる自動テストを担当。KHQR決済およびEC向けAPI開発の経験があります。'
+    }
+  };
+
   const translations = {
     ja: {
-      'i18n-role': 'バックエンド開発者',
-      'i18n-whoami': '<span class="prompt">$</span> whoami<br/>ジュニアWeb開発者 ・ EC向けAPI開発(REST・GraphQL)<span class="cursor"></span>',
-      'i18n-cv-btn': '履歴書をダウンロード',
-      'i18n-nav-about': '概要',
-      'i18n-nav-experience': '職務経歴',
-      'i18n-nav-projects': 'プロジェクト',
-      'i18n-nav-skillset': 'スキル',
-      'i18n-nav-skills': '資格・言語',
-      'i18n-nav-contact': 'お問い合わせ',
-      'i18n-address': 'st 247, Beong Salang, Toul Kok<br/>プノンペン、カンボジア<br/><a href="mailto:porchheng914@gmail.com">porchheng914@gmail.com</a>',
-      'i18n-about-lede': 'バックエンドを軸とする<b>ジュニアWeb開発者</b>です。主な業務はECプラットフォーム向けの<b>API開発(REST・GraphQL)</b>と既存の本番ECプロジェクトの保守で、エンタープライズ品質を支える<b>自動テストとパフォーマンス</b>を重視しています。<br/><br/>現在、カンボジアデジタル技術アカデミー(CADT)にて<b>コンピュータサイエンス(ソフトウェアエンジニアリング専攻)</b>を専攻中(2023年〜2026年卒業予定)で、プノンペンにてジュニアWeb開発者として勤務しています。',
-      'i18n-exp0-title': 'ジュニアWeb開発者 ・ Biz Solution Co., Ltd.',
-      'i18n-exp0-date': '2026年5月 - 現在',
-      'i18n-exp0-list': '<ul><li>Web・モバイル両対応のエンタープライズ向けECプラットフォームの<b>REST・GraphQL API</b>を開発。</li><li><b>既存の本番ECプロジェクト</b>を保守・拡張し、<b>Odoo</b>連携、<b>PayWay</b>決済ゲートウェイ、<b>Redis</b>キャッシュなどを統合。</li><li>徹底した自動テストとパフォーマンスチューニングにより、<b>エンタープライズ品質</b>のリリースを維持。</li></ul>',
-      'i18n-exp1-title': 'バックエンド開発者インターン ・ Biz Solution Co., Ltd.',
-      'i18n-exp1-date': '2026年1月 - 2026年5月',
-      'i18n-exp1-list': '<ul><li>Vendureフレームワーク上で<b>REST・GraphQL API</b>を構築し、クメール語対応のマルチベンダー型モバイルECプラットフォーム「Easy Eazy」を支えた。</li><li><b>ABA銀行のKHQR決済ゲートウェイ</b>を統合し、安全な取引フローと決済ステータスの自動Webhookを実装。</li><li><b>Redisキャッシュ</b>、<b>Firebase Cloud Messaging</b>通知、<b>AWS CloudWatch</b>監視により、速度と信頼性を向上。</li></ul>',
-      'i18n-exp2-title': 'API・Web開発者インターン ・ カンボジア開発評議会 (CDC)',
-      'i18n-exp2-date': '2025年5月 - 2025年8月',
-      'i18n-exp2-list': '<ul><li>クロスプラットフォーム対応の会議スケジューリングシステムを支える<b>NestJS製REST API</b>を構築し、Web・モバイル両クライアントに提供。</li><li>オフィスのLCDディスプレイ向けにリアルタイムの<b>Next.js</b>ポータルを開発し、スケジュールの即時更新を実現。</li></ul>',
-      'i18n-proj1-title': '耐量子暗号メッセンジャーアプリ',
-      'i18n-proj1-date': '2025年10月 - 2025年12月',
-      'i18n-proj1-list': '<ul><li>NestJSとPython FastAPIによる<b>ポリグロットなマイクロサービスアーキテクチャ</b>でセキュアなチャットバックエンドを構築し、耐量子暗号のエンドツーエンド鍵交換に<b>ML-KEM(Kyber)</b>を実装した。</li><li>ML-KEMのアルゴリズム的強度と性能を従来のRSA暗号と比較するセキュリティ分析を実施した。</li><li><b>NIST FIPS 203(ML-KEM/Kyber)</b>を専用のFastAPIマイクロサービスとして実装し、耐量子鍵カプセル化とセッション鍵交換に対応した。</li></ul>',
-      'i18n-proj2-title': 'リサーチフェロー ・ Angkor Social Innovation Park',
-      'i18n-proj2-date': '2024年4月 - 2024年6月',
-      'i18n-proj2-list': '<ul><li>カンボジアのデジタル決済システムに対するブロックチェーン技術の影響を分析した15ページの研究論文を執筆した。</li><li>ブロックチェーンの動向と課題に関する20本以上の論文を対象に体系的文献レビューを実施した。</li><li>Bakongのブロックチェーンに関する概念的フレームワークを構築し、スケーラビリティとセキュリティ向上のための提言を行った。</li></ul>',
+      'i18n-skip': '本文へスキップ',
+      'i18n-name': 'チェン・ポーチェン',
+      'i18n-role': 'バックエンドエンジニア',
+      'i18n-cv': '履歴書をダウンロード',
+      'i18n-grp-intro': 'はじめに',
+      'i18n-grp-work': '実務・プロジェクト',
+      'i18n-grp-ref': 'リファレンス',
+      'i18n-rail-about': '概要',
+      'i18n-rail-nbc': 'NBC / Bakong',
+      'i18n-rail-ecommerce': 'EC / KHQR',
+      'i18n-rail-biz': 'Biz Solution',
+      'i18n-rail-cdc': 'CDC',
+      'i18n-rail-skills': 'スキル',
+      'i18n-rail-credentials': '資格・学歴',
+      'i18n-rail-contact': 'お問い合わせ',
+      'i18n-address': 'プノンペン、カンボジア<br/><a href="mailto:porchheng914@gmail.com">porchheng914@gmail.com</a>',
+
+      'i18n-about-title': '概要',
+      'i18n-about-body': '<p>カンボジアの中央銀行である<b>カンボジア国立銀行(NBC)のバックエンドエンジニア</b>として、国家決済システム<b>Bakong</b>に携わっています。<b>Bakong公開API向けの負荷テストアプリケーション</b>と、モバイルアプリの<b>Appiumによる自動テスト</b>を開発しています。</p><p>それ以前は、REST・GraphQLによる<b>決済・EC向けAPI</b>を開発し、<b>ABA銀行のKHQR決済</b>を統合しました。カンボジアデジタル技術アカデミー(CADT)にて<b>コンピュータサイエンス(ソフトウェアエンジニアリング専攻)</b>を修了(2023年〜2026年)。プノンペンを拠点としています。</p>',
+      'i18n-about-record': '<div><dt>name</dt><dd>チェン・ポーチェン (Cheng Porchheng)</dd></div><div><dt>role</dt><dd>バックエンドエンジニア</dd></div><div><dt>employer</dt><dd>カンボジア国立銀行</dd></div><div><dt>location</dt><dd>プノンペン、カンボジア</dd></div><div><dt>email</dt><dd><a href="mailto:porchheng914@gmail.com">porchheng914@gmail.com</a></dd></div>',
+
+      'i18n-nbc-title': 'Bakongのテスト・パフォーマンスエンジニアリング',
+      'i18n-nbc-body': '<li>中央銀行が運営するカンボジアの国家決済システム<b>Bakong</b>のテスト・パフォーマンスエンジニアリングを担当。</li><li><b>Bakong公開API</b>向けの<b>負荷テストアプリケーション</b>を開発し、継続的な負荷下での挙動を測定。</li><li><b>Bakongモバイルアプリ</b>の<b>Appium</b>による自動テストを構築。</li>',
+      'i18n-nbc-record': '<div><dt>employer</dt><dd>カンボジア国立銀行 (NBC)</dd></div><div><dt>role</dt><dd>バックエンドエンジニア</dd></div><div><dt>period</dt><dd>2026年8月 〜 現在</dd></div><div><dt>system</dt><dd>Bakong(カンボジアの国家決済システム)</dd></div><div><dt>surface</dt><dd>公開API、モバイルアプリ</dd></div><div><dt>stack</dt><dd>負荷テスト、Appium、テスト自動化</dd></div>',
+
+      'i18n-ecommerce-title': 'マルチベンダー型ECプラットフォームとKHQR決済',
+      'i18n-ecommerce-body': '<li>Vendureフレームワーク上で<b>REST・GraphQL API</b>を構築し、クメール語対応のマルチベンダー型モバイルECプラットフォームを支えた。</li><li><b>ABA銀行のKHQR決済ゲートウェイ</b>を統合し、安全な取引フローと決済ステータスの自動Webhookを実装した。</li><li><b>Redisキャッシュ</b>、<b>Firebase Cloud Messaging</b>通知、<b>AWS CloudWatch</b>監視により、速度と信頼性を向上させた。</li>',
+      'i18n-ecommerce-record': '<div><dt>employer</dt><dd>Biz Solution Co., Ltd.</dd></div><div><dt>role</dt><dd>バックエンド開発者インターン</dd></div><div><dt>period</dt><dd>2026年1月 〜 2026年5月</dd></div><div><dt>product</dt><dd>クメール語対応マルチベンダー型ECプラットフォーム</dd></div><div><dt>payments</dt><dd>ABA銀行 KHQR</dd></div><div><dt>stack</dt><dd>Vendure, GraphQL, REST, Redis, FCM, AWS CloudWatch</dd></div>',
+
+      'i18n-biz-title': 'EC向けAPI開発とOdoo・PayWay連携',
+      'i18n-biz-body': '<li>Web・モバイル両対応のECプラットフォーム向けに<b>REST・GraphQL API</b>を開発した。</li><li><b>既存の本番ECプロジェクト</b>を保守・拡張し、<b>Odoo</b>連携、<b>PayWay</b>決済ゲートウェイ、<b>Redis</b>キャッシュなどを統合した。</li><li>徹底した自動テストとパフォーマンスチューニングにより、安定したリリースを維持した。</li>',
+      'i18n-biz-record': '<div><dt>employer</dt><dd>Biz Solution Co., Ltd.</dd></div><div><dt>role</dt><dd>ジュニアWeb開発者</dd></div><div><dt>period</dt><dd>2026年5月 〜 2026年7月</dd></div><div><dt>payments</dt><dd>PayWay</dd></div><div><dt>stack</dt><dd>NestJS, REST, GraphQL, Odoo, Redis</dd></div>',
+
+      'i18n-cdc-title': '会議スケジューリングAPIとWebポータル',
+      'i18n-cdc-body': '<li>会議スケジューリングシステムを支える<b>NestJS製REST API</b>を構築し、<b>モバイルアプリ</b>に提供した。</li><li>リアルタイムに更新される<b>Next.js製Webポータル</b>を開発し、オフィスのLCDディスプレイに表示した。</li>',
+      'i18n-cdc-record': '<div><dt>employer</dt><dd>カンボジア開発評議会 (CDC)</dd></div><div><dt>role</dt><dd>API・Web開発者インターン</dd></div><div><dt>period</dt><dd>2025年5月 〜 2025年8月</dd></div><div><dt>clients</dt><dd>モバイルアプリ、Webポータル</dd></div><div><dt>stack</dt><dd>NestJS, Next.js, REST</dd></div>',
+
+      'i18n-skills-title': 'スキル',
       'i18n-skill-programming': 'プログラミング',
       'i18n-skill-frameworks': 'フレームワーク',
       'i18n-skill-tools': 'ツール・プラットフォーム',
@@ -946,19 +1390,28 @@
       'i18n-skill-fintech': 'フィンテック',
       'i18n-skill-soft': 'ソフトスキル',
       'i18n-skill-soft-chips': '<span class="chip">コミュニケーション</span><span class="chip">問題解決力</span><span class="chip">適応力</span>',
+      'i18n-skills-record': '<div><dt>primary</dt><dd>TypeScript, NestJS, PostgreSQL</dd></div><div><dt>focus</dt><dd>バックエンドAPI、決済連携、テスト</dd></div><div><dt>apis</dt><dd>REST, GraphQL</dd></div><div><dt>testing</dt><dd>Jest, Appium, 負荷テスト</dd></div>',
+
+      'i18n-credentials-title': '資格・学歴',
+      'i18n-edu-title': '学歴',
+      'i18n-edu-body': '<li><span>コンピュータサイエンス学士(ソフトウェアエンジニアリング専攻)・CADT</span><span class="val">2023 – 2026</span></li><li><span>日本ITパスウェイプログラム・American University of Phnom Penh (AUPP)、NEXTMAKE Inc.</span><span class="val">2025 – 2027</span></li>',
       'i18n-certs-title': '資格・認定',
-      'i18n-cert-1': 'サイバーセキュリティ入門 ・ Cisco Networking Academy',
-      'i18n-cert-2': 'CyberObs Associate ・ Cisco Networking Academy',
-      'i18n-cert-3': 'サイバーセキュリティ基礎 ・ Cisco Networking Academy',
-      'i18n-cert-4': 'Solid Edge Mechanical ・ アソシエイトレベル',
+      'i18n-certs-body': '<li><span>サイバーセキュリティ入門 ・ Cisco Networking Academy</span></li><li><span>CyberObs Associate ・ Cisco Networking Academy</span></li><li><span>サイバーセキュリティ基礎 ・ Cisco Networking Academy</span></li><li><span>Solid Edge Mechanical ・ アソシエイトレベル</span></li>',
       'i18n-langs-title': '言語',
-      'i18n-lang-km': 'クメール語', 'i18n-lang-km-level': '母語',
-      'i18n-lang-en': '英語', 'i18n-lang-en-level': '上級',
-      'i18n-lang-ja': '日本語', 'i18n-lang-ja-level': '初級',
-      'i18n-contact-req': '<span class="k">Content-Type:</span> application/human<br/><span class="k">Status:</span> バックエンド・API開発の機会を歓迎',
-      'i18n-contact-p': 'バックエンドのポジション、構築が必要なAPI、決済連携のご相談など、お気軽にご連絡ください。できるだけ早くご返信します。',
+      'i18n-langs-body': '<li><span>クメール語</span><span class="val">母語</span></li><li><span>英語</span><span class="val">上級</span></li><li><span>日本語</span><span class="val">中級</span></li>',
+      'i18n-credentials-record': '<div><dt>degree</dt><dd>コンピュータサイエンス学士(ソフトウェアエンジニアリング専攻)</dd></div><div><dt>institution</dt><dd>カンボジアデジタル技術アカデミー (CADT)</dd></div><div><dt>graduated</dt><dd>2026年</dd></div><div><dt>program</dt><dd>日本ITパスウェイプログラム</dd></div><div><dt>partners</dt><dd>American University of Phnom Penh (AUPP)、NEXTMAKE Inc.</dd></div><div><dt>enrolled</dt><dd>2025年 〜 2027年、在籍中</dd></div>',
+
+      'i18n-contact-title': 'お問い合わせ',
+      'i18n-contact-body': '<p>バックエンドのポジション、構築が必要なAPI、決済連携のご相談など、お気軽にご連絡ください。できるだけ早くご返信します。</p>',
       'i18n-contact-btn': 'リクエストを送る',
-      'i18n-footer': 'Cheng Porchheng 制作 ・ プノンペン、カンボジア'
+      'i18n-contact-record': '<div><dt>email</dt><dd><a href="mailto:porchheng914@gmail.com">porchheng914@gmail.com</a></dd></div><div><dt>linkedin</dt><dd><a href="https://linkedin.com/in/porchheng" target="_blank" rel="noopener">linkedin.com/in/porchheng<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-external"/></svg></a></dd></div><div><dt>location</dt><dd>プノンペン、カンボジア</dd></div>',
+      'i18n-footer': 'チェン・ポーチェン 制作 ・ プノンペン、カンボジア',
+
+      'i18n-res-label-1': 'レスポンス', 'i18n-res-label-2': 'レスポンス', 'i18n-res-label-3': 'レスポンス',
+      'i18n-res-label-5': 'レスポンス', 'i18n-res-label-6': 'レスポンス',
+      'i18n-res-label-7': 'レスポンス', 'i18n-res-label-8': 'レスポンス', 'i18n-res-label-9': 'レスポンス',
+      'i18n-avail-1': 'バックエンド・API開発の機会を歓迎しています',
+      'i18n-avail-2': 'バックエンド・API開発の機会を歓迎しています'
     }
   };
 
@@ -966,14 +1419,33 @@
   document.querySelectorAll('[id^="i18n-"]').forEach(el => { originals[el.id] = el.innerHTML; });
 
   function setLang(lang){
+    if (lang !== 'ja') lang = 'en';
     document.documentElement.lang = lang;
     document.querySelectorAll('[id^="i18n-"]').forEach(el => {
       el.innerHTML = lang === 'en' ? originals[el.id] : (translations.ja[el.id] || originals[el.id]);
     });
+    document.title = meta[lang].title;
+    const desc = document.querySelector('meta[name="description"]');
+    if (desc) desc.setAttribute('content', meta[lang].description);
     document.querySelectorAll('.lang-switch button').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.lang === lang);
+      btn.setAttribute('aria-pressed', String(btn.dataset.lang === lang));
     });
+    renderNextLinks(lang);
+    relabelLifecycle();
+    localStorage.setItem('lang', lang);
   }
+
+  /* Japanese is the primary reading path: detect it, then honour an explicit choice. */
+  (function(){
+    const saved = localStorage.getItem('lang');
+    const prefs = navigator.languages || [navigator.language || 'en'];
+    setLang(saved || (prefs.some(l => String(l).toLowerCase().startsWith('ja')) ? 'ja' : 'en'));
+  })();
+
+  /* The opening request runs last, after the language pass has settled the
+     record it is about to stream. t0 = 0 is navigation start, so the number
+     the reviewer first sees is the real time from opening the link. */
+  request(current, { t0: 0 });
 </script>
 </body>
 </html>
