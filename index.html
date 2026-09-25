@@ -833,7 +833,9 @@
         <h2 class="pane-title" id="i18n-nbc-title">Bakong test and performance engineering</h2>
         <ul class="work" id="i18n-nbc-body">
           <li>Test and performance engineering for <b>Bakong</b>, Cambodia's national payment system, operated by the central bank.</li>
-          <li>Build <b>load-testing applications</b> for the <b>Bakong public API</b> to measure how it behaves under sustained traffic.</li>
+          <li>Design and build, largely on my own, a <b>load-benchmarking platform</b> for the <b>Bakong public API</b>. It turns API collections into <b>repeatable, graded load tests</b>, keeps results <b>comparable from one release to the next</b>, and lets QA staff run and read benchmarks without writing test code.</li>
+          <li>Built with <b>NestJS, Next.js, PostgreSQL and k6</b>, with automated tests, database migrations, CI and written architecture decision records.</li>
+          <li>Focused on <b>measurements you can trust</b>: each response's own result code is checked, not just its HTTP status, and a run whose measurements came back incomplete under load is flagged rather than read as a good result.</li>
           <li>Build <b>Appium</b>-based automated testing for the <b>Bakong mobile application</b>.</li>
         </ul>
       </div>
@@ -846,7 +848,7 @@
             <div><dt>period</dt><dd>Aug 2026 – present</dd></div>
             <div><dt>system</dt><dd>Bakong, Cambodia's national payment system</dd></div>
             <div><dt>surface</dt><dd>public API, mobile application</dd></div>
-            <div><dt>stack</dt><dd>Load testing, Appium, test automation</dd></div>
+            <div><dt>stack</dt><dd>k6, NestJS, Next.js, PostgreSQL, Appium</dd></div>
           </dl>
         </div>
       </aside>
@@ -953,7 +955,7 @@
               <span class="chip">Git</span><span class="chip">Docker</span><span class="chip">Postgres</span>
               <span class="chip">Postman</span><span class="chip">Jira</span><span class="chip">GraphQL</span>
               <span class="chip">Jest</span><span class="chip">Automated Testing</span><span class="chip">Appium</span>
-              <span class="chip">Load Testing</span>
+              <span class="chip">Load Testing</span><span class="chip">k6</span>
             </div>
           </div>
           <div>
@@ -1367,8 +1369,8 @@
       'i18n-about-record': '<div><dt>name</dt><dd>チェン・ポーチェン (Cheng Porchheng)</dd></div><div><dt>role</dt><dd>バックエンドエンジニア</dd></div><div><dt>employer</dt><dd>カンボジア国立銀行</dd></div><div><dt>location</dt><dd>プノンペン、カンボジア</dd></div><div><dt>email</dt><dd><a href="mailto:porchheng914@gmail.com">porchheng914@gmail.com</a></dd></div>',
 
       'i18n-nbc-title': 'Bakongのテスト・パフォーマンスエンジニアリング',
-      'i18n-nbc-body': '<li>中央銀行が運営するカンボジアの国家決済システム<b>Bakong</b>のテスト・パフォーマンスエンジニアリングを担当。</li><li><b>Bakong公開API</b>向けの<b>負荷テストアプリケーション</b>を開発し、継続的な負荷下での挙動を測定。</li><li><b>Bakongモバイルアプリ</b>の<b>Appium</b>による自動テストを構築。</li>',
-      'i18n-nbc-record': '<div><dt>employer</dt><dd>カンボジア国立銀行 (NBC)</dd></div><div><dt>role</dt><dd>バックエンドエンジニア</dd></div><div><dt>period</dt><dd>2026年8月 〜 現在</dd></div><div><dt>system</dt><dd>Bakong(カンボジアの国家決済システム)</dd></div><div><dt>surface</dt><dd>公開API、モバイルアプリ</dd></div><div><dt>stack</dt><dd>負荷テスト、Appium、テスト自動化</dd></div>',
+      'i18n-nbc-body': '<li>中央銀行が運営するカンボジアの国家決済システム<b>Bakong</b>のテスト・パフォーマンスエンジニアリングを担当。</li><li><b>Bakong公開API</b>向けの<b>負荷ベンチマーク基盤</b>を、ほぼ単独で設計・開発。APIコレクションを<b>再現性のある評価付き負荷テスト</b>に変換し、リリースごとに結果を<b>比較できる</b>状態を保ち、QA担当者がテストコードを書かずにベンチマークを実行・確認できるようにしました。</li><li><b>NestJS・Next.js・PostgreSQL・k6</b>で構築し、自動テスト、DBマイグレーション、CI、アーキテクチャ決定記録(ADR)を整備。</li><li><b>信頼できる計測</b>を重視。HTTPステータスだけでなく各レスポンスの結果コードを検証し、高負荷時に計測が欠けた実行は、良い結果と誤認されないよう明示します。</li><li><b>Bakongモバイルアプリ</b>の<b>Appium</b>による自動テストを構築。</li>',
+      'i18n-nbc-record': '<div><dt>employer</dt><dd>カンボジア国立銀行 (NBC)</dd></div><div><dt>role</dt><dd>バックエンドエンジニア</dd></div><div><dt>period</dt><dd>2026年8月 〜 現在</dd></div><div><dt>system</dt><dd>Bakong(カンボジアの国家決済システム)</dd></div><div><dt>surface</dt><dd>公開API、モバイルアプリ</dd></div><div><dt>stack</dt><dd>k6、NestJS、Next.js、PostgreSQL、Appium</dd></div>',
 
       'i18n-ecommerce-title': 'マルチベンダー型ECプラットフォームとKHQR決済',
       'i18n-ecommerce-body': '<li>Vendureフレームワーク上で<b>REST・GraphQL API</b>を構築し、クメール語対応のマルチベンダー型モバイルECプラットフォームを支えた。</li><li><b>ABA銀行のKHQR決済ゲートウェイ</b>を統合し、安全な取引フローと決済ステータスの自動Webhookを実装した。</li><li><b>Redisキャッシュ</b>、<b>Firebase Cloud Messaging</b>通知、<b>AWS CloudWatch</b>監視により、速度と信頼性を向上させた。</li>',

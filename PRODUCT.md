@@ -69,6 +69,7 @@ Consequence: **the site has no Projects section at all.** It carries four employ
 ## Evidence on Hand
 
 - **Written content only.** Confirmed by the owner: "the contents written is basically it." The site's content is in `index.html`: **four roles** (NBC backend engineer, Biz Solution junior developer and backend intern, CDC API & web intern), **no projects**, skills, three Cisco certifications plus Solid Edge Associate, and languages.
+- **NBC copy updated 2026-09-25** from the owner's own git history of the benchmark platform, kept within the disclosure limit: kind of engineering, stack and principles only, with no internal names, architecture, metrics or commit counts. Superseded note below:
 - **The NBC role has no written copy yet.** It exists only as the facts recorded above and must be written from scratch, within the disclosure limit. This is the single biggest content gap on the site: its strongest credential is the one thing currently missing.
 - **CV:** `CHHENG_PORCHHENG_CV.pdf`.
 - **Photos:** `pf.jpeg` (1290×2293, used as the avatar), `IMG_8347.jpeg` (4032×3024, unreferenced), `_MG_2004.png` (a Canon CR2 raw file with a `.png` extension, unreferenced).
