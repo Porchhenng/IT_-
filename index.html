@@ -805,7 +805,7 @@
         <div class="prose" id="i18n-about-body">
           <p>I'm a <b>backend engineer at the National Bank of Cambodia</b>, the country's central bank, working on
           <b>Bakong</b>, Cambodia's national payment system. I build <b>load-testing applications for its public API</b>
-          and <b>Appium-based automated tests</b> for its mobile app.</p>
+          and test its mobile app with <b>Appium-based automated tests</b>.</p>
           <p>Before the bank I built <b>payment and e-commerce APIs</b> in REST and GraphQL, including
           <b>ABA Bank KHQR</b> integration. I hold a Bachelor of Computer Science (Software Engineering) from the
           Cambodia Academy of Digital Technology (CADT), 2023–2026, and work from Phnom Penh.</p>
@@ -836,7 +836,7 @@
           <li>Design and build, largely on my own, a <b>load-benchmarking platform</b> for the <b>Bakong public API</b>. It turns API collections into <b>repeatable, graded load tests</b>, keeps results <b>comparable from one release to the next</b>, and lets QA staff run and read benchmarks without writing test code.</li>
           <li>Built with <b>NestJS, Next.js, PostgreSQL and k6</b>, with automated tests, database migrations, CI and written architecture decision records.</li>
           <li>Focused on <b>measurements you can trust</b>: each response's own result code is checked, not just its HTTP status, and a run whose measurements came back incomplete under load is flagged rather than read as a good result.</li>
-          <li>Build <b>Appium</b>-based automated testing for the <b>Bakong mobile application</b>.</li>
+          <li>Test the <b>Bakong mobile application</b> using <b>Appium</b>-based automated tests.</li>
         </ul>
       </div>
       <aside class="res">
@@ -1341,7 +1341,7 @@
     },
     ja: {
       title: 'チェン・ポーチェン (Cheng Porchheng) | バックエンドエンジニア',
-      description: 'チェン・ポーチェン。カンボジア国立銀行のバックエンドエンジニア。国家決済システムBakongの負荷テストとAppiumによる自動テストを担当。KHQR決済およびEC向けAPI開発の経験があります。'
+      description: 'チェン・ポーチェン。カンボジア国立銀行のバックエンドエンジニア。国家決済システムBakongの負荷テストと、Appiumを用いたモバイルアプリのテストを担当。KHQR決済およびEC向けAPI開発の経験があります。'
     }
   };
 
@@ -1365,11 +1365,11 @@
       'i18n-address': 'プノンペン、カンボジア<br/><a href="mailto:porchheng914@gmail.com">porchheng914@gmail.com</a>',
 
       'i18n-about-title': '概要',
-      'i18n-about-body': '<p>カンボジアの中央銀行である<b>カンボジア国立銀行(NBC)のバックエンドエンジニア</b>として、国家決済システム<b>Bakong</b>に携わっています。<b>Bakong公開API向けの負荷テストアプリケーション</b>と、モバイルアプリの<b>Appiumによる自動テスト</b>を開発しています。</p><p>それ以前は、REST・GraphQLによる<b>決済・EC向けAPI</b>を開発し、<b>ABA銀行のKHQR決済</b>を統合しました。カンボジアデジタル技術アカデミー(CADT)にて<b>コンピュータサイエンス(ソフトウェアエンジニアリング専攻)</b>を修了(2023年〜2026年)。プノンペンを拠点としています。</p>',
+      'i18n-about-body': '<p>カンボジアの中央銀行である<b>カンボジア国立銀行(NBC)のバックエンドエンジニア</b>として、国家決済システム<b>Bakong</b>に携わっています。<b>Bakong公開API向けの負荷テストアプリケーション</b>を開発し、モバイルアプリを<b>Appiumによる自動テスト</b>で検証しています。</p><p>それ以前は、REST・GraphQLによる<b>決済・EC向けAPI</b>を開発し、<b>ABA銀行のKHQR決済</b>を統合しました。カンボジアデジタル技術アカデミー(CADT)にて<b>コンピュータサイエンス(ソフトウェアエンジニアリング専攻)</b>を修了(2023年〜2026年)。プノンペンを拠点としています。</p>',
       'i18n-about-record': '<div><dt>name</dt><dd>チェン・ポーチェン (Cheng Porchheng)</dd></div><div><dt>role</dt><dd>バックエンドエンジニア</dd></div><div><dt>employer</dt><dd>カンボジア国立銀行</dd></div><div><dt>location</dt><dd>プノンペン、カンボジア</dd></div><div><dt>email</dt><dd><a href="mailto:porchheng914@gmail.com">porchheng914@gmail.com</a></dd></div>',
 
       'i18n-nbc-title': 'Bakongのテスト・パフォーマンスエンジニアリング',
-      'i18n-nbc-body': '<li>中央銀行が運営するカンボジアの国家決済システム<b>Bakong</b>のテスト・パフォーマンスエンジニアリングを担当。</li><li><b>Bakong公開API</b>向けの<b>負荷ベンチマーク基盤</b>を、ほぼ単独で設計・開発。APIコレクションを<b>再現性のある評価付き負荷テスト</b>に変換し、リリースごとに結果を<b>比較できる</b>状態を保ち、QA担当者がテストコードを書かずにベンチマークを実行・確認できるようにしました。</li><li><b>NestJS・Next.js・PostgreSQL・k6</b>で構築し、自動テスト、DBマイグレーション、CI、アーキテクチャ決定記録(ADR)を整備。</li><li><b>信頼できる計測</b>を重視。HTTPステータスだけでなく各レスポンスの結果コードを検証し、高負荷時に計測が欠けた実行は、良い結果と誤認されないよう明示します。</li><li><b>Bakongモバイルアプリ</b>の<b>Appium</b>による自動テストを構築。</li>',
+      'i18n-nbc-body': '<li>中央銀行が運営するカンボジアの国家決済システム<b>Bakong</b>のテスト・パフォーマンスエンジニアリングを担当。</li><li><b>Bakong公開API</b>向けの<b>負荷ベンチマーク基盤</b>を、ほぼ単独で設計・開発。APIコレクションを<b>再現性のある評価付き負荷テスト</b>に変換し、リリースごとに結果を<b>比較できる</b>状態を保ち、QA担当者がテストコードを書かずにベンチマークを実行・確認できるようにしました。</li><li><b>NestJS・Next.js・PostgreSQL・k6</b>で構築し、自動テスト、DBマイグレーション、CI、アーキテクチャ決定記録(ADR)を整備。</li><li><b>信頼できる計測</b>を重視。HTTPステータスだけでなく各レスポンスの結果コードを検証し、高負荷時に計測が欠けた実行は、良い結果と誤認されないよう明示します。</li><li><b>Bakongモバイルアプリ</b>を<b>Appium</b>による自動テストで検証。</li>',
       'i18n-nbc-record': '<div><dt>employer</dt><dd>カンボジア国立銀行 (NBC)</dd></div><div><dt>role</dt><dd>バックエンドエンジニア</dd></div><div><dt>period</dt><dd>2026年8月 〜 現在</dd></div><div><dt>system</dt><dd>Bakong(カンボジアの国家決済システム)</dd></div><div><dt>surface</dt><dd>公開API、モバイルアプリ</dd></div><div><dt>stack</dt><dd>k6、NestJS、Next.js、PostgreSQL、Appium</dd></div>',
 
       'i18n-ecommerce-title': 'マルチベンダー型ECプラットフォームとKHQR決済',
