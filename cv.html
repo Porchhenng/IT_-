@@ -380,7 +380,7 @@
     <p class="issuer">Cisco Networking Academy</p>
     <ul class="certs certs-group">
       <li>Introduction to Cyber Security</li>
-      <li>CyberObs Associate</li>
+      <li>CyberOps Associate</li>
       <li>Cybersecurity Essentials</li>
     </ul>
     <ul class="certs certs-standalone">
@@ -401,6 +401,7 @@
 </body>
 </html>
 <!--
-  Build:  node /tmp/pdf.mjs   (headless Chrome Page.printToPDF, A4, no margins
-          beyond @page, printBackground on so the rules and photo border survive)
+  Build:  Playwright page.pdf() on this file (headless Chromium Page.printToPDF,
+          preferCSSPageSize so @page sets A4 and the margins, printBackground on
+          so the rules and photo border survive). Check it stays one page.
 -->
