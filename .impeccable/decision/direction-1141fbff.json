@@ -1,0 +1,151 @@
+{
+  "title": "Choose the new look for your portfolio",
+  "question": "The roll dealt Station Signs. Keep it, take an alternate, or re-roll.",
+  "options": [
+    {
+      "id": "assigned",
+      "label": "Station Signs",
+      "kicker": "THE ROLL",
+      "lineage": "Japanese railway wayfinding: station signboards (駅名標) and route maps (路線図)",
+      "thesis": "Your career as a rail line: every section is a station, and the reviewer rides it.",
+      "palette": ["#FFFFFF", "#16181D", "#009E73", "#F08300", "#8F76D6", "#E5004F", "#0E1621"],
+      "materials": ["backlit sign panels", "line-colour bands", "station-number roundels", "bilingual signage type (BIZ UDPGothic + Signika)"],
+      "viewport": "A route map runs across the top with CDC, Biz Solution and NBC as stations, the current one lit. Below it, a full-width station signboard shows the section name in JA and EN, with previous and next stations at its foot.",
+      "risk": "Pushed too far it turns into train-themed kitsch; the bullets and dates must stay plain and scannable under the signs.",
+      "raised": [
+        {"from": "challenger-pickling", "raise": "Time as material: every work station's sign carries its own duration band (4 months, now)."},
+        {"from": "challenger-depot", "raise": "Three-dye discipline per station (line colour, sign white, ink), and only the current station inverts on the map."},
+        {"from": "challenger-splitflap", "raise": "The facts board keeps fixed columns between stations; only the values change, row by row."},
+        {"from": "challenger-cdrom", "raise": "Station buttons on the map have real press travel, so the pressed state reads as pressed."},
+        {"from": "challenger-quarry", "raise": "Platform rhythm: generous zones between sign, content and facts board, like marked platform areas."}
+      ],
+      "wireframe": {"cols": 12, "rows": 10, "regions": [
+        {"label": "route map: CDC · Biz · Biz · NBC  |  branch: skills · credentials · contact", "x": 0, "y": 0, "w": 12, "h": 2, "accent": true},
+        {"label": "station signboard: name JA + EN, line band, duration", "x": 0, "y": 2, "w": 12, "h": 3},
+        {"label": "what I did (bullets)", "x": 0, "y": 5, "w": 8, "h": 4},
+        {"label": "facts board", "x": 8, "y": 5, "w": 4, "h": 4},
+        {"label": "← previous station   next station →", "x": 0, "y": 9, "w": 12, "h": 1}
+      ]}
+    },
+    {
+      "id": "model-pick",
+      "label": "Rirekisho, in full colour",
+      "kicker": "IMPECCABLE’S PICK",
+      "lineage": "the JIS 履歴書 form every Japanese reviewer reads daily",
+      "thesis": "The résumé form your reviewer knows by heart, printed in one bold ink and stamped where it matters.",
+      "palette": ["#EAF3EE", "#0B6E4F", "#D7263D", "#16181D"],
+      "materials": ["ruled form grid in one saturated ink", "photo in the 写真 box", "hanko seal on the current role"],
+      "viewport": "A wide ruled form fills the screen: your photo sits in the photo box, name and role in the header cells, and the history table opens on NBC with a red seal.",
+      "risk": "The most familiar of all for this audience, and the one most at risk of reading stiff, which you flagged as wrong.",
+      "wireframe": {"cols": 12, "rows": 10, "regions": [
+        {"label": "name / role cells", "x": 0, "y": 0, "w": 9, "h": 2},
+        {"label": "写真 photo box", "x": 9, "y": 0, "w": 3, "h": 3, "accent": true},
+        {"label": "section tabs as form headings", "x": 0, "y": 2, "w": 9, "h": 1},
+        {"label": "history table: year | month | entry", "x": 0, "y": 3, "w": 12, "h": 6},
+        {"label": "contact cells", "x": 0, "y": 9, "w": 12, "h": 1}
+      ]}
+    },
+    {
+      "id": "challenger-rietveld",
+      "label": "Sliding Planes",
+      "verdict": "competitive",
+      "lineage": "the Rietveld Schröder house, primary planes that reconfigure one room",
+      "thesis": "One room that slides into each section: coloured planes move, and the page is the composition you operate.",
+      "palette": ["#F2F2F0", "#111111", "#D7261E", "#F4C300", "#1F4AA8"],
+      "materials": ["white and grey planes", "black frame lines", "primary colour only on moving edges"],
+      "viewport": "Your name and role sit on one white plane; a red plane slides aside to reveal NBC, and every section is a plane position.",
+      "case": "Fuses cleanly and navigation is very clear; loses on recognition, since Dutch modernism is not your reviewer's world.",
+      "risk": "Can tip into playful if the planes move for show rather than to reveal content.",
+      "hero": "https://impeccable.style/worlds/cards/design-canon-rietveld-sliding-house-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/design-canon-rietveld-sliding-house.webp",
+      "wireframe": {"cols": 12, "rows": 10, "regions": [
+        {"label": "name plane", "x": 0, "y": 0, "w": 5, "h": 4},
+        {"label": "sliding red plane (nav)", "x": 5, "y": 0, "w": 2, "h": 10, "accent": true},
+        {"label": "section content plane", "x": 7, "y": 0, "w": 5, "h": 7},
+        {"label": "facts plane", "x": 0, "y": 4, "w": 5, "h": 6}
+      ]}
+    },
+    {
+      "id": "challenger-depot",
+      "label": "Depot Destination Blind",
+      "verdict": "declined",
+      "lineage": "bus and tram destination roll signs (方向幕)",
+      "thesis": "Sections roll past one fixed window like a destination blind.",
+      "palette": ["#1F4D3A", "#F2C230", "#EFE9DA"],
+      "materials": ["dyed duck cloth", "chrome-yellow caps"],
+      "viewport": "One fixed window, the current section's legend stopped in it.",
+      "case": "One-size condensed caps make long bullets hard to scan; loses on clarity and on recognition next to station signs.",
+      "kept": "Three-dye discipline, and only the current item inverts.",
+      "risk": "All-caps legends tire the eye on real prose.",
+      "hero": "https://impeccable.style/worlds/cards/operate-c-depot-blind-courses-hero.webp"
+    },
+    {
+      "id": "challenger-splitflap",
+      "label": "Split-flap Concourse",
+      "verdict": "declined",
+      "lineage": "station departure boards",
+      "thesis": "Your roles as departures on a split-flap board.",
+      "palette": ["#121212", "#F5F5F5", "#F2A900", "#B3261E"],
+      "materials": ["black flaps", "brushed steel"],
+      "viewport": "A board of rows: role, employer, period, flipping in.",
+      "case": "Reads as a gimmick for four roles and drifts toward tech costume; loses both axes.",
+      "kept": "Fixed columns that never reflow; only values change.",
+      "risk": "Novelty wears off after the first flip.",
+      "hero": "https://impeccable.style/worlds/cards/signals-instruments-split-flap-concourse-hero.webp"
+    },
+    {
+      "id": "challenger-cdrom",
+      "label": "CD-ROM Console",
+      "verdict": "declined",
+      "lineage": "mid-90s rendered CD-ROM interfaces",
+      "thesis": "A beveled console with your record in a small window.",
+      "palette": ["#9AA3AD", "#2A9D9A", "#6B4FA0", "#F0F4F8"],
+      "materials": ["brushed panels", "embossed toggles"],
+      "viewport": "A rendered machine framing a small content window.",
+      "case": "Too playful for a central-bank engineer, which you flagged as wrong; loses both axes.",
+      "kept": "Controls with real press travel.",
+      "risk": "Reads as a joke.",
+      "hero": "https://impeccable.style/worlds/cards/digital-design-canon-cdrom-chrome-navigation-hero.webp"
+    },
+    {
+      "id": "challenger-pickling",
+      "label": "Pickling Brine Calendar",
+      "verdict": "declined",
+      "lineage": "seasonal fermentation shelves",
+      "thesis": "Roles as jars maturing on a shelf.",
+      "palette": ["#E9EFE6", "#FF7F66", "#9B1B3A", "#7FA650", "#B88A5A"],
+      "materials": ["jar glass", "kraft labels"],
+      "viewport": "A shelf of labelled jars, one per role.",
+      "case": "No link to backend work or to the reviewer; loses both axes.",
+      "kept": "Time as visible material: each item carries its own duration.",
+      "risk": "Unrelated metaphor.",
+      "hero": "https://impeccable.style/worlds/cards/food-fermentation-culinary-theater-pickling-brine-calendar-hero.webp"
+    },
+    {
+      "id": "challenger-quarry",
+      "label": "Cloud Quarry",
+      "verdict": "declined",
+      "lineage": "surreal constructed weather",
+      "thesis": "Sections cut from cloud blocks.",
+      "palette": ["#F7F8FA", "#5AA9E6", "#6B7280", "#C0C7D1"],
+      "materials": ["cumulus blocks", "sky voids"],
+      "viewport": "Stacked white blocks with blue gaps.",
+      "case": "Dreamlike and vague where the reviewer needs facts; loses both axes.",
+      "kept": "Deep, deliberate gaps between blocks of content.",
+      "risk": "Style over substance.",
+      "hero": "https://impeccable.style/worlds/cards/dream-surreal-impossible-worlds-cloud-quarry-hero.webp"
+    }
+  ],
+  "reroll": {"registers": ["safer", "bolder"]},
+  "buildPath": {"value": "code"},
+  "canon": true,
+  "canonCard": {
+    "label": "The category standard",
+    "thesis": "A classic developer portfolio, executed impeccably.",
+    "palette": ["#FFFFFF", "#111827", "#2563EB"],
+    "materials": ["clean grid", "hero with name and role", "experience timeline"],
+    "viewport": "Name and role large, a short intro, then experience, skills and contact.",
+    "risk": "Looks like every other developer portfolio by design."
+  },
+  "steer": true
+}

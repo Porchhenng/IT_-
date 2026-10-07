@@ -1,0 +1,501 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-07T03:42:32+00:00",
+  "title": "Design System: Cheng Porchheng, Rirekisho",
+  "extensions": {
+    "colorMeta": {
+      "ink": {
+        "role": "primary",
+        "displayName": "Form Ink",
+        "canonical": "oklch(47.8% 0.098 164.9)",
+        "tonalRamp": [
+          "oklch(15.0% 0.098 164.9)",
+          "oklch(26.4% 0.098 164.9)",
+          "oklch(37.9% 0.098 164.9)",
+          "oklch(49.3% 0.098 164.9)",
+          "oklch(60.7% 0.098 164.9)",
+          "oklch(72.1% 0.098 164.9)",
+          "oklch(83.6% 0.098 164.9)",
+          "oklch(95.0% 0.098 164.9)"
+        ]
+      },
+      "ink-2": {
+        "role": "primary",
+        "displayName": "Faded Ink",
+        "canonical": "oklch(44.2% 0.061 167.0)",
+        "tonalRamp": [
+          "oklch(15.0% 0.061 167.0)",
+          "oklch(26.4% 0.061 167.0)",
+          "oklch(37.9% 0.061 167.0)",
+          "oklch(49.3% 0.061 167.0)",
+          "oklch(60.7% 0.061 167.0)",
+          "oklch(72.1% 0.061 167.0)",
+          "oklch(83.6% 0.061 167.0)",
+          "oklch(95.0% 0.061 167.0)"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Form Stock",
+        "canonical": "oklch(95.6% 0.012 162.0)",
+        "tonalRamp": [
+          "oklch(15.0% 0.012 162.0)",
+          "oklch(26.4% 0.012 162.0)",
+          "oklch(37.9% 0.012 162.0)",
+          "oklch(49.3% 0.012 162.0)",
+          "oklch(60.7% 0.012 162.0)",
+          "oklch(72.1% 0.012 162.0)",
+          "oklch(83.6% 0.012 162.0)",
+          "oklch(95.0% 0.012 162.0)"
+        ]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Printed Rule",
+        "canonical": "color-mix(in oklab, var(--ink) 40%, var(--paper))",
+        "tonalRamp": [
+          "oklch(15.0% 0.098 164.9)",
+          "oklch(26.4% 0.098 164.9)",
+          "oklch(37.9% 0.098 164.9)",
+          "oklch(49.3% 0.098 164.9)",
+          "oklch(60.7% 0.098 164.9)",
+          "oklch(72.1% 0.098 164.9)",
+          "oklch(83.6% 0.098 164.9)",
+          "oklch(95.0% 0.098 164.9)"
+        ]
+      },
+      "tint": {
+        "role": "neutral",
+        "displayName": "Field Tint",
+        "canonical": "color-mix(in oklab, var(--ink) 7%, var(--paper))",
+        "tonalRamp": [
+          "oklch(15.0% 0.012 162.0)",
+          "oklch(26.4% 0.012 162.0)",
+          "oklch(37.9% 0.012 162.0)",
+          "oklch(49.3% 0.012 162.0)",
+          "oklch(60.7% 0.012 162.0)",
+          "oklch(72.1% 0.012 162.0)",
+          "oklch(83.6% 0.012 162.0)",
+          "oklch(95.0% 0.012 162.0)"
+        ]
+      },
+      "text": {
+        "role": "neutral",
+        "displayName": "Typed Black",
+        "canonical": "oklch(20.9% 0.010 268.2)",
+        "tonalRamp": [
+          "oklch(15.0% 0.01 268.2)",
+          "oklch(26.4% 0.01 268.2)",
+          "oklch(37.9% 0.01 268.2)",
+          "oklch(49.3% 0.01 268.2)",
+          "oklch(60.7% 0.01 268.2)",
+          "oklch(72.1% 0.01 268.2)",
+          "oklch(83.6% 0.01 268.2)",
+          "oklch(95.0% 0.01 268.2)"
+        ]
+      },
+      "text-2": {
+        "role": "neutral",
+        "displayName": "Typed Grey-Green",
+        "canonical": "oklch(38.4% 0.020 165.7)",
+        "tonalRamp": [
+          "oklch(15.0% 0.02 165.7)",
+          "oklch(26.4% 0.02 165.7)",
+          "oklch(37.9% 0.02 165.7)",
+          "oklch(49.3% 0.02 165.7)",
+          "oklch(60.7% 0.02 165.7)",
+          "oklch(72.1% 0.02 165.7)",
+          "oklch(83.6% 0.02 165.7)",
+          "oklch(95.0% 0.02 165.7)"
+        ]
+      },
+      "seal": {
+        "role": "secondary",
+        "displayName": "Seal Vermilion",
+        "canonical": "oklch(57.1% 0.209 21.1)",
+        "tonalRamp": [
+          "oklch(15.0% 0.16 21.1)",
+          "oklch(26.4% 0.16 21.1)",
+          "oklch(37.9% 0.16 21.1)",
+          "oklch(49.3% 0.16 21.1)",
+          "oklch(60.7% 0.16 21.1)",
+          "oklch(72.1% 0.16 21.1)",
+          "oklch(83.6% 0.16 21.1)",
+          "oklch(95.0% 0.16 21.1)"
+        ]
+      },
+      "night-desk": {
+        "role": "neutral",
+        "displayName": "Night Desk",
+        "canonical": "oklch(17.4% 0.027 168.1)",
+        "tonalRamp": [
+          "oklch(15.0% 0.027 168.1)",
+          "oklch(26.4% 0.027 168.1)",
+          "oklch(37.9% 0.027 168.1)",
+          "oklch(49.3% 0.027 168.1)",
+          "oklch(60.7% 0.027 168.1)",
+          "oklch(72.1% 0.027 168.1)",
+          "oklch(83.6% 0.027 168.1)",
+          "oklch(95.0% 0.027 168.1)"
+        ]
+      },
+      "night-paper": {
+        "role": "neutral",
+        "displayName": "Night Paper",
+        "canonical": "oklch(22.6% 0.026 169.4)",
+        "tonalRamp": [
+          "oklch(15.0% 0.026 169.4)",
+          "oklch(26.4% 0.026 169.4)",
+          "oklch(37.9% 0.026 169.4)",
+          "oklch(49.3% 0.026 169.4)",
+          "oklch(60.7% 0.026 169.4)",
+          "oklch(72.1% 0.026 169.4)",
+          "oklch(83.6% 0.026 169.4)",
+          "oklch(95.0% 0.026 169.4)"
+        ]
+      },
+      "night-band": {
+        "role": "primary",
+        "displayName": "Night Band",
+        "canonical": "oklch(37.3% 0.063 167.9)",
+        "tonalRamp": [
+          "oklch(15.0% 0.063 167.9)",
+          "oklch(26.4% 0.063 167.9)",
+          "oklch(37.9% 0.063 167.9)",
+          "oklch(49.3% 0.063 167.9)",
+          "oklch(60.7% 0.063 167.9)",
+          "oklch(72.1% 0.063 167.9)",
+          "oklch(83.6% 0.063 167.9)",
+          "oklch(95.0% 0.063 167.9)"
+        ]
+      },
+      "night-ink": {
+        "role": "primary",
+        "displayName": "Night Ink",
+        "canonical": "oklch(75.4% 0.120 163.5)",
+        "tonalRamp": [
+          "oklch(15.0% 0.12 163.5)",
+          "oklch(26.4% 0.12 163.5)",
+          "oklch(37.9% 0.12 163.5)",
+          "oklch(49.3% 0.12 163.5)",
+          "oklch(60.7% 0.12 163.5)",
+          "oklch(72.1% 0.12 163.5)",
+          "oklch(83.6% 0.12 163.5)",
+          "oklch(95.0% 0.12 163.5)"
+        ]
+      },
+      "night-ink-2": {
+        "role": "primary",
+        "displayName": "Night Faded Ink",
+        "canonical": "oklch(80.6% 0.078 165.0)",
+        "tonalRamp": [
+          "oklch(15.0% 0.078 165.0)",
+          "oklch(26.4% 0.078 165.0)",
+          "oklch(37.9% 0.078 165.0)",
+          "oklch(49.3% 0.078 165.0)",
+          "oklch(60.7% 0.078 165.0)",
+          "oklch(72.1% 0.078 165.0)",
+          "oklch(83.6% 0.078 165.0)",
+          "oklch(95.0% 0.078 165.0)"
+        ]
+      },
+      "night-rule": {
+        "role": "neutral",
+        "displayName": "Night Rule",
+        "canonical": "color-mix(in oklab, var(--ink) 30%, var(--paper))",
+        "tonalRamp": [
+          "oklch(15.0% 0.12 163.5)",
+          "oklch(26.4% 0.12 163.5)",
+          "oklch(37.9% 0.12 163.5)",
+          "oklch(49.3% 0.12 163.5)",
+          "oklch(60.7% 0.12 163.5)",
+          "oklch(72.1% 0.12 163.5)",
+          "oklch(83.6% 0.12 163.5)",
+          "oklch(95.0% 0.12 163.5)"
+        ]
+      },
+      "night-tint": {
+        "role": "neutral",
+        "displayName": "Night Tint",
+        "canonical": "color-mix(in oklab, var(--ink) 9%, var(--paper))",
+        "tonalRamp": [
+          "oklch(15.0% 0.026 169.4)",
+          "oklch(26.4% 0.026 169.4)",
+          "oklch(37.9% 0.026 169.4)",
+          "oklch(49.3% 0.026 169.4)",
+          "oklch(60.7% 0.026 169.4)",
+          "oklch(72.1% 0.026 169.4)",
+          "oklch(83.6% 0.026 169.4)",
+          "oklch(95.0% 0.026 169.4)"
+        ]
+      },
+      "night-text": {
+        "role": "neutral",
+        "displayName": "Night Typed",
+        "canonical": "oklch(94.0% 0.013 164.8)",
+        "tonalRamp": [
+          "oklch(15.0% 0.013 164.8)",
+          "oklch(26.4% 0.013 164.8)",
+          "oklch(37.9% 0.013 164.8)",
+          "oklch(49.3% 0.013 164.8)",
+          "oklch(60.7% 0.013 164.8)",
+          "oklch(72.1% 0.013 164.8)",
+          "oklch(83.6% 0.013 164.8)",
+          "oklch(95.0% 0.013 164.8)"
+        ]
+      },
+      "night-text-2": {
+        "role": "neutral",
+        "displayName": "Night Typed Grey-Green",
+        "canonical": "oklch(79.9% 0.025 166.9)",
+        "tonalRamp": [
+          "oklch(15.0% 0.025 166.9)",
+          "oklch(26.4% 0.025 166.9)",
+          "oklch(37.9% 0.025 166.9)",
+          "oklch(49.3% 0.025 166.9)",
+          "oklch(60.7% 0.025 166.9)",
+          "oklch(72.1% 0.025 166.9)",
+          "oklch(83.6% 0.025 166.9)",
+          "oklch(95.0% 0.025 166.9)"
+        ]
+      },
+      "night-seal": {
+        "role": "secondary",
+        "displayName": "Night Seal",
+        "canonical": "oklch(69.4% 0.198 18.3)",
+        "tonalRamp": [
+          "oklch(15.0% 0.16 18.3)",
+          "oklch(26.4% 0.16 18.3)",
+          "oklch(37.9% 0.16 18.3)",
+          "oklch(49.3% 0.16 18.3)",
+          "oklch(60.7% 0.16 18.3)",
+          "oklch(72.1% 0.16 18.3)",
+          "oklch(83.6% 0.16 18.3)",
+          "oklch(95.0% 0.16 18.3)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "form-title": {
+        "displayName": "Form Title",
+        "purpose": "履歴書 only, Mincho 800 widely tracked."
+      },
+      "display": {
+        "displayName": "Display",
+        "purpose": "The name in the 氏名 cell."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Heading inside an opened history row."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Organisation name in each history row."
+      },
+      "data": {
+        "displayName": "Data",
+        "purpose": "Year and month cells, tabular lining figures."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Values in cells and rows."
+      },
+      "body-long": {
+        "displayName": "Body Long",
+        "purpose": "Work bullets in opened detail, 68ch max."
+      },
+      "label": {
+        "displayName": "Printed Label",
+        "purpose": "Japanese field names printed by the form, in ink."
+      },
+      "label-en": {
+        "displayName": "Label EN",
+        "purpose": "English gloss under each Japanese label; hidden in JA."
+      },
+      "control": {
+        "displayName": "Control",
+        "purpose": "Buttons and toggles; 13px inside the band."
+      }
+    },
+    "shadows": [
+      {
+        "name": "sheet",
+        "value": "0 1px 2px rgba(3,40,28,.28), 0 24px 48px -18px rgba(3,40,28,.55)",
+        "purpose": "The paper sheet on the green desk. Night: 0 1px 2px rgba(0,0,0,.5), 0 24px 48px -18px rgba(0,0,0,.8). Removed on phones and in print."
+      },
+      {
+        "name": "pinned-band",
+        "value": "0 10px 18px -14px rgba(3,40,28,.6)",
+        "purpose": "The sticky section band only."
+      },
+      {
+        "name": "pasted-photo",
+        "value": "0 1px 1px rgba(0,0,0,.18), 0 6px 14px -6px rgba(3,40,28,.45)",
+        "purpose": "The applicant photo only."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease",
+        "value": "cubic-bezier(.16,1,.3,1)",
+        "purpose": "Opening and closing history rows (0.5s grid-rows) and the plus/minus mark (0.35s)."
+      },
+      {
+        "name": "hover",
+        "value": ".18s ease",
+        "purpose": "Background and underline color changes on buttons, links and controls; 0.2s on tabs and rows."
+      },
+      {
+        "name": "stamp",
+        "value": ".66s cubic-bezier(.2,.9,.24,1)",
+        "purpose": "The seal pressing once on load; disabled under reduced motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "detail-stack",
+        "value": "1060px"
+      },
+      {
+        "name": "tablet",
+        "value": "900px"
+      },
+      {
+        "name": "phone",
+        "value": "720px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The main action on the form, solid ink. Used once per action row.",
+      "html": "<a class=\"ds-btn ds-btn-primary\" href=\"#\"><svg class=\"ds-ico\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"3.6\" y=\"5.6\" width=\"16.8\" height=\"12.8\" rx=\"1.6\"/><path d=\"m4.4 7.2 7.6 5.6 7.6-5.6\"/></svg>Email me</a>",
+      "css": ".ds-btn{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 20px;border:1.5px solid var(--ink,#0B6E4F);border-radius:4px;background:transparent;color:var(--ink,#0B6E4F);font-family:'Schibsted Grotesk','Zen Kaku Gothic New',sans-serif;font-size:15px;font-weight:600;text-decoration:none;cursor:pointer;transition:background-color .18s ease,color .18s ease;} .ds-btn-primary{background:var(--ink,#0B6E4F);color:var(--paper,#EAF3EE);} .ds-btn-primary:hover{background:color-mix(in oklab,var(--ink,#0B6E4F) 86%,var(--text,#16181D));} .ds-btn:focus-visible{outline:2px solid var(--text,#16181D);outline-offset:3px;} .ds-ico{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Outlined ink action: copy address, download CV.",
+      "html": "<button type=\"button\" class=\"ds-btn2\"><svg class=\"ds-ico2\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M12 3.6v11.6\"/><path d=\"m7 10.4 5 5 5-5\"/><path d=\"M4.4 20.4h15.2\"/></svg>Download CV (PDF)</button>",
+      "css": ".ds-btn2{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 20px;border:1.5px solid var(--ink,#0B6E4F);border-radius:4px;background:transparent;color:var(--ink,#0B6E4F);font-family:'Schibsted Grotesk','Zen Kaku Gothic New',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:background-color .18s ease;} .ds-btn2:hover{background:var(--tint,#DCE9E2);} .ds-btn2:focus-visible{outline:2px solid var(--text,#16181D);outline-offset:3px;} .ds-ico2{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;}"
+    },
+    {
+      "name": "Section Band",
+      "kind": "nav",
+      "refersTo": "band-tab",
+      "description": "The pinned green heading strip: bilingual tabs, the current one cut out to paper, controls at right.",
+      "html": "<nav class=\"ds-band\"><a class=\"ds-tab\" aria-current=\"true\" href=\"#\"><span class=\"ds-lj\">学歴・職歴</span><span class=\"ds-le\">History</span></a><a class=\"ds-tab\" href=\"#\"><span class=\"ds-lj\">自己PR</span><span class=\"ds-le\">Summary</span></a><a class=\"ds-tab\" href=\"#\"><span class=\"ds-lj\">特技・スキル</span><span class=\"ds-le\">Skills</span></a><span class=\"ds-seg\"><button type=\"button\" aria-pressed=\"true\">EN</button><button type=\"button\" aria-pressed=\"false\">日本語</button></span><a class=\"ds-cv\" href=\"#\">Download CV</a></nav>",
+      "css": ".ds-band{display:flex;align-items:stretch;gap:16px;padding:0 20px 0 32px;background:var(--band,#0B6E4F);color:var(--on-band,#EAF3EE);box-shadow:0 10px 18px -14px rgba(3,40,28,.6);font-family:'Schibsted Grotesk','Zen Kaku Gothic New',sans-serif;} .ds-tab{display:flex;flex-direction:column;justify-content:center;gap:1px;min-height:60px;padding:0 20px;color:inherit;text-decoration:none;white-space:nowrap;transition:background-color .2s ease,color .2s ease;} .ds-tab:hover{background:color-mix(in oklab,var(--on-band,#EAF3EE) 12%,var(--band,#0B6E4F));} .ds-tab[aria-current=\"true\"]{background:var(--paper,#EAF3EE);color:var(--ink,#0B6E4F);} .ds-tab:focus-visible,.ds-seg button:focus-visible,.ds-cv:focus-visible{outline:2px solid var(--on-band,#EAF3EE);outline-offset:3px;} .ds-lj{font-family:'Shippori Mincho B1','Hiragino Mincho ProN',serif;font-weight:700;font-size:14.5px;line-height:1.35;letter-spacing:.08em;} .ds-le{font-size:12px;font-weight:500;line-height:1.35;opacity:.88;} .ds-seg{display:inline-flex;align-self:center;margin-left:auto;padding:2px;border:1px solid color-mix(in oklab,var(--on-band,#EAF3EE) 45%,var(--band,#0B6E4F));border-radius:4px;} .ds-seg button{font:inherit;font-size:13px;font-weight:600;min-height:38px;min-width:42px;padding:0 11px;border:none;border-radius:2px;background:transparent;color:var(--on-band,#EAF3EE);cursor:pointer;} .ds-seg button[aria-pressed=\"true\"]{background:var(--on-band,#EAF3EE);color:var(--band,#0B6E4F);} .ds-cv{display:inline-flex;align-items:center;align-self:center;min-height:38px;padding:0 14px;border-radius:4px;background:var(--on-band,#EAF3EE);color:var(--band,#0B6E4F);font-size:13px;font-weight:600;text-decoration:none;} .ds-cv:hover{background:color-mix(in oklab,var(--on-band,#EAF3EE) 86%,var(--band,#0B6E4F));}"
+    },
+    {
+      "name": "Form Cells",
+      "kind": "custom",
+      "refersTo": "form-cell-label",
+      "description": "The name block: Mincho label column against typed values inside a 2px ink frame, furigana split from the name by a dashed rule.",
+      "html": "<div class=\"ds-cells\"><div class=\"ds-cell ds-furi\"><span class=\"ds-l\"><span class=\"ds-lj\">ふりがな</span><span class=\"ds-le\">Reading</span></span><p class=\"ds-v\">チェン・ポーチェン</p></div><div class=\"ds-cell ds-name\"><span class=\"ds-l\"><span class=\"ds-lj\">氏名</span><span class=\"ds-le\">Name</span></span><p class=\"ds-v\">Cheng Porchheng</p></div><div class=\"ds-cell\"><span class=\"ds-l\"><span class=\"ds-lj\">連絡先</span><span class=\"ds-le\">Contact</span></span><p class=\"ds-v\"><a href=\"#\">porchheng914@gmail.com</a></p></div></div>",
+      "css": ".ds-cells{border:2px solid var(--ink,#0B6E4F);background:var(--paper,#EAF3EE);font-family:'Schibsted Grotesk','Zen Kaku Gothic New',sans-serif;color:var(--text,#16181D);} .ds-cell{display:grid;grid-template-columns:150px minmax(0,1fr);border-top:1px solid var(--rule,#98BCAB);} .ds-cell:first-child{border-top:none;} .ds-furi + .ds-cell{border-top-style:dashed;} .ds-l{display:flex;flex-direction:column;justify-content:center;gap:1px;padding:12px 16px;border-right:1px solid var(--rule,#98BCAB);} .ds-lj{font-family:'Shippori Mincho B1','Hiragino Mincho ProN',serif;font-weight:700;font-size:14px;line-height:1.35;letter-spacing:.08em;color:var(--ink,#0B6E4F);} .ds-le{font-size:12px;font-weight:500;line-height:1.35;color:var(--ink-2,#2E5E4C);} .ds-v{margin:0;padding:12px 20px;align-self:center;font-size:17px;line-height:1.5;} .ds-furi .ds-v{font-size:15px;letter-spacing:.24em;color:var(--text-2,#3A4741);} .ds-name .ds-v{font-size:clamp(34px,4.6vw,60px);font-weight:700;line-height:1.05;letter-spacing:-0.028em;padding:18px 20px 20px;} .ds-v a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px;text-decoration-color:var(--rule,#98BCAB);transition:text-decoration-color .18s ease;} .ds-v a:hover{text-decoration-color:var(--ink,#0B6E4F);} .ds-v a:focus-visible{outline:2px solid var(--text,#16181D);outline-offset:3px;}"
+    },
+    {
+      "name": "History Row",
+      "kind": "custom",
+      "refersTo": "history-row-hover",
+      "description": "Signature year | month | entry table with continuous column rules, ink header, and a plus that loses its upright on open.",
+      "html": "<ol class=\"ds-hist\"><li class=\"ds-hh\"><span>年</span><span>月</span><span class=\"ds-hh-e\">学歴・職歴</span></li><li class=\"ds-row\"><button type=\"button\" class=\"ds-rb\" aria-expanded=\"false\"><span class=\"ds-y\">2026</span><span class=\"ds-y\">8</span><span class=\"ds-entry\"><span class=\"ds-org\">National Bank of Cambodia (NBC)</span><span class=\"ds-role\">Backend Engineer</span><span class=\"ds-per\">Aug 2026, present</span></span></button><svg class=\"ds-pm\" viewBox=\"0 0 18 18\" aria-hidden=\"true\"><line x1=\"2\" y1=\"9\" x2=\"16\" y2=\"9\"/><line class=\"ds-up\" x1=\"9\" y1=\"2\" x2=\"9\" y2=\"16\"/></svg></li></ol>",
+      "css": ".ds-hist{margin:0;padding:0;list-style:none;border:2px solid var(--ink,#0B6E4F);background:var(--paper,#EAF3EE);font-family:'Schibsted Grotesk','Zen Kaku Gothic New',sans-serif;} .ds-hist > li{position:relative;display:grid;grid-template-columns:88px 60px minmax(0,1fr);border-top:1px solid var(--rule,#98BCAB);} .ds-hist > li:first-child{border-top:none;} .ds-hh{background:var(--band,#0B6E4F);color:var(--on-band,#EAF3EE);font-family:'Shippori Mincho B1','Hiragino Mincho ProN',serif;font-weight:700;font-size:14px;letter-spacing:.08em;} .ds-hh > span{padding:12px 14px;text-align:center;border-right:1px solid color-mix(in oklab,var(--on-band,#EAF3EE) 35%,var(--band,#0B6E4F));} .ds-hh .ds-hh-e{text-align:left;padding-left:20px;font-size:16px;border-right:none;} .ds-rb{grid-column:1 / -1;display:grid;grid-template-columns:88px 60px minmax(0,1fr);width:100%;padding:0;border:none;background:transparent;color:inherit;font:inherit;text-align:left;cursor:pointer;transition:background-color .2s ease;} .ds-rb:hover{background:var(--tint,#DCE9E2);} .ds-rb:focus-visible{outline:2px solid var(--text,#16181D);outline-offset:3px;} .ds-y{padding:18px 8px;text-align:center;font-size:17px;font-weight:600;font-variant-numeric:tabular-nums lining-nums;color:var(--text,#16181D);border-right:1px solid var(--rule,#98BCAB);} .ds-entry{display:flex;flex-direction:column;gap:3px;padding:15px 72px 15px 20px;} .ds-org{font-size:18px;font-weight:600;line-height:1.35;color:var(--text,#16181D);} .ds-role{font-size:15.5px;line-height:1.45;color:var(--text-2,#3A4741);} .ds-per{font-size:13.5px;font-weight:500;color:var(--ink,#0B6E4F);font-variant-numeric:tabular-nums lining-nums;} .ds-pm{position:absolute;right:22px;top:26px;width:18px;height:18px;color:var(--ink,#0B6E4F);pointer-events:none;} .ds-pm line{stroke:currentColor;stroke-width:1.8;stroke-linecap:round;transition:transform .35s cubic-bezier(.16,1,.3,1);transform-origin:9px 9px;} .ds-row:has([aria-expanded=\"true\"]) .ds-up{transform:scaleY(0);}"
+    },
+    {
+      "name": "Form Block",
+      "kind": "card",
+      "refersTo": "block-head",
+      "description": "The container for every section below the history: 2px ink frame, solid ink head bar, ruled writing lines for free text.",
+      "html": "<section class=\"ds-block\"><div class=\"ds-bh\"><span class=\"ds-bj\">自己PR</span><span class=\"ds-be\">Summary</span></div><div class=\"ds-bb\"><p>I'm a <b>backend engineer at the National Bank of Cambodia</b>, working on Bakong, Cambodia's national payment system.</p></div></section>",
+      "css": ".ds-block{border:2px solid var(--ink,#0B6E4F);background:var(--paper,#EAF3EE);font-family:'Schibsted Grotesk','Zen Kaku Gothic New',sans-serif;} .ds-bh{display:flex;align-items:baseline;flex-wrap:wrap;gap:2px 10px;padding:12px 20px;background:var(--band,#0B6E4F);color:var(--on-band,#EAF3EE);} .ds-bj{font-family:'Shippori Mincho B1','Hiragino Mincho ProN',serif;font-weight:700;font-size:16px;letter-spacing:.08em;} .ds-be{font-size:12px;font-weight:500;} .ds-bb{padding:24px 28px 28px;--lh:31px;line-height:var(--lh);background-image:linear-gradient(to bottom,transparent calc(var(--lh) - 1px),var(--rule,#98BCAB) calc(var(--lh) - 1px));background-size:100% var(--lh);background-origin:content-box;background-clip:content-box;} .ds-bb p{margin:0;max-width:72ch;font-size:16.5px;line-height:var(--lh);color:var(--text-2,#3A4741);} .ds-bb b{font-weight:600;color:var(--text,#16181D);}"
+    },
+    {
+      "name": "Facts Box",
+      "kind": "custom",
+      "refersTo": "form-cell-label",
+      "description": "Fixed-field box beside opened history detail: Mincho keys in ink, typed values.",
+      "html": "<dl class=\"ds-facts\"><div><dt>Employer</dt><dd>National Bank of Cambodia (NBC)</dd></div><div><dt>Period</dt><dd>Aug 2026, present</dd></div><div><dt>Stack</dt><dd>k6, NestJS, Next.js, PostgreSQL, Appium</dd></div></dl>",
+      "css": ".ds-facts{margin:0;max-width:300px;border:1px solid var(--rule,#98BCAB);background:var(--paper,#EAF3EE);} .ds-facts > div{display:grid;grid-template-columns:84px minmax(0,1fr);border-top:1px solid var(--rule,#98BCAB);} .ds-facts > div:first-child{border-top:none;} .ds-facts dt{padding:9px 10px;border-right:1px solid var(--rule,#98BCAB);font-family:'Shippori Mincho B1','Hiragino Mincho ProN',serif;font-size:13px;font-weight:700;letter-spacing:.03em;color:var(--ink,#0B6E4F);} .ds-facts dd{margin:0;padding:9px 12px;font-family:'Schibsted Grotesk','Zen Kaku Gothic New',sans-serif;font-size:14px;line-height:1.5;color:var(--text,#16181D);}"
+    },
+    {
+      "name": "Seal",
+      "kind": "custom",
+      "refersTo": "seal",
+      "description": "The one red 在職中 stamp, pressed once on the current post.",
+      "html": "<span class=\"ds-seal\" role=\"img\" aria-label=\"Currently employed\"><svg viewBox=\"0 0 100 100\" aria-hidden=\"true\"><circle cx=\"50\" cy=\"50\" r=\"44\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"4.6\"/><text x=\"50\" y=\"32.5\" text-anchor=\"middle\">在</text><text x=\"50\" y=\"57.5\" text-anchor=\"middle\">職</text><text x=\"50\" y=\"82.5\" text-anchor=\"middle\">中</text></svg></span>",
+      "css": ".ds-seal{display:inline-block;width:82px;height:82px;color:var(--seal,#D7263D);transform:rotate(-9deg);mix-blend-mode:multiply;animation:ds-stamp .66s cubic-bezier(.2,.9,.24,1) both;} .ds-seal svg{display:block;width:100%;height:100%;overflow:visible;} .ds-seal text{font-family:'Yuji Syuku','Shippori Mincho B1',serif;font-size:23.5px;fill:currentColor;} @keyframes ds-stamp{0%{opacity:0;transform:rotate(-22deg) scale(1.9);filter:blur(3px);}52%{opacity:1;transform:rotate(-8deg) scale(.93);filter:blur(0);}72%{transform:rotate(-9.4deg) scale(1.03);}100%{opacity:1;transform:rotate(-9deg) scale(1);}} @media (prefers-reduced-motion: reduce){.ds-seal{animation:none;}}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Filled-In Rirekisho",
+    "overview": "The page is a 履歴書, the JIS resume form a Japanese reviewer handles every working day, printed in one saturated green ink on pale green stock and filled in with a typed grotesk. Every surface is a part of that form: name cells, a photo box, a year and month history table, ruled free-text fields, fixed-field boxes. Nothing is a card, a hero or a skills grid. The reviewer should recognise the document before reading a word of it.\n\nDensity is the form's density: tight ruled cells, labels in small Mincho, values at reading size. Hierarchy comes from the frame (2px outer, 1px inner rules, solid green header bars), not from scale jumps or color. Red appears once, as the 在職中 seal pressed on the current post. Dark mode is the same form at night: a deep green sheet with the ink lifted so it still reads.\n\nThe world refuses the developer-portfolio arrangement (hero, cards, skills grid) and the earlier API-reference costume.",
+    "keyCharacteristics": [
+      "One green ink prints every frame, rule, label and header bar; one red seal is spent once.",
+      "Two voices: Shippori Mincho B1 prints the form, Schibsted Grotesk fills it in.",
+      "Every label is bilingual: Japanese always, English beneath for English readers, hidden in JA.",
+      "Square frames, ruled tables and dotted or dashed separators carry all structure.",
+      "The sheet sits on a green desk, lifted by a single soft paper shadow."
+    ],
+    "rules": [
+      {
+        "name": "The One Ink Rule",
+        "body": "Everything printed on the form is the ink color or a mix of it with paper. No second structural hue, no grey borders, no blue links.",
+        "section": "colors"
+      },
+      {
+        "name": "The Single Seal Rule",
+        "body": "Red is the seal and only the seal: one stamp, on the current post, per page. It never colors text, buttons, errors or hover states.",
+        "section": "colors"
+      },
+      {
+        "name": "The Typed Entry Rule",
+        "body": "Content a person \"wrote in\" is text or text-2, never ink. Ink is reserved for what the form printed.",
+        "section": "colors"
+      },
+      {
+        "name": "The Printed and Typed Rule",
+        "body": "Mincho is the form; Grotesk is the applicant. Never set a filled-in value in Mincho or a printed field name in Grotesk.",
+        "section": "typography"
+      },
+      {
+        "name": "The Bilingual Label Rule",
+        "body": "Every printed label is a Japanese line in Mincho with an English gloss beneath it. In the JA view the gloss is removed, never translated into the Mincho line.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tabular Date Rule",
+        "body": "Every year, month and period uses tabular lining figures so the history columns align.",
+        "section": "typography"
+      },
+      {
+        "name": "The One Sheet Rule",
+        "body": "Only the sheet lifts off the desk. Blocks, tables and rows on it never take a shadow; they take a frame.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** print every frame, rule and label in the one ink; derive rules and tints by mixing ink into paper (40% and 7%; 30% and 9% at night).",
+      "**Do** give every new field a bilingual label: Mincho Japanese over a 12px Grotesk English gloss.",
+      "**Do** build new content as a part of the form: a ruled block with an ink head bar, a key/value row, or a history row.",
+      "**Do** frame blocks with 2px ink outside and 1px rule inside, square cornered.",
+      "**Do** keep numerals tabular and lining in every date and table column.",
+      "**Do** use the expo-out curve (cubic-bezier(.16,1,.3,1)) for opening and closing, and 0.18s to 0.2s ease for hover fills.",
+      "**Do** keep JA typesetting strict: line-break strict, keep-all on headings, no Latin tracking on Japanese headings."
+    ],
+    "donts": [
+      "**Don't** use red for anything but the single seal on the current post.",
+      "**Don't** add a second structural color, grey borders or blue links.",
+      "**Don't** arrange content as a hero, cards or a skills grid; the page is a form, not a portfolio template.",
+      "**Don't** put shadows on blocks, rows or buttons; only the sheet, the pinned band and the photo cast one.",
+      "**Don't** round the form's frames, cells or tables; radius belongs to controls only (4px).",
+      "**Don't** set typed content in Mincho or printed labels in Grotesk.",
+      "**Don't** use gradients except to draw ruled writing lines and scroll-edge fades."
+    ]
+  }
+}

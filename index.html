@@ -13,1364 +13,1307 @@
 </script>
 <title>Cheng Porchheng | Backend Engineer</title>
 <meta name="description" content="Cheng Porchheng, backend engineer at the National Bank of Cambodia, working on load testing and automated testing for Bakong, Cambodia's national payment system, with a background in KHQR payment and e-commerce APIs." />
+<meta name="theme-color" content="#0B6E4F" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- The seal face, subset to the three characters it carves. -->
+<link href="https://fonts.googleapis.com/css2?family=Yuji+Syuku&text=%E5%9C%A8%E8%81%B7%E4%B8%AD&display=block" rel="stylesheet">
 <style>
   :root{
-    --bg:#F6F1E7;
-    --surface:#FCFAF4;
-    --ink:#181511;
-    --muted:#6B6355;
-    --accent:#2952E3;
-    --accent-soft:#EEF1FD;
-    --on-accent:#FFFFFF;
-    --ok:#147A52;
-    --line:#E6DFCF;
-    --code-bg:#171410;
-    --code-text:#6EE7A6;
-    --record-key:#8B94A6;
-    --record-val:#E6E9EF;
-    --rail-w:302px;
-    --res-w:330px;
+    /* One saturated ink prints the whole form; red is spent once, on the seal. */
+    --desk:#0B6E4F;
+    --paper:#EAF3EE;
+    --ink:#0B6E4F;
+    --ink-2:#2E5E4C;
+    --rule:color-mix(in oklab, var(--ink) 40%, var(--paper));
+    --text:#16181D;
+    --text-2:#3A4741;
+    --seal:#D7263D;
+    --band:#0B6E4F;
+    --on-band:#EAF3EE;
+    --tint:color-mix(in oklab, var(--ink) 7%, var(--paper));
+    --sheet-shadow:0 1px 2px rgba(3,40,28,.28), 0 24px 48px -18px rgba(3,40,28,.55);
+    --f-form:'Shippori Mincho B1','Shippori Mincho','Hiragino Mincho ProN',serif;
+    --f-entry:'Schibsted Grotesk','Zen Kaku Gothic New','Hiragino Sans',sans-serif;
+    --cy:88px;
+    --cm:60px;
     --ease:cubic-bezier(.16,1,.3,1);
   }
   html[data-theme="dark"]{
-    --bg:#131211;
-    --surface:#1B1916;
-    --ink:#EDE8DF;
-    --muted:#A39B8E;
-    --accent:#7C96FF;
-    --accent-soft:#232B45;
-    --on-accent:#0E1330;
-    --ok:#3FBE8B;
-    --line:#2C2823;
-    /* Cool and a step lighter than the warm page, so the record still reads as its own pane. */
-    --code-bg:#171A22;
+    /* The same form at night: a deep green sheet, the ink lifted so it still reads. */
+    --desk:#04140E;
+    --paper:#0F201A;
+    --ink:#5CC79A;
+    --ink-2:#8FD0B3;
+    --rule:color-mix(in oklab, var(--ink) 30%, var(--paper));
+    --text:#E4EEE9;
+    --text-2:#AFC3BA;
+    --seal:#FF5C6C;
+    --band:#174B3A;
+    --on-band:#E4EEE9;
+    --tint:color-mix(in oklab, var(--ink) 9%, var(--paper));
+    --sheet-shadow:0 1px 2px rgba(0,0,0,.5), 0 24px 48px -18px rgba(0,0,0,.8);
   }
   *{box-sizing:border-box;}
+  html{scrollbar-color:var(--rule) var(--desk);}
+  @media (prefers-reduced-motion: no-preference){ html{scroll-behavior:smooth;} }
   body{
     margin:0;
-    background:var(--bg);
-    color:var(--ink);
-    font-family:'Inter','Noto Sans JP',sans-serif;
+    background:var(--desk);
+    color:var(--text);
+    font-family:var(--f-entry);
     font-size:16px;
+    line-height:1.6;
     -webkit-font-smoothing:antialiased;
-    transition:background .25s ease, color .25s ease;
+    text-rendering:optimizeLegibility;
   }
-  h1,h2,h3{font-family:'Space Grotesk','Noto Sans JP',sans-serif;margin:0;font-weight:600;}
-  html[lang="ja"] h1, html[lang="ja"] h2{letter-spacing:0;}
-  /* Japanese: no small kana or long-vowel mark may open a line. */
   html[lang="ja"] body{line-break:strict;}
-  a{color:inherit;text-decoration:none;}
-  ::selection{background:var(--accent);color:var(--on-accent);}
-  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px;}
-  .mono, .endpoint, .record, .rail-group-title, .res-label, .field-date{
-    font-family:'JetBrains Mono','Noto Sans JP',monospace;
-    font-variant-numeric:tabular-nums;
-  }
+  a{color:inherit;}
+  ::selection{background:var(--ink);color:var(--paper);}
+  :focus-visible{outline:2px solid var(--text);outline-offset:3px;border-radius:2px;}
+  .band :focus-visible, .hist-head :focus-visible{outline-color:var(--on-band);}
+  h1,h2,h3,p{margin:0;}
+  .num{font-variant-numeric:tabular-nums lining-nums;}
+
   .skip{
     position:absolute;left:-9999px;top:0;z-index:100;
-    padding:12px 18px;background:var(--accent);color:var(--on-accent);
-    font-size:14px;font-weight:600;border-radius:0 0 8px 0;
+    padding:12px 18px;background:var(--paper);color:var(--ink);
+    font-weight:600;
   }
   .skip:focus{left:0;}
 
-  /* ===== Shell: rail | request pane | response pane ===== */
-  .app{
-    display:grid;
-    grid-template-columns:var(--rail-w) minmax(0,1fr);
-    min-height:100vh;
-  }
-  .rail{
-    position:sticky;
-    top:0;
-    align-self:start;
-    height:100vh;
-    display:flex;
-    flex-direction:column;
-    gap:34px;
-    padding:34px 26px 26px;
-    border-right:1px solid var(--line);
-    background:var(--surface);
-    overflow-y:auto;
-    scrollbar-width:thin;
-    scrollbar-color:var(--line) transparent;
-    transition:background .25s ease, border-color .25s ease;
-  }
-  .rail::-webkit-scrollbar{width:10px;}
-  .rail::-webkit-scrollbar-thumb{background:var(--line);border-radius:6px;border:3px solid var(--surface);}
-
-  /* ===== Rail header: the name is a byline, not a hero ===== */
-  .byline{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    font-size:15px;
-    line-height:1.25;
-  }
-  .byline img{
-    width:40px;height:40px;
-    border-radius:50%;
-    object-fit:cover;
-    border:1px solid var(--line);
-    flex:none;
-  }
-  .byline-name{display:block;font-weight:600;letter-spacing:-0.01em;}
-  .byline-role{display:block;font-size:12px;font-weight:500;color:var(--muted);margin-top:2px;}
-  .cv-btn{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    gap:9px;
-    margin-top:18px;
-    padding:0 14px;
-    min-height:44px;
-    width:100%;
-    border:1px solid var(--line);
-    border-radius:9px;
-    background:var(--bg);
-    font-size:13.5px;
-    font-weight:600;
-    transition:border-color .2s ease, background-color .2s ease;
-  }
-  .cv-btn:hover{border-color:var(--ink);}
-  .cv-btn svg{flex:none;}
-
-  /* ===== Rail navigation ===== */
-  .rail-nav{flex:1;}
-  .rail-group + .rail-group{margin-top:26px;}
-  .rail-group-title{
-    margin:0 0 8px;
-    padding-left:11px;
-    font-size:12px;
-    font-weight:500;
-    letter-spacing:.06em;
-    text-transform:uppercase;
-    color:var(--muted);
-  }
-  .rail-list{list-style:none;margin:0;padding:0;}
-  /* One icon grid, one stroke weight, sized optically for each context. */
-  .ico{
-    width:17px;height:17px;
-    flex:none;
-    fill:none;
-    stroke:currentColor;
-    stroke-width:1.7;
-    stroke-linecap:round;
-    stroke-linejoin:round;
-  }
-  .rail-link{
-    display:flex;
-    align-items:center;
-    gap:9px;
-    padding:9px 11px;
-    min-height:40px;
-    border-radius:8px;
+  /* ===== Printed labels: Japanese always, English beside it for English readers ===== */
+  .lbl{display:flex;flex-direction:column;gap:1px;}
+  .lj{
+    font-family:var(--f-form);
+    font-weight:700;
     font-size:14px;
-    color:var(--muted);
-    transition:color .18s ease, background-color .18s ease;
-  }
-  .rail-link .verb{
-    font-family:'JetBrains Mono',monospace;
-    font-size:12px;
-    font-weight:500;
-    letter-spacing:.02em;
-    flex:none;
-  }
-  .rail-text{display:flex;flex-direction:column;min-width:0;}
-  /* The period under each role, so the timeline reads without opening a pane. */
-  .rail-when{
-    margin-top:2px;
-    font-family:'JetBrains Mono','Noto Sans JP',monospace;
-    font-variant-numeric:tabular-nums;
-    font-size:12px;
-    line-height:1.3;
-    color:var(--muted);
-    font-weight:400;
-  }
-  .rail-link[aria-current="true"] .rail-when{color:inherit;}
-  /* Two roles at one employer: the company heads them, the roles sit under it. */
-  .rail-org-name{
-    display:block;
-    padding:9px 11px 4px;
-    font-size:13px;
-    color:var(--muted);
-  }
-  .rail-sub{
-    list-style:none;
-    margin:0 0 0 11px;
-    padding:0;
-    border-left:1px solid var(--line);
-  }
-  .rail-sub .rail-link{padding-left:10px;border-radius:0 8px 8px 0;}
-  .rail-link:hover{color:var(--ink);}
-  /* The one reserved accent: spent only on the resource under load. */
-  .rail-link[aria-current="true"]{
-    background:var(--accent-soft);
-    color:var(--accent);
-    font-weight:500;
-  }
-
-  .rail-foot{
-    font-size:12.5px;
-    line-height:1.7;
-    color:var(--muted);
-    border-top:1px solid var(--line);
-    padding-top:20px;
-  }
-  /* Links announce themselves: underline everywhere, an icon where it leaves the page. */
-  .rail-foot a, .prose a{
+    line-height:1.35;
+    letter-spacing:.08em;
     color:var(--ink);
+  }
+  .le{
+    font-size:12px;
+    font-weight:500;
+    line-height:1.35;
+    color:var(--ink-2);
+  }
+  html[lang="ja"] .le{display:none;}
+  .lbl.inline{flex-direction:row;align-items:baseline;flex-wrap:wrap;gap:2px 10px;}
+
+  /* ===== Desk and sheet ===== */
+  .desk{padding:36px 28px 28px;}
+  .sheet{
+    position:relative;
+    max-width:1180px;
+    margin:0 auto;
+    padding:44px 52px 56px;
+    background:var(--paper);
+    box-shadow:var(--sheet-shadow);
+  }
+  /* Paper tooth: a faint grain so the sheet reads as stock, not a flat fill. */
+  .sheet::before{
+    content:'';
+    position:absolute;inset:0;
+    pointer-events:none;
+    opacity:.5;
+    mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .04 0 0 0 0 .3 0 0 0 0 .2 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  html[data-theme="dark"] .sheet::before{mix-blend-mode:screen;opacity:.35;}
+  .sheet > *{position:relative;}
+
+  /* ===== Form head: title, name cells, photo box ===== */
+  .form-head{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 200px;
+    grid-template-areas:"title photo" "cells photo";
+    grid-template-rows:auto 1fr;
+    column-gap:36px;
+  }
+  .title-row{
+    grid-area:title;
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:12px 24px;
+    flex-wrap:wrap;
+    padding-bottom:18px;
+  }
+  .doc-title{
+    display:flex;
+    align-items:baseline;
+    gap:18px;
+    color:var(--ink);
+  }
+  .doc-title .lj{font-size:44px;font-weight:800;letter-spacing:.42em;line-height:1;margin-right:-.42em;}
+  .doc-title .le{font-size:15px;font-weight:500;letter-spacing:.02em;}
+  .asof{
+    font-family:var(--f-form);
+    font-size:15px;
+    font-weight:500;
+    color:var(--ink);
+    letter-spacing:.04em;
+  }
+  .cells{
+    grid-area:cells;
+    border:2px solid var(--ink);
+    align-self:end;
+  }
+  .cell{
+    display:grid;
+    grid-template-columns:150px minmax(0,1fr);
+    border-top:1px solid var(--rule);
+  }
+  .cell:first-child{border-top:none;}
+  .cell > .lbl{
+    padding:12px 16px;
+    border-right:1px solid var(--rule);
+    justify-content:center;
+  }
+  .cell .val{
+    padding:12px 20px;
+    align-self:center;
+    min-width:0;
+    font-size:17px;
+    line-height:1.5;
+  }
+  /* The reading line sits over the name, split by a dotted rule as on the printed form. */
+  .cell.furi .val{
+    font-family:'Zen Kaku Gothic New',sans-serif;
+    font-size:15px;
+    letter-spacing:.24em;
+    color:var(--text-2);
+  }
+  .cell.furi + .cell{border-top:1px dashed var(--rule);}
+  .cell.name .val{
+    font-size:clamp(34px, 4.6vw, 60px);
+    font-weight:700;
+    line-height:1.05;
+    letter-spacing:-0.028em;
+    padding-top:18px;
+    padding-bottom:20px;
+    color:var(--text);
+  }
+  .cell.position .val b{font-weight:600;}
+  .cell .val a{
     text-decoration:underline;
     text-decoration-thickness:1px;
-    text-underline-offset:3px;
-    text-decoration-color:var(--muted);
+    text-underline-offset:4px;
+    text-decoration-color:var(--rule);
     transition:text-decoration-color .18s ease;
   }
-  .rail-foot a:hover, .prose a:hover{text-decoration-color:var(--ink);}
-  .socials{display:flex;gap:2px;margin:8px 0 0 -11px;}
-  .socials a{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    width:44px;height:44px;
-    color:var(--muted);
-    transition:color .18s ease;
-  }
-  .socials a:hover{color:var(--ink);}
+  .cell .val a:hover{text-decoration-color:var(--ink);}
+  .links{display:flex;flex-wrap:wrap;gap:4px 22px;font-size:16px;}
+  .links .ext{display:inline-flex;align-items:center;gap:6px;}
+  .ico{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;flex:none;}
 
-  /* ===== Floating controls ===== */
-  .controls{
-    position:fixed;
-    top:24px;
-    /* Clear of the response pane: these are page controls, not part of the record. */
-    right:calc(var(--res-w) + 32px);
-    z-index:60;
+  .photo-box{
+    grid-area:photo;
+    align-self:end;
+    margin:0;
     display:flex;
-    gap:8px;
+    flex-direction:column;
+    gap:10px;
   }
-  .lang-switch{
+  .photo-frame{
+    position:relative;
+    aspect-ratio:3 / 4;
+    border:1px dashed var(--ink);
+    padding:9px;
+  }
+  /* What the printed box says before a photo goes in. */
+  .photo-frame::before{
+    content:'写真をはる位置';
+    position:absolute;
+    left:0;right:0;top:50%;
+    text-align:center;
+    font-family:var(--f-form);
+    font-size:12px;
+    color:var(--ink);
+    transform:translateY(-50%);
+  }
+  .photo-frame img{
+    position:relative;
+    display:block;
+    width:100%;height:100%;
+    object-fit:cover;
+    object-position:50% 20%;
+    box-shadow:0 1px 1px rgba(0,0,0,.18), 0 6px 14px -6px rgba(3,40,28,.45);
+  }
+  .photo-box figcaption{align-items:center;text-align:center;}
+
+  .photo-cell{display:none;margin:0;}
+
+  /* ===== Section band: the form's headings, pinned while reading ===== */
+  .band{
+    position:sticky;
+    top:0;
+    z-index:50;
+    display:flex;
+    align-items:stretch;
+    gap:16px;
+    margin:36px -52px 0;
+    padding:0 20px 0 32px;
+    background:var(--band);
+    color:var(--on-band);
+    box-shadow:0 10px 18px -14px rgba(3,40,28,.6);
+  }
+  .band .lj, .band .le{color:inherit;}
+  .tabs{
+    display:flex;
+    flex:1;
+    min-width:0;
+    margin:0;
+    padding:0;
+    list-style:none;
+    overflow-x:auto;
+    scrollbar-width:none;
+  }
+  .tabs::-webkit-scrollbar{display:none;}
+  .tabs a{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:1px;
+    height:100%;
+    min-height:60px;
+    padding:0 20px;
+    text-decoration:none;
+    white-space:nowrap;
+    transition:background-color .2s ease, color .2s ease;
+  }
+  .tabs a .lj{font-size:14.5px;}
+  .tabs a .le{font-size:12px;opacity:.88;}
+  .tabs a:hover{background:color-mix(in oklab, var(--on-band) 12%, var(--band));}
+  /* The open section is cut out of the band, opening onto the sheet below. */
+  .tabs a[aria-current="true"]{background:var(--paper);color:var(--ink);}
+  .tabs a[aria-current="true"] .le{color:var(--ink-2);opacity:1;}
+  .controls{display:flex;align-items:center;gap:8px;flex:none;}
+  .seg{
     display:inline-flex;
-    padding:3px;
-    gap:2px;
-    background:var(--surface);
-    border:1px solid var(--line);
-    border-radius:10px;
+    padding:2px;
+    border:1px solid color-mix(in oklab, var(--on-band) 45%, var(--band));
+    border-radius:4px;
   }
-  .lang-switch button, .theme-btn{
+  .seg button, .theme-btn, .cv-btn{
+    font:inherit;
+    font-size:13px;
+    font-weight:600;
+    min-height:38px;
     border:none;
+    border-radius:2px;
     cursor:pointer;
     background:transparent;
-    font-family:'JetBrains Mono',monospace;
-    font-size:12px;
-    font-weight:500;
-    color:var(--muted);
-    border-radius:7px;
-    min-height:38px;
-    padding:0 12px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:7px;
-    transition:color .18s ease, background-color .18s ease;
+    color:var(--on-band);
+    transition:background-color .18s ease, color .18s ease;
   }
-  .lang-globe{align-self:center;margin:0 3px 0 9px;color:var(--muted);}
-  .lang-switch button:hover, .theme-btn:hover{color:var(--ink);}
-  .lang-switch button[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent);}
-  .lang-switch button .flag{font-size:15px;line-height:1;}
+  .seg button{padding:0 11px;min-width:42px;}
+  .seg button[aria-pressed="true"]{background:var(--on-band);color:var(--band);}
+  .seg button:not([aria-pressed="true"]):hover, .theme-btn:hover{background:color-mix(in oklab, var(--on-band) 14%, var(--band));}
   .theme-btn{
-    background:var(--surface);
-    border:1px solid var(--line);
-    min-width:46px;
-    padding:0;
+    width:44px;
+    display:inline-flex;align-items:center;justify-content:center;
+    border:1px solid color-mix(in oklab, var(--on-band) 45%, var(--band));
+    border-radius:4px;
   }
-  .theme-btn svg{display:block;}
   .theme-btn .icon-sun{display:none;}
   html[data-theme="dark"] .theme-btn .icon-sun{display:block;}
   html[data-theme="dark"] .theme-btn .icon-moon{display:none;}
+  .cv-btn{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:0 14px;
+    background:var(--on-band);
+    color:var(--band);
+    border-radius:4px;
+    text-decoration:none;
+  }
+  .cv-btn:hover{background:color-mix(in oklab, var(--on-band) 86%, var(--band));}
+  .cv-short{display:none;}
 
-  /* ===== Resource: request pane (centre) + response pane (right) ===== */
-  .panes{min-width:0;}
-  .resource{
-    display:grid;
-    grid-template-columns:minmax(0,1fr) var(--res-w);
-    align-items:stretch;
-    min-height:100vh;
-  }
-  html.js .resource{display:none;}
-  html.js .resource.active{display:grid;}
-
-  .req{
-    padding:78px 64px 96px;
-    min-width:0;
-  }
-  .endpoint{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    margin:0 0 18px;
-    font-size:13px;
-    color:var(--muted);
-  }
-  .endpoint .verb{
-    font-weight:600;
-    letter-spacing:.04em;
-    color:var(--ink);
-  }
-  .pane-title{
-    font-size:30px;
-    line-height:1.22;
-    letter-spacing:-0.025em;
-    text-wrap:balance;
-    max-width:24ch;
-  }
-  html[lang="ja"] .pane-title{max-width:20em;font-size:27px;}
-  /* Headings break only at the <wbr> phrase boundaries in the JA strings,
-     never inside a katakana word; anywhere is the overflow safety net. */
-  html[lang="ja"] .pane-title, html[lang="ja"] .avail, html[lang="ja"] .next-name{
-    word-break:keep-all;
-    overflow-wrap:anywhere;
-  }
-  .prose{
-    margin:26px 0 0;
-    max-width:58ch;
-    font-size:16px;
-    line-height:1.78;
-    color:var(--muted);
-  }
-  .prose b{color:var(--ink);font-weight:600;}
-  .prose p{margin:0 0 1.1em;}
-  .prose p:last-child{margin-bottom:0;}
-  /* Justified, with hyphenation so the Latin text does not open rivers. */
-  .prose p, .work li{
-    text-align:justify;
-    text-justify:inter-word;
-    -webkit-hyphens:auto;
-    hyphens:auto;
-  }
-  /* Japanese sets ragged: justify only stretches the gaps around Latin words. */
-  html[lang="ja"] .prose p, html[lang="ja"] .work li{text-align:start;-webkit-hyphens:none;hyphens:none;}
-  .work{
-    margin:30px 0 0;
+  /* ===== The history table: year | month | entry ===== */
+  section{scroll-margin-top:76px;}
+  .hist{
+    margin:34px 0 0;
     padding:0;
     list-style:none;
-    max-width:58ch;
+    border:2px solid var(--ink);
   }
+  .hist > li{
+    position:relative;
+    display:grid;
+    grid-template-columns:var(--cy) var(--cm) minmax(0,1fr);
+    border-top:1px solid var(--rule);
+    scroll-margin-top:76px;
+  }
+  .hist > li:first-child{border-top:none;}
+  /* The two column rules run through every row, detail included. */
+  .hist > li::before, .hist > li::after{
+    content:'';
+    position:absolute;
+    top:0;bottom:0;
+    width:1px;
+    background:var(--rule);
+    pointer-events:none;
+  }
+  .hist > li::before{left:var(--cy);}
+  .hist > li::after{left:calc(var(--cy) + var(--cm));}
+  .hist-head{background:var(--band);color:var(--on-band);}
+  .hist > li.hist-head::before, .hist > li.hist-head::after{background:color-mix(in oklab, var(--on-band) 35%, var(--band));}
+  .hist-head .lbl{padding:12px 14px;justify-content:center;}
+  .hist-head .lj, .hist-head .le{color:inherit;}
+  .hist-head .yh, .hist-head .mh{align-items:center;text-align:center;}
+  .hist-head .eh{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding:8px 12px 8px 20px;
+  }
+  .hist-head h2{font-weight:inherit;}
+  .hist-head h2 .lj{font-size:16px;}
+  .toggle-all{
+    font:inherit;
+    font-size:13px;
+    font-weight:600;
+    min-height:38px;
+    padding:0 14px;
+    border:1px solid color-mix(in oklab, var(--on-band) 50%, var(--band));
+    border-radius:4px;
+    background:transparent;
+    color:var(--on-band);
+    cursor:pointer;
+    white-space:nowrap;
+    transition:background-color .18s ease;
+  }
+  .toggle-all:hover{background:color-mix(in oklab, var(--on-band) 14%, var(--band));}
+  html:not(.js) .toggle-all{display:none;}
+
+  .hist-group > .lbl{
+    grid-column:3;
+    align-items:center;
+    padding:12px 20px;
+  }
+  .hist-group .lj{font-size:16px;letter-spacing:.7em;margin-right:-.7em;}
+  .hist-group .le{letter-spacing:.02em;}
+
+  .row-btn{
+    grid-column:1 / -1;
+    display:grid;
+    grid-template-columns:var(--cy) var(--cm) minmax(0,1fr);
+    width:100%;
+    padding:0;
+    border:none;
+    background:transparent;
+    color:inherit;
+    font:inherit;
+    text-align:left;
+    cursor:pointer;
+    transition:background-color .2s ease;
+  }
+  .row-btn:hover{background:var(--tint);}
+  html:not(.js) .row-btn{cursor:default;}
+  html:not(.js) .row-btn:hover{background:transparent;}
+  .y, .m{
+    padding:18px 8px;
+    text-align:center;
+    font-size:17px;
+    font-weight:600;
+    font-variant-numeric:tabular-nums lining-nums;
+    color:var(--text);
+  }
+  .entry{
+    display:flex;
+    flex-direction:column;
+    gap:3px;
+    padding:15px 72px 15px 20px;
+    min-width:0;
+  }
+  .org{font-size:18px;font-weight:600;line-height:1.35;color:var(--text);}
+  .role{font-size:15.5px;line-height:1.45;color:var(--text-2);}
+  .period{
+    font-size:13.5px;
+    font-weight:500;
+    color:var(--ink);
+    font-variant-numeric:tabular-nums lining-nums;
+  }
+  /* Open and close drawn as a plus that loses its upright. */
+  .pm{
+    position:absolute;
+    right:22px;top:26px;
+    width:18px;height:18px;
+    color:var(--ink);
+    pointer-events:none;
+  }
+  .pm line{stroke:currentColor;stroke-width:1.8;stroke-linecap:round;transition:transform .35s var(--ease);transform-origin:9px 9px;}
+  .open .pm .up{transform:scaleY(0);}
+  html:not(.js) .pm{display:none;}
+
+  .detail{
+    grid-column:3;
+    display:grid;
+    grid-template-rows:0fr;
+    transition:grid-template-rows .5s var(--ease);
+  }
+  .detail-inner{min-height:0;overflow:hidden;}
+  .open .detail, html:not(.js) .detail{grid-template-rows:1fr;}
+  .hist-row:not(.open) .detail-inner{visibility:hidden;transition:visibility 0s .5s;}
+  html:not(.js) .hist-row .detail-inner{visibility:visible;}
+  .detail-body{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 300px;
+    gap:28px 40px;
+    padding:6px 28px 30px 20px;
+    border-top:1px dotted var(--rule);
+    margin-top:2px;
+    padding-top:22px;
+  }
+  .detail-body h3{
+    grid-column:1 / -1;
+    font-size:22px;
+    font-weight:700;
+    line-height:1.3;
+    letter-spacing:-0.012em;
+    text-wrap:balance;
+    color:var(--text);
+  }
+  html[lang="ja"] .detail-body h3{font-size:20px;letter-spacing:0;word-break:keep-all;overflow-wrap:anywhere;}
+  .work{margin:0;padding:0;list-style:none;max-width:68ch;}
   .work li{
     position:relative;
-    padding-left:22px;
-    margin-bottom:15px;
-    font-size:15.5px;
+    padding-left:20px;
+    margin-bottom:12px;
+    font-size:16px;
     line-height:1.72;
-    color:var(--muted);
+    color:var(--text-2);
   }
+  .work li:last-child{margin-bottom:0;}
   .work li::before{
     content:'';
     position:absolute;
-    left:0;top:.72em;
-    width:9px;height:1px;
-    background:var(--line);
+    left:1px;top:.78em;
+    width:7px;height:7px;
+    border:1.5px solid var(--ink);
+    border-radius:50%;
   }
-  .work b{color:var(--ink);font-weight:600;}
-  /* The landing pane's plain answer: who he is, before what he does. */
-  .lede{
-    margin:18px 0 0;
-    max-width:58ch;
-    font-size:16px;
-    line-height:1.75;
+  .work b{font-weight:600;color:var(--text);}
+  /* The facts sit in their own ruled box, the way a form keeps fixed fields. */
+  .facts{
+    margin:0;
+    align-self:start;
+    border:1px solid var(--rule);
+  }
+  .facts > div{
+    display:grid;
+    grid-template-columns:84px minmax(0,1fr);
+    border-top:1px solid var(--rule);
+  }
+  .facts > div:first-child{border-top:none;}
+  .facts dt{
+    padding:9px 10px;
+    border-right:1px solid var(--rule);
+    font-family:var(--f-form);
+    font-size:13px;
+    font-weight:700;
     color:var(--ink);
+    letter-spacing:.03em;
   }
-  .lede + .work{margin-top:26px;}
+  .facts dd{
+    margin:0;
+    padding:9px 12px;
+    font-size:14px;
+    line-height:1.5;
+    color:var(--text);
+    overflow-wrap:anywhere;
+  }
+
+  /* Education rows are plain lines: nothing to open. */
+  .hist-line .entry{padding-top:16px;padding-bottom:16px;}
+  .hist-line .org{font-size:16.5px;font-weight:500;}
+  .hist-line .role{font-size:14.5px;}
+  .hist-end > p{
+    grid-column:3;
+    padding:12px 28px 12px 20px;
+    text-align:right;
+    font-family:var(--f-form);
+    font-weight:700;
+    color:var(--ink);
+    letter-spacing:.3em;
+  }
+
+  /* ===== The seal: pressed once, on the current role ===== */
+  .seal{
+    position:absolute;
+    right:62px;top:-6px;
+    width:82px;height:82px;
+    color:var(--seal);
+    transform:rotate(-9deg);
+    pointer-events:none;
+    mix-blend-mode:multiply;
+    z-index:2;
+  }
+  html[data-theme="dark"] .seal{mix-blend-mode:normal;}
+  .seal svg{display:block;width:100%;height:100%;overflow:visible;}
+  .seal text{font-family:'Yuji Syuku',var(--f-form);font-size:23.5px;fill:currentColor;}
+  .hist-row.has-seal .entry{padding-right:168px;}
+  html.js .seal{opacity:0;}
+  html.js .seal.stamped{opacity:1;animation:stamp .66s cubic-bezier(.2,.9,.24,1) both;}
+  @keyframes stamp{
+    0%{opacity:0;transform:rotate(-22deg) scale(1.9);filter:blur(3px);}
+    52%{opacity:1;transform:rotate(-8deg) scale(.93);filter:blur(0);}
+    72%{transform:rotate(-9.4deg) scale(1.03);}
+    100%{opacity:1;transform:rotate(-9deg) scale(1);}
+  }
+
+  /* ===== Blocks below the table ===== */
+  .block{margin-top:34px;border:2px solid var(--ink);}
+  .block-head{
+    padding:12px 20px;
+    background:var(--band);
+    color:var(--on-band);
+  }
+  .block-head .lj, .block-head .le{color:inherit;}
+  .block-head .lj{font-size:16px;}
+  .block-head h2{font-weight:inherit;}
+  .block-body{padding:24px 28px 28px;}
+  .prose{max-width:72ch;}
+  /* Free-text fields are written on the form's own ruled lines. */
+  .ruled{
+    --lh:31px;
+    line-height:var(--lh);
+    background-image:linear-gradient(to bottom, transparent calc(var(--lh) - 1px), var(--rule) calc(var(--lh) - 1px));
+    background-size:100% var(--lh);
+    background-origin:content-box;
+    background-clip:content-box;
+  }
+  .ruled.prose{max-width:none;}
+  .ruled.prose p{max-width:72ch;line-height:var(--lh);margin:0 0 var(--lh);}
+  .ruled.prose p:last-child{margin-bottom:0;}
+  .prose p{
+    margin:0 0 1em;
+    font-size:16.5px;
+    line-height:1.85;
+    color:var(--text-2);
+  }
+  .prose p:last-child{margin-bottom:0;}
+  .prose b{font-weight:600;color:var(--text);}
   .nw{white-space:nowrap;}
 
-  h3.sub{
-    margin:52px 0 16px;
-    font-size:12px;
-    font-weight:500;
-    letter-spacing:.06em;
-    text-transform:uppercase;
-    color:var(--muted);
-    font-family:'JetBrains Mono','Noto Sans JP',monospace;
-  }
-  h3.sub:first-child{margin-top:0;}
-
-  /* ===== Response pane: the resource as a record ===== */
-  .res{
-    background:var(--code-bg);
-    padding:78px 30px 96px;
-    transition:background .25s ease;
-  }
-  .res-inner{position:sticky;top:78px;}
-  .res-label{
-    margin:0 0 20px;
-    font-size:12px;
-    letter-spacing:.06em;
-    text-transform:uppercase;
-    color:var(--record-key);
-  }
-  .record{margin:0;font-size:12.5px;line-height:1.6;}
-  .record > div{
+  .rows{margin:0;padding:0;list-style:none;}
+  .rows > li{
     display:grid;
-    grid-template-columns:78px minmax(0,1fr);
-    gap:10px;
-    padding:9px 0;
-    border-bottom:1px solid rgba(255,255,255,.07);
+    grid-template-columns:210px minmax(0,1fr);
+    border-top:1px solid var(--rule);
   }
-  .record > div:last-child{border-bottom:none;}
-  .record dt{color:var(--record-key);}
-  .record dd{margin:0;color:var(--record-val);overflow-wrap:anywhere;}
-  .record dd a{
-    display:inline-flex;
-    align-items:center;
-    gap:5px;
-    text-decoration:underline;
-    text-decoration-thickness:1px;
-    text-underline-offset:3px;
-    text-decoration-color:rgba(255,255,255,.4);
-    transition:text-decoration-color .18s ease, color .18s ease;
+  .rows > li:first-child{border-top:none;}
+  .rows > li > .lbl, .rows > li > .k{
+    padding:14px 18px;
+    border-right:1px solid var(--rule);
   }
-  .record dd a:hover{color:#fff;text-decoration-color:#fff;}
-  .record dd a .ico{width:13px;height:13px;stroke-width:1.9;}
-  .avail{
-    display:flex;
-    align-items:baseline;
-    gap:8px;
-    margin-top:22px;
-    font-size:12.5px;
-    line-height:1.6;
-    color:var(--code-text);
+  .rows .k{
+    font-family:var(--f-form);
+    font-size:14.5px;
+    font-weight:700;
+    letter-spacing:.04em;
+    color:var(--ink);
   }
-  .avail::before{
+  .rows .v{padding:14px 20px;font-size:16px;line-height:1.6;min-width:0;}
+  /* Skill entries as a typed line, separated by small printed rings. */
+  .items{display:flex;flex-wrap:wrap;align-items:center;gap:4px 0;margin:0;padding:0;list-style:none;}
+  .items li{display:inline-flex;align-items:center;}
+  .items li + li::before{
     content:'';
-    flex:none;
-    width:6px;height:6px;
+    width:5px;height:5px;
+    margin:0 12px;
+    border:1.5px solid var(--ink);
     border-radius:50%;
-    background:var(--code-text);
-    transform:translateY(-1px);
+    opacity:.75;
   }
 
-  /* ===== Skills / credentials / contact ===== */
-  .groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:34px 40px;margin-top:34px;max-width:66ch;}
-  .chips{display:flex;flex-wrap:wrap;gap:7px;}
-  .chip{
-    font-size:13px;
-    padding:6px 11px;
-    border:1px solid var(--line);
-    border-radius:7px;
-    background:var(--surface);
-    color:var(--ink);
+  .pair{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:28px;margin-top:34px;}
+  .pair .block{margin-top:0;}
+  .grid-table{width:100%;border-collapse:collapse;}
+  .grid-table th, .grid-table td{
+    padding:13px 18px;
+    text-align:left;
+    vertical-align:top;
+    border-top:1px solid var(--rule);
+    font-size:15.5px;
+    line-height:1.5;
   }
-  .rows{margin:0;padding:0;list-style:none;max-width:66ch;}
-  .rows li{
-    display:flex;
-    justify-content:space-between;
-    align-items:baseline;
-    gap:20px;
-    padding:12px 0;
-    border-bottom:1px solid var(--line);
-    font-size:14.5px;
-    color:var(--muted);
+  .grid-table th + th, .grid-table td + td{border-left:1px solid var(--rule);}
+  .grid-table thead th{
+    border-top:none;
+    padding-top:10px;padding-bottom:10px;
+    background:var(--tint);
+    font-weight:inherit;
   }
-  .rows li:last-child{border-bottom:none;}
-  .rows .val{
-    font-family:'JetBrains Mono','Noto Sans JP',monospace;
-    font-size:12px;
-    color:var(--ink);
-    white-space:nowrap;
-  }
-  .contact-actions{
-    display:flex;
-    flex-wrap:wrap;
-    align-items:center;
-    gap:12px;
-    margin-top:30px;
-  }
-  .send-btn{
+  .grid-table thead .lj{font-size:13px;}
+  .grid-table thead .le{font-size:11.5px;}
+  .grid-table td.lvl{white-space:nowrap;font-weight:600;color:var(--ink);}
+  .grid-table td.sub{color:var(--text-2);}
+
+  .request{font-size:17px;font-weight:600;color:var(--text);}
+  .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px;}
+  .btn{
     display:inline-flex;
     align-items:center;
     gap:10px;
-    padding:0 22px;
     min-height:48px;
-    background:var(--accent);
-    color:var(--on-accent);
-    font-size:14.5px;
-    font-weight:600;
-    border-radius:9px;
-    transition:filter .18s ease;
-  }
-  .send-btn:hover{filter:brightness(1.08);}
-  /* The address itself, for reviewers whose mail runs in a browser tab. */
-  .copy-btn{
-    display:inline-flex;
-    align-items:center;
-    gap:9px;
-    padding:0 16px;
-    min-height:48px;
-    border:1px solid var(--line);
-    border-radius:9px;
-    background:var(--surface);
+    padding:0 20px;
+    border:1.5px solid var(--ink);
+    border-radius:4px;
+    background:transparent;
     color:var(--ink);
-    font-family:'JetBrains Mono','Noto Sans JP',monospace;
-    font-size:13px;
-    cursor:pointer;
-    transition:border-color .18s ease;
-  }
-  .copy-btn:hover{border-color:var(--ink);}
-  .copy-btn .ico{width:15px;height:15px;color:var(--muted);}
-  .copy-note{color:var(--ok);font-weight:500;}
-  .copy-note:empty{display:none;}
-  footer{
-    margin-top:64px;
-    padding-top:22px;
-    border-top:1px solid var(--line);
-    font-size:12.5px;
-    color:var(--muted);
-    max-width:66ch;
-  }
-
-  /* Every reference page ends by pointing at the next one. */
-  .next{
-    display:grid;
-    grid-template-columns:minmax(0,1fr) auto;
-    align-items:center;
-    column-gap:20px;
-    margin-top:58px;
-    padding-top:22px;
-    border-top:1px solid var(--line);
-    max-width:66ch;
-  }
-  .next-arrow{
-    grid-column:2;
-    grid-row:1 / 4;
-    width:24px;height:24px;
-    color:var(--muted);
-    transition:transform .3s var(--ease), color .18s ease;
-  }
-  .next:hover .next-arrow{transform:translateX(5px);color:var(--ink);}
-  .next-label{
-    display:block;
-    font-family:'JetBrains Mono','Noto Sans JP',monospace;
-    font-size:12px;
-    letter-spacing:.06em;
-    text-transform:uppercase;
-    color:var(--muted);
-  }
-  .next-name{
-    display:block;
-    margin-top:7px;
-    font-family:'Space Grotesk','Noto Sans JP',sans-serif;
-    font-size:19px;
+    font:inherit;
+    font-size:15px;
     font-weight:600;
-    letter-spacing:-0.015em;
+    text-decoration:none;
+    cursor:pointer;
+    transition:background-color .18s ease, color .18s ease;
   }
-  .next-path{
-    display:block;
-    margin-top:4px;
-    font-family:'JetBrains Mono','Noto Sans JP',monospace;
-    font-size:12.5px;
-    color:var(--muted);
-  }
-  .next:hover .next-name{text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:1px;}
+  .btn:hover{background:var(--tint);}
+  .btn.primary{background:var(--ink);color:var(--paper);}
+  .btn.primary:hover{background:color-mix(in oklab, var(--ink) 86%, var(--text));}
+  .btn .ico{width:16px;height:16px;}
+  .copy-note{font-weight:600;}
+  .copy-note:empty{display:none;}
 
-  /* ===== The one authored moment: the request completing ===== */
-  @keyframes pane-in{
-    from{opacity:0;transform:translateY(10px);}
-    to{opacity:1;transform:none;}
+  .foot{
+    max-width:1180px;
+    margin:22px auto 0;
+    padding:0 4px;
+    font-size:13.5px;
+    color:color-mix(in oklab, var(--on-band) 88%, var(--desk));
   }
-  html.js .resource.swap .req > *{animation:pane-in .55s var(--ease) both;}
-  html.js .resource.swap .req > *:nth-child(2){animation-delay:.05s;}
-  html.js .resource.swap .req > *:nth-child(3){animation-delay:.1s;}
-  html.js .resource.swap .req > *:nth-child(n+4){animation-delay:.14s;}
-
-  /* The request pane answers instantly; the record is what arrives over the wire. */
-
-  /* Status line: the response reports its own code and its own measured time. */
-  .res-head{
-    display:flex;
-    flex-wrap:wrap;
-    align-items:baseline;
-    justify-content:space-between;
-    gap:6px 16px;
-    margin:0 0 20px;
-    min-height:17px;
-  }
-  /* The time is labelled where it is shown, not in a tooltip. */
-  .status-cap{
-    flex-basis:100%;
-    margin:0;
-    font-family:'JetBrains Mono','Noto Sans JP',monospace;
-    font-size:12px;
-    line-height:1.4;
-    text-align:right;
-    color:var(--record-key);
-  }
-  .status-cap:empty{display:none;}
-  .res-head .res-label{margin:0;}
-  .status{
-    display:inline-flex;
-    align-items:baseline;
-    gap:9px;
-    font-family:'JetBrains Mono',monospace;
-    font-variant-numeric:tabular-nums;
-    font-size:12px;
-    white-space:nowrap;
-  }
-  .status-dot{
-    align-self:center;
-    width:6px;height:6px;
-    flex:none;
-    border-radius:50%;
-    background:var(--code-text);
-    transition:background-color .2s ease;
-  }
-  .status-code{color:var(--code-text);font-weight:500;}
-  .status-note, .status-time{color:var(--record-key);}
-  .status[data-state="pending"] .status-dot{
-    background:#E3A53C;
-    animation:status-pulse 1s ease-in-out infinite;
-  }
-  .status[data-state="pending"] .status-code{color:var(--record-key);}
-  @keyframes status-pulse{
-    0%,100%{opacity:1;}
-    50%{opacity:.25;}
-  }
-
-  /* The record arriving: one line sweeps the pane as the fields land. */
-  .scan{
-    position:absolute;
-    left:-30px;right:-30px;
-    top:0;
-    height:1px;
-    background:linear-gradient(90deg,transparent,var(--code-text),transparent);
-    opacity:0;
-    pointer-events:none;
-  }
-
-  /* View Transitions: the verb flies from the rail into the header it addresses.
-     The root snap is deliberate; only the object that moved should animate. */
-  @media (prefers-reduced-motion: no-preference){
-    ::view-transition-old(root),
-    ::view-transition-new(root){animation:none;mix-blend-mode:normal;}
-    ::view-transition-group(vt-verb){
-      animation-duration:.42s;
-      animation-timing-function:var(--ease);
-    }
-  }
+  html[data-theme="dark"] .foot{color:var(--text-2);}
 
   /* ===== Responsive ===== */
-  @media (max-width: 1180px){
-    .controls{right:30px;}
-    .resource{grid-template-columns:minmax(0,1fr);min-height:0;}
-    .req{padding:72px 48px 56px;}
-    .res{padding:32px 48px 72px;}
-    /* Relative, not static, so .scan has a containing block; top:auto undoes
-       the sticky offset that relative positioning would otherwise apply. */
-    .res-inner{position:relative;top:auto;}
-    .record{max-width:520px;}
-    .scan{left:0;right:0;}
+  @media (max-width: 1060px){
+    .detail-body{grid-template-columns:minmax(0,1fr);}
+    .facts{max-width:520px;}
   }
   @media (max-width: 900px){
-    .app{grid-template-columns:minmax(0,1fr);padding-top:64px;}
-    /* The rail dissolves into the page grid, so the tab strip can stay pinned
-       for the whole scroll instead of only while its own box is on screen. */
-    .rail{display:contents;}
-    .rail > div:first-child{padding:16px 20px;background:var(--surface);}
-    /* The byline rides in the fixed top bar: the name stays on screen. */
-    .byline{
-      position:fixed;
-      top:0;left:14px;
-      z-index:61;
-      height:64px;
-      gap:10px;
-      font-size:14px;
-    }
-    .byline img{width:32px;height:32px;}
-    .cv-btn{width:auto;margin-top:0;}
-    .rail-nav{
-      position:sticky;
-      top:64px;
-      z-index:40;
-      margin:0;
-      padding:0;
-      background:var(--surface);
-      border-top:1px solid var(--line);
-      border-bottom:1px solid var(--line);
-      display:flex;
-      overflow-x:auto;
-      scrollbar-width:none;
-    }
-    .rail-nav::-webkit-scrollbar{display:none;}
-    /* More tabs than the strip shows: the cut edge fades toward them. */
-    .rail-nav[data-more~="end"]{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 44px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 44px),transparent);}
-    .rail-nav[data-more~="start"]{-webkit-mask-image:linear-gradient(90deg,transparent,#000 44px);mask-image:linear-gradient(90deg,transparent,#000 44px);}
-    .rail-nav[data-more="start end"]{-webkit-mask-image:linear-gradient(90deg,transparent,#000 44px,#000 calc(100% - 44px),transparent);mask-image:linear-gradient(90deg,transparent,#000 44px,#000 calc(100% - 44px),transparent);}
-    .rail-group + .rail-group{margin-top:0;}
-    .rail-group{flex:none;}
-    .rail-group-title{display:none;}
-    .rail-list{display:flex;}
-    /* The strip is one row of tabs: the employer heading and periods stay in the records. */
-    .rail-org, .rail-sub{display:contents;}
-    .rail-org-name, .rail-when{display:none;}
-    .rail-link{
-      min-height:50px;
-      align-items:center;
-      border-radius:0;
-      padding:0 13px;
-      white-space:nowrap;
-    }
-    .rail-link .verb{display:none;}
-    .rail-link[aria-current="true"]{
-      background:transparent;
-      box-shadow:inset 0 -2px 0 var(--accent);
-    }
-    .rail-foot{display:none;}
-    .controls{
-      top:0;left:0;right:0;
-      height:64px;
-      padding:0 14px;
-      align-items:center;
-      justify-content:flex-end;
-      background:var(--bg);
-      border-bottom:1px solid var(--line);
-    }
-    .lang-globe{display:none;}
-    .lang-switch button, .theme-btn{min-height:44px;}
-    .lang-switch button{min-width:44px;}
-    .theme-btn{min-width:48px;}
-    .req{padding:32px 20px 44px;}
-    .res{padding:26px 20px 56px;}
-    .pane-title{font-size:26px;max-width:none;}
-    html[lang="ja"] .pane-title{font-size:23px;max-width:none;}
-    .prose, .lede{font-size:15.5px;}
-    /* A narrow measure cannot justify without rivers: set it ragged. */
-    .prose p, .work li{text-align:start;-webkit-hyphens:manual;hyphens:manual;}
-    .record > div{grid-template-columns:72px minmax(0,1fr);}
-    .res-head{gap:6px 14px;}
-    .groups{gap:28px;}
-    footer{margin-top:48px;}
+    .pair{grid-template-columns:minmax(0,1fr);}
+    .form-head{grid-template-columns:minmax(0,1fr) 150px;column-gap:24px;}
+    .cell{grid-template-columns:120px minmax(0,1fr);}
+    .doc-title .lj{font-size:36px;}
   }
-  @media (max-width: 359px){
-    .byline img{display:none;}
+  @media (max-width: 720px){
+    :root{--cy:54px;--cm:36px;}
+    .desk{padding:0 0 22px;}
+    .sheet{padding:22px 16px 30px;box-shadow:none;}
+    .form-head{
+      grid-template-columns:minmax(0,1fr);
+      grid-template-areas:"title" "cells";
+      grid-template-rows:auto auto;
+    }
+    .title-row{flex-direction:row;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:6px 16px;padding:0 0 14px;}
+    .doc-title{gap:10px;}
+    .doc-title .lj{font-size:32px;}
+    .doc-title .le{font-size:14px;}
+    .asof{font-size:13.5px;}
+    .photo-box{display:none;}
+    .cells-top{display:grid;grid-template-columns:minmax(0,1fr) 96px;}
+    .cells-names{min-width:0;}
+    .photo-cell{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:5px;
+      padding:8px 8px 6px;
+      border-left:1px solid var(--rule);
+    }
+    .photo-cell img{
+      display:block;
+      width:100%;
+      aspect-ratio:3 / 4;
+      height:auto;
+      object-fit:cover;
+      object-position:50% 20%;
+      box-shadow:0 1px 1px rgba(0,0,0,.18), 0 5px 10px -5px rgba(3,40,28,.45);
+    }
+    .photo-cell figcaption{font-size:11.5px;}
+    .cells-top + .cell{border-top:1px solid var(--rule);}
+    .cell{grid-template-columns:86px minmax(0,1fr);}
+    .cell > .lbl{padding:10px 10px;}
+    .cell .lj{font-size:13px;letter-spacing:.04em;}
+    .cell .le{font-size:11.5px;}
+    .cell .val{padding:10px 12px;font-size:15.5px;}
+    .cell.furi .val{font-size:13.5px;letter-spacing:.12em;}
+    .cell.name .val{font-size:30px;padding-top:12px;padding-bottom:14px;}
+    .links{flex-direction:column;gap:2px;font-size:15px;}
+
+    .band{margin:24px -16px 0;padding:0 8px 0 0;gap:8px;}
+    .tabs a{min-height:52px;padding:0 10px;}
+    .tabs a .lj{font-size:13.5px;letter-spacing:.04em;}
+    /* One line per tab on a phone: the reader's language only. */
+    html[lang="en"] .tabs a .lj{display:none;}
+    html[lang="en"] .tabs a .le{font-size:14px;font-weight:600;opacity:1;}
+    .tabs[data-more~="end"]{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent);}
+    .tabs[data-more~="start"]{-webkit-mask-image:linear-gradient(90deg,transparent,#000 36px);mask-image:linear-gradient(90deg,transparent,#000 36px);}
+    .tabs[data-more="start end"]{-webkit-mask-image:linear-gradient(90deg,transparent,#000 36px,#000 calc(100% - 36px),transparent);mask-image:linear-gradient(90deg,transparent,#000 36px,#000 calc(100% - 36px),transparent);}
+    .controls{gap:4px;}
+    .seg button{min-height:44px;min-width:40px;padding:0 8px;}
+    .theme-btn{min-height:46px;width:42px;}
+    /* On a phone the band keeps every action: one language switch, theme, CV. */
+    .seg button[aria-pressed="true"]{display:none;}
+    .seg button{min-width:48px;}
+    .cv-btn{min-height:46px;padding:0 11px;gap:6px;}
+    .cv-btn .ico{display:none;}
+    .cv-long{display:none;}
+    .cv-short{display:inline;}
+
+    .hist{margin-top:24px;}
+    .hist-head .lbl{padding:10px 4px;}
+    .hist-head .yh .le, .hist-head .mh .le{display:none;}
+    .hist-head .eh{padding:8px 8px 8px 12px;}
+    .hist-head h2 .lj{font-size:14px;}
+    .toggle-all{min-height:44px;padding:0 10px;font-size:12.5px;}
+    .hist-group > .lbl{padding:10px 12px;}
+    .y, .m{padding:15px 2px;font-size:15px;}
+    .entry{padding:12px 40px 13px 12px;}
+    .org{font-size:16px;}
+    .role{font-size:14.5px;}
+    .period{font-size:13px;}
+    .pm{right:12px;top:20px;width:16px;height:16px;}
+    .seal{right:30px;top:-4px;width:58px;height:58px;}
+    .hist-row.has-seal .entry{padding-right:92px;}
+    /* Full width on a phone: the detail paper covers the year and month rules. */
+    .detail{grid-column:1 / -1;position:relative;z-index:1;}
+    .detail-body{padding:18px 14px 24px 14px;gap:20px;background:var(--paper);}
+    .detail-body h3{font-size:19px;}
+    html[lang="ja"] .detail-body h3{font-size:18px;}
+    .work li{font-size:15.5px;}
+    .facts > div{grid-template-columns:76px minmax(0,1fr);}
+    .hist-end > p{padding-right:16px;}
+
+    .block{margin-top:24px;}
+    .block-head{padding:10px 14px;}
+    .block-body{padding:18px 14px 22px;}
+    .prose p{font-size:15.5px;line-height:1.8;}
+    .ruled{--lh:29px;}
+    .rows > li{grid-template-columns:minmax(0,1fr);}
+    .rows > li > .lbl, .rows > li > .k{border-right:none;padding:12px 14px 2px;}
+    .rows .v{padding:4px 14px 14px;font-size:15px;}
+    .grid-table th, .grid-table td{padding:11px 12px;font-size:14.5px;}
+    .pair{gap:24px;margin-top:24px;}
+    .actions .btn{flex:1 1 auto;justify-content:center;}
+    .foot{padding:0 16px;}
   }
   @media (prefers-reduced-motion: reduce){
-    html.js .resource.swap .req > *{animation:none;}
-    .status[data-state="pending"] .status-dot{animation:none;}
-    .scan{display:none;}
+    html.js .seal.stamped{animation:none;}
     *{transition-duration:.01ms!important;}
+  }
+  @media print{
+    body{background:#fff;}
+    .desk{padding:0;}
+    .sheet{box-shadow:none;max-width:none;}
+    .band, .toggle-all, .pm, .actions, .skip{display:none!important;}
+    .detail{grid-template-rows:1fr!important;}
+    .detail-inner{visibility:visible!important;}
+    html.js .seal{opacity:1;}
   }
 </style>
 </head>
 <body>
-<a class="skip" href="#panes" id="i18n-skip">Skip to content</a>
+<!--
+  THESIS: The page is the 履歴書, the JIS resume form a Japanese reviewer reads every working day, filled in and printed in one green ink. It refuses the developer-portfolio arrangement (hero, cards, skills grid) and the API-reference costume before it.
+  OWN-WORLD: Green desk #0B6E4F; paper sheet #EAF3EE ruled in that one ink, a 2px outer frame, 1px inner rules, solid green header bars; content typed in near-black #16181D; one red #D7263D 在職中 seal. Shippori Mincho B1 prints the form, Schibsted Grotesk fills it in.
+  STORY: The reviewer recognises the form at once, reads name, current post and photo, then the history: NBC open, sealed as current. They expand older rows, scan skills and credentials, and email or download the CV.
+  FIRST VIEWPORT: 履歴書 title and date over the name cells (ふりがな, 氏名 at 60px, 現職, 現住所, 連絡先) with the 写真 box at right, the green section band beneath, then the history table opening on NBC with its seal pressed on load.
+  FORM: Rirekisho, in full colour (Impeccable's pick, ranked first); direction-1141fbff, option model-pick.
+  FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
+-->
+<a class="skip" href="#history" data-i18n="skip">Skip to history</a>
 
-<!-- Icon set: one stroke weight, one grid, referenced with <use>. -->
 <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
   <defs>
-    <symbol id="i-about" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4"/><path d="M4.8 20a7.4 7.4 0 0 1 14.4 0"/></symbol>
-    <symbol id="i-nbc" viewBox="0 0 24 24"><path d="M3 9.6 12 4l9 5.6"/><path d="M5.5 9.9v8.6M12 9.9v8.6M18.5 9.9v8.6"/><path d="M3.4 20h17.2"/></symbol>
-    <symbol id="i-ecommerce" viewBox="0 0 24 24"><path d="M5 7.5h14l-1.1 12a1.5 1.5 0 0 1-1.5 1.4H7.6a1.5 1.5 0 0 1-1.5-1.4z"/><path d="M8.8 10V6.9a3.2 3.2 0 0 1 6.4 0V10"/></symbol>
-    <symbol id="i-biz" viewBox="0 0 24 24"><path d="M8.6 8.4 4.4 12l4.2 3.6"/><path d="M15.4 8.4 19.6 12l-4.2 3.6"/><path d="M13.4 5.6l-2.8 12.8"/></symbol>
-    <symbol id="i-cdc" viewBox="0 0 24 24"><rect x="4" y="5.6" width="16" height="14.4" rx="2"/><path d="M4 10h16M8.8 3.6v4M15.2 3.6v4"/></symbol>
-    <symbol id="i-skills" viewBox="0 0 24 24"><path d="M4.4 8.4 12 4.4l7.6 4-7.6 4z"/><path d="M4.4 12.8 12 16.8l7.6-4"/><path d="M4.4 17.2 12 21.2l7.6-4"/></symbol>
-    <symbol id="i-credentials" viewBox="0 0 24 24"><circle cx="12" cy="9.6" r="5.2"/><path d="M8.6 14.2 7.6 21l4.4-2.4L16.4 21l-1-6.8"/></symbol>
-    <symbol id="i-contact" viewBox="0 0 24 24"><rect x="3.6" y="5.6" width="16.8" height="12.8" rx="2"/><path d="m4.4 7.2 7.6 5.6 7.6-5.6"/></symbol>
-    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h13.4"/><path d="m13 6.6 5.4 5.4-5.4 5.4"/></symbol>
     <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4.8h5.2V10"/><path d="M19.2 4.8 11.4 12.6"/><path d="M18 14.6v3.8a1.8 1.8 0 0 1-1.8 1.8H5.8A1.8 1.8 0 0 1 4 18.4V8a1.8 1.8 0 0 1 1.8-1.8h3.8"/></symbol>
-    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8.4" y="8.4" width="11.6" height="11.6" rx="2"/><path d="M15.6 8.4V5.8A1.8 1.8 0 0 0 13.8 4H5.8A1.8 1.8 0 0 0 4 5.8v8a1.8 1.8 0 0 0 1.8 1.8h2.6"/></symbol>
-    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M4 12h16"/><path d="M12 4a12.4 12.4 0 0 1 0 16 12.4 12.4 0 0 1 0-16z"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 3.6v11.6"/><path d="m7 10.4 5 5 5-5"/><path d="M4.4 20.4h15.2"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3.6" y="5.6" width="16.8" height="12.8" rx="1.6"/><path d="m4.4 7.2 7.6 5.6 7.6-5.6"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8.4" y="8.4" width="11.6" height="11.6" rx="1.6"/><path d="M15.6 8.4V5.8A1.8 1.8 0 0 0 13.8 4H5.8A1.8 1.8 0 0 0 4 5.8v8a1.8 1.8 0 0 0 1.8 1.8h2.6"/></symbol>
+    <!-- Seal ink: the edge wanders and the colour does not take everywhere. -->
+    <filter id="seal-ink" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency=".75" numOctaves="2" seed="11" result="warp"/>
+      <feDisplacementMap in="SourceGraphic" in2="warp" scale="2.4" xChannelSelector="R" yChannelSelector="G" result="edge"/>
+      <feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="1" seed="4" result="grain"/>
+      <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -3.2 2.55" result="holes"/>
+      <feComposite in="edge" in2="holes" operator="in"/>
+    </filter>
   </defs>
 </svg>
 
-<div class="controls">
-  <div class="lang-switch" role="group" aria-label="Language">
-    <svg class="ico lang-globe" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-globe"/></svg>
-    <button type="button" data-lang="en" aria-pressed="true" onclick="setLang('en')">EN</button>
-    <button type="button" data-lang="ja" aria-pressed="false" onclick="setLang('ja')">JA</button>
-  </div>
-  <button type="button" class="theme-btn" onclick="toggleTheme()" aria-label="Toggle dark mode">
-    <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-    <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-  </button>
-</div>
+<div class="desk">
+<main class="sheet" id="sheet">
 
-<div class="app">
+  <!-- ===== Form head ===== -->
+  <header class="form-head">
+    <div class="title-row">
+      <p class="doc-title lbl inline"><span class="lj" lang="ja">履歴書</span><span class="le">Résumé</span></p>
+      <p class="asof num" data-i18n="asof">As of October 2026</p>
+    </div>
 
-  <!-- ===== RAIL ===== -->
-  <aside class="rail">
-    <div>
-      <h1 class="byline">
-        <img src="pf.jpeg" width="40" height="40" alt="" />
-        <span>
-          <span class="byline-name" id="i18n-name">Cheng Porchheng</span>
-          <span class="byline-role" id="i18n-role">Backend Engineer</span>
+    <div class="cells">
+      <div class="cells-top">
+      <div class="cells-names">
+      <div class="cell furi">
+        <span class="lbl"><span class="lj" lang="ja">ふりがな</span><span class="le">Reading</span></span>
+        <p class="val" lang="ja">チェン・ポーチェン</p>
+      </div>
+      <div class="cell name">
+        <span class="lbl"><span class="lj" lang="ja">氏名</span><span class="le">Name</span></span>
+        <h1 class="val">Cheng Porchheng</h1>
+      </div>
+      </div>
+      <!-- On a phone the photo sits inside the form, beside the name it identifies. -->
+      <figure class="photo-cell">
+        <img src="cv-photo-print.jpg" width="622" height="800" alt="Photo of Cheng Porchheng" />
+        <figcaption class="lj" lang="ja">写真</figcaption>
+      </figure>
+      </div>
+      <div class="cell position">
+        <span class="lbl"><span class="lj" lang="ja">現職</span><span class="le">Current post</span></span>
+        <p class="val" data-i18n="position"><b>Backend Engineer</b>, National Bank of Cambodia, the country's central bank</p>
+      </div>
+      <div class="cell">
+        <span class="lbl"><span class="lj" lang="ja">現住所</span><span class="le">Address</span></span>
+        <p class="val" data-i18n="address">Phnom Penh, Cambodia</p>
+      </div>
+      <div class="cell">
+        <span class="lbl"><span class="lj" lang="ja">連絡先</span><span class="le">Contact</span></span>
+        <p class="val links">
+          <a href="mailto:porchheng914@gmail.com">porchheng914@gmail.com</a>
+          <a class="ext" href="https://linkedin.com/in/porchheng" target="_blank" rel="noopener">linkedin.com/in/porchheng<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-external"/></svg></a>
+        </p>
+      </div>
+    </div>
+
+    <figure class="photo-box">
+      <div class="photo-frame">
+        <img src="cv-photo-print.jpg" width="622" height="800" alt="Photo of Cheng Porchheng" />
+      </div>
+      <figcaption class="lbl"><span class="lj" lang="ja">写真</span><span class="le">Photo</span></figcaption>
+    </figure>
+  </header>
+
+  <!-- ===== Section band ===== -->
+  <nav class="band" aria-label="Sections">
+    <ul class="tabs">
+      <li><a href="#history" data-tab="history"><span class="lj" lang="ja">学歴・職歴</span><span class="le">History</span></a></li>
+      <li><a href="#summary" data-tab="summary"><span class="lj" lang="ja">自己PR</span><span class="le">Summary</span></a></li>
+      <li><a href="#skills" data-tab="skills"><span class="lj" lang="ja">特技・スキル</span><span class="le">Skills</span></a></li>
+      <li><a href="#credentials" data-tab="credentials"><span class="lj" lang="ja">免許・資格</span><span class="le">Certifications</span></a></li>
+      <li><a href="#contact" data-tab="contact"><span class="lj" lang="ja">連絡先</span><span class="le">Contact</span></a></li>
+    </ul>
+    <div class="controls">
+      <div class="seg" role="group" aria-label="Language">
+        <button type="button" data-lang="en" aria-pressed="true">EN</button>
+        <button type="button" data-lang="ja" aria-pressed="false" lang="ja">日本語</button>
+      </div>
+      <button type="button" class="theme-btn" aria-label="Toggle dark mode" data-i18n-label="theme">
+        <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      </button>
+      <a class="cv-btn" href="Cheng_Porchheng_CV.pdf" download><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-down"/></svg><span class="cv-long" data-i18n="cv">Download CV</span><span class="cv-short" aria-hidden="true">CV</span></a>
+    </div>
+  </nav>
+
+  <!-- ===== 学歴・職歴: history, newest first ===== -->
+  <section id="history" aria-labelledby="history-title">
+    <ol class="hist">
+      <li class="hist-head">
+        <span class="lbl yh"><span class="lj" lang="ja">年</span><span class="le">Year</span></span>
+        <span class="lbl mh"><span class="lj" lang="ja">月</span><span class="le">Month</span></span>
+        <div class="eh">
+          <h2 id="history-title" class="lbl inline"><span class="lj" lang="ja">学歴・職歴</span><span class="le">Work and education history</span></h2>
+          <button type="button" class="toggle-all">Open all</button>
+        </div>
+      </li>
+
+      <li class="hist-group"><p class="lbl"><span class="lj" lang="ja">職歴</span><span class="le">Work history</span></p></li>
+
+      <!-- NBC: open on arrival, sealed as the current post -->
+      <li class="hist-row job open has-seal" id="nbc">
+        <button type="button" class="row-btn" aria-expanded="true" aria-controls="nbc-detail">
+          <span class="y num">2026</span>
+          <span class="m num">8</span>
+          <span class="entry" data-i18n="nbc-entry">
+            <span class="org">National Bank of Cambodia (NBC)</span>
+            <span class="role">Backend Engineer</span>
+            <span class="period">Aug 2026 – present</span>
+          </span>
+        </button>
+        <span class="seal" role="img" aria-label="Currently employed" data-i18n-label="seal">
+          <svg viewBox="0 0 100 100" aria-hidden="true">
+            <g filter="url(#seal-ink)">
+              <circle cx="50" cy="50" r="44" fill="none" stroke="currentColor" stroke-width="4.6"/>
+              <text x="50" y="32.5" text-anchor="middle" lang="ja">在</text>
+              <text x="50" y="57.5" text-anchor="middle" lang="ja">職</text>
+              <text x="50" y="82.5" text-anchor="middle" lang="ja">中</text>
+            </g>
+          </svg>
         </span>
-      </h1>
-      <a class="cv-btn" href="Cheng_Porchheng_CV.pdf" download>
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0 4-4m-4 4-4-4"/><path d="M4 21h16"/></svg>
-        <span id="i18n-cv">Download CV</span>
-      </a>
+        <svg class="pm" viewBox="0 0 18 18" aria-hidden="true"><line x1="2" y1="9" x2="16" y2="9"/><line class="up" x1="9" y1="2" x2="9" y2="16"/></svg>
+        <div class="detail" id="nbc-detail">
+          <div class="detail-inner">
+            <div class="detail-body">
+              <h3 data-i18n="nbc-title">Bakong test and performance engineering</h3>
+              <ul class="work" data-i18n="nbc-body">
+                <li>Test and performance engineering for <b>Bakong</b>, Cambodia's national payment system, operated by the central bank.</li>
+                <li>Design and build, largely on my own, a <b>load-benchmarking platform</b> for the <b>Bakong public API</b>. It turns API collections into <b>repeatable, graded load tests</b>, keeps results <b>comparable from one release to the next</b>, and lets QA staff run and read benchmarks without writing test code.</li>
+                <li>Built with <b>NestJS, Next.js, PostgreSQL and k6</b>, with automated tests, database migrations, CI and written architecture decision records.</li>
+                <li>Focused on <b>measurements you can trust</b>: each response's own result code is checked, not just its HTTP status, and a run whose measurements came back incomplete under load is flagged rather than read as a good result.</li>
+                <li>Test the <b>Bakong mobile application</b> using <b>Appium</b>-based automated tests.</li>
+              </ul>
+              <dl class="facts" data-i18n="nbc-facts">
+                <div><dt>Employer</dt><dd>National Bank of Cambodia (NBC)</dd></div>
+                <div><dt>Role</dt><dd>Backend Engineer</dd></div>
+                <div><dt>Period</dt><dd>Aug 2026 – present</dd></div>
+                <div><dt>System</dt><dd>Bakong, Cambodia's national payment system</dd></div>
+                <div><dt>Surface</dt><dd>public API, mobile application</dd></div>
+                <div><dt>Stack</dt><dd>k6, NestJS, Next.js, PostgreSQL, Appium</dd></div>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </li>
+
+      <li class="hist-row job" id="biz">
+        <button type="button" class="row-btn" aria-expanded="false" aria-controls="biz-detail">
+          <span class="y num">2026</span>
+          <span class="m num">5</span>
+          <span class="entry" data-i18n="biz-entry">
+            <span class="org">Biz Solution Co., Ltd.</span>
+            <span class="role">Junior Web Developer · E-commerce and Odoo</span>
+            <span class="period">May 2026 – July 2026</span>
+          </span>
+        </button>
+        <svg class="pm" viewBox="0 0 18 18" aria-hidden="true"><line x1="2" y1="9" x2="16" y2="9"/><line class="up" x1="9" y1="2" x2="9" y2="16"/></svg>
+        <div class="detail" id="biz-detail">
+          <div class="detail-inner">
+            <div class="detail-body">
+              <h3 data-i18n="biz-title">E-commerce maintenance and Odoo integration</h3>
+              <ul class="work" data-i18n="biz-body">
+                <li>Maintained and extended <b>existing production e-commerce projects</b> on both the <b>frontend and the backend</b>, including their REST and GraphQL APIs.</li>
+                <li>Worked on <b>notifications</b> and <b>queue-based background jobs</b>.</li>
+                <li>Integrated the projects with the <b>Odoo</b> ERP.</li>
+              </ul>
+              <dl class="facts" data-i18n="biz-facts">
+                <div><dt>Employer</dt><dd>Biz Solution Co., Ltd.</dd></div>
+                <div><dt>Role</dt><dd>Junior Web Developer</dd></div>
+                <div><dt>Period</dt><dd>May 2026 – July 2026</dd></div>
+                <div><dt>Scope</dt><dd>frontend, backend, notifications, queues</dd></div>
+                <div><dt>Stack</dt><dd>NestJS, REST, GraphQL, Odoo, Redis</dd></div>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </li>
+
+      <li class="hist-row job" id="ecommerce">
+        <button type="button" class="row-btn" aria-expanded="false" aria-controls="ecommerce-detail">
+          <span class="y num">2026</span>
+          <span class="m num">1</span>
+          <span class="entry" data-i18n="ecommerce-entry">
+            <span class="org">Biz Solution Co., Ltd.</span>
+            <span class="role">Backend Developer Intern · E-commerce and KHQR payments</span>
+            <span class="period">Jan 2026 – May 2026</span>
+          </span>
+        </button>
+        <svg class="pm" viewBox="0 0 18 18" aria-hidden="true"><line x1="2" y1="9" x2="16" y2="9"/><line class="up" x1="9" y1="2" x2="9" y2="16"/></svg>
+        <div class="detail" id="ecommerce-detail">
+          <div class="detail-inner">
+            <div class="detail-body">
+              <h3 data-i18n="ecommerce-title">Multi-vendor e-commerce platform and KHQR payments</h3>
+              <ul class="work" data-i18n="ecommerce-body">
+                <li>Built <b>REST and GraphQL APIs</b> on the Vendure framework for a Khmer-language multi-vendor mobile e-commerce platform.</li>
+                <li>Integrated <b>KHQR</b>, Cambodia's national QR payment standard, through <b>ABA Bank's payment gateway</b>, with secure transaction flows and automated payment-status webhooks.</li>
+                <li>Improved speed and reliability with <b>Redis caching</b>, <b>Firebase Cloud Messaging</b> notifications, and <b>AWS CloudWatch</b> monitoring.</li>
+              </ul>
+              <dl class="facts" data-i18n="ecommerce-facts">
+                <div><dt>Employer</dt><dd>Biz Solution Co., Ltd.</dd></div>
+                <div><dt>Role</dt><dd>Backend Developer Intern</dd></div>
+                <div><dt>Period</dt><dd>Jan 2026 – May 2026</dd></div>
+                <div><dt>Product</dt><dd>Khmer-language multi-vendor e-commerce platform</dd></div>
+                <div><dt>Payments</dt><dd>KHQR via ABA Bank</dd></div>
+                <div><dt>Stack</dt><dd>Vendure, GraphQL, REST, Redis, FCM, AWS CloudWatch</dd></div>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </li>
+
+      <li class="hist-row job" id="cdc">
+        <button type="button" class="row-btn" aria-expanded="false" aria-controls="cdc-detail">
+          <span class="y num">2025</span>
+          <span class="m num">5</span>
+          <span class="entry" data-i18n="cdc-entry">
+            <span class="org">The Council for the Development of Cambodia (CDC)</span>
+            <span class="role">API &amp; Web Developer Intern</span>
+            <span class="period">May 2025 – Aug 2025</span>
+          </span>
+        </button>
+        <svg class="pm" viewBox="0 0 18 18" aria-hidden="true"><line x1="2" y1="9" x2="16" y2="9"/><line class="up" x1="9" y1="2" x2="9" y2="16"/></svg>
+        <div class="detail" id="cdc-detail">
+          <div class="detail-inner">
+            <div class="detail-body">
+              <h3 data-i18n="cdc-title">Meeting scheduling API and web portal</h3>
+              <ul class="work" data-i18n="cdc-body">
+                <li>Built a <b>NestJS REST API</b> powering a meeting scheduling system, serving the <b>mobile application</b>.</li>
+                <li>Developed a real-time <b>Next.js web portal</b> with live scheduling updates, shown on office LCD displays.</li>
+              </ul>
+              <dl class="facts" data-i18n="cdc-facts">
+                <div><dt>Employer</dt><dd>The Council for the Development of Cambodia (CDC)</dd></div>
+                <div><dt>Role</dt><dd>API &amp; Web Developer Intern</dd></div>
+                <div><dt>Period</dt><dd>May 2025 – Aug 2025</dd></div>
+                <div><dt>Clients</dt><dd>mobile application, web portal</dd></div>
+                <div><dt>Stack</dt><dd>NestJS, Next.js, REST</dd></div>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </li>
+
+      <li class="hist-group"><p class="lbl"><span class="lj" lang="ja">学歴</span><span class="le">Education</span></p></li>
+
+      <!-- Months are left blank where the record gives only the year. -->
+      <li class="hist-line">
+        <span class="y num">2026</span><span class="m"></span>
+        <span class="entry" data-i18n="edu-grad">
+          <span class="org">Graduated, Cambodia Academy of Digital Technology (CADT)</span>
+          <span class="role">Bachelor of Computer Science (Software Engineering)</span>
+        </span>
+      </li>
+      <li class="hist-line">
+        <span class="y num">2025</span><span class="m"></span>
+        <span class="entry" data-i18n="edu-jit">
+          <span class="org">Enrolled, Japanese IT Pathway Program <span class="nw">(2025–2027, ongoing)</span></span>
+          <span class="role">American University of Phnom Penh (AUPP) and NEXTMAKE Inc.</span>
+        </span>
+      </li>
+      <li class="hist-line">
+        <span class="y num">2023</span><span class="m"></span>
+        <span class="entry" data-i18n="edu-enter">
+          <span class="org">Entered Cambodia Academy of Digital Technology (CADT)</span>
+          <span class="role">Bachelor of Computer Science (Software Engineering)</span>
+        </span>
+      </li>
+      <li class="hist-end"><p lang="ja">以上</p></li>
+    </ol>
+  </section>
+
+  <!-- ===== 自己PR ===== -->
+  <section class="block" id="summary" aria-labelledby="summary-title">
+    <div class="block-head"><h2 id="summary-title" class="lbl inline"><span class="lj" lang="ja">自己PR</span><span class="le">Summary</span></h2></div>
+    <div class="block-body prose ruled" data-i18n="about">
+      <p>I'm a <b>backend engineer at the National Bank of Cambodia</b>, the country's central bank, working on
+      <b>Bakong</b>, Cambodia's national payment system. I build <b>load-testing applications for its public API</b>
+      and test its mobile app with <b>Appium-based automated tests</b>.</p>
+      <p>Before the bank I built <b>payment and e-commerce APIs</b> in REST and GraphQL, including
+      <b>ABA Bank KHQR</b> integration. I hold a Bachelor of Computer Science (Software Engineering) from the
+      Cambodia Academy of Digital Technology (CADT), 2023–2026, and work from Phnom Penh.</p>
+      <p>I'm also enrolled in the <b>Japanese IT Pathway Program</b> (<span class="nw">2025–2027</span>), run by the American University of
+      Phnom Penh (AUPP) and NEXTMAKE Inc.</p>
     </div>
+  </section>
 
-    <nav class="rail-nav" aria-label="Resources">
-      <div class="rail-group">
-        <p class="rail-group-title" id="grp-intro"><span id="i18n-grp-intro">Introduction</span></p>
-        <ul class="rail-list" aria-labelledby="grp-intro">
-          <li><a class="rail-link" href="#about" data-target="about"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-about"/></svg><span class="verb">GET</span><span class="rail-name" id="i18n-rail-about">About</span></a></li>
-        </ul>
-      </div>
-      <div class="rail-group">
-        <p class="rail-group-title" id="grp-work"><span id="i18n-grp-work">Work</span></p>
-        <ul class="rail-list" aria-labelledby="grp-work">
-          <li><a class="rail-link" href="#nbc" data-target="nbc"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-nbc"/></svg><span class="verb">GET</span><span class="rail-text"><span class="rail-name" id="i18n-rail-nbc">NBC / Bakong</span><span class="rail-when" id="i18n-when-nbc">Aug 2026–now</span></span></a></li>
-          <li class="rail-org">
-            <span class="rail-org-name">Biz Solution Co., Ltd.</span>
-            <ul class="rail-sub">
-              <li><a class="rail-link" href="#ecommerce" data-target="ecommerce"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ecommerce"/></svg><span class="verb">GET</span><span class="rail-text"><span class="rail-name" id="i18n-rail-ecommerce">E-commerce / KHQR</span><span class="rail-when" id="i18n-when-ecommerce">Intern · Jan–May 2026</span></span></a></li>
-              <li><a class="rail-link" href="#biz" data-target="biz"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-biz"/></svg><span class="verb">GET</span><span class="rail-text"><span class="rail-name" id="i18n-rail-biz">E-commerce / Odoo</span><span class="rail-when" id="i18n-when-biz">Junior · May–Jul 2026</span></span></a></li>
-            </ul>
-          </li>
-          <li><a class="rail-link" href="#cdc" data-target="cdc"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-cdc"/></svg><span class="verb">GET</span><span class="rail-text"><span class="rail-name" id="i18n-rail-cdc">CDC</span><span class="rail-when" id="i18n-when-cdc">May–Aug 2025</span></span></a></li>
-        </ul>
-      </div>
-      <div class="rail-group">
-        <p class="rail-group-title" id="grp-ref"><span id="i18n-grp-ref">Reference</span></p>
-        <ul class="rail-list" aria-labelledby="grp-ref">
-          <li><a class="rail-link" href="#skills" data-target="skills"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-skills"/></svg><span class="verb">GET</span><span class="rail-name" id="i18n-rail-skills">Skills</span></a></li>
-          <li><a class="rail-link" href="#credentials" data-target="credentials"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-credentials"/></svg><span class="verb">GET</span><span class="rail-name" id="i18n-rail-credentials">Credentials</span></a></li>
-          <li><a class="rail-link" href="#contact" data-target="contact"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-contact"/></svg><span class="verb">GET</span><span class="rail-name" id="i18n-rail-contact">Contact</span></a></li>
-        </ul>
-      </div>
-    </nav>
+  <!-- ===== 特技・スキル ===== -->
+  <section class="block" id="skills" aria-labelledby="skills-title">
+    <div class="block-head"><h2 id="skills-title" class="lbl inline"><span class="lj" lang="ja">特技・スキル</span><span class="le">Skills</span></h2></div>
+    <ul class="rows">
+      <li>
+        <h3 class="k" data-i18n="skill-programming">Programming</h3>
+        <div class="v"><ul class="items"><li>TypeScript</li><li>JavaScript</li><li>Python</li><li>Dart</li><li>C++</li><li>Java</li><li>SQL</li></ul></div>
+      </li>
+      <li>
+        <h3 class="k" data-i18n="skill-frameworks">Frameworks</h3>
+        <div class="v"><ul class="items"><li>NestJS</li><li>Vendure</li><li>FastAPI</li><li>Node.js</li><li>Next.js</li><li>Flutter</li><li>Angular</li></ul></div>
+      </li>
+      <li>
+        <h3 class="k" data-i18n="skill-tools">Tools &amp; Platforms</h3>
+        <div class="v"><ul class="items"><li>Git</li><li>Docker</li><li>Postgres</li><li>Postman</li><li>Jira</li><li>GraphQL</li><li>Jest</li><li>Automated Testing</li><li>Appium</li><li>Load Testing</li><li>k6</li></ul></div>
+      </li>
+      <li>
+        <h3 class="k" data-i18n="skill-cloud">Cloud &amp; DevOps</h3>
+        <div class="v"><ul class="items"><li>AWS CloudWatch</li><li>Firebase (FCM)</li><li>Redis</li><li>Cloudflare</li><li>Digital Ocean</li></ul></div>
+      </li>
+      <li>
+        <h3 class="k" data-i18n="skill-fintech">FinTech</h3>
+        <div class="v"><ul class="items"><li>KHQR Integration</li><li>ABA Payment Gateway</li></ul></div>
+      </li>
+      <li>
+        <h3 class="k" data-i18n="skill-soft">Soft Skills</h3>
+        <div class="v"><ul class="items" data-i18n="skill-soft-items"><li>Communication</li><li>Problem-Solving</li><li>Adaptability</li></ul></div>
+      </li>
+    </ul>
+  </section>
 
-    <div class="rail-foot">
-      <div id="i18n-address">
-        Phnom Penh, Cambodia<br/>
-        <a href="mailto:porchheng914@gmail.com">porchheng914@gmail.com</a>
-      </div>
-      <div class="socials">
-        <a href="https://linkedin.com/in/porchheng" target="_blank" rel="noopener" aria-label="LinkedIn">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.03-1.85-3.03-1.85 0-2.14 1.44-2.14 2.94v5.66H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"/></svg>
-        </a>
-        <a href="mailto:porchheng914@gmail.com" aria-label="Email">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M2 5.5A1.5 1.5 0 0 1 3.5 4h17A1.5 1.5 0 0 1 22 5.5v13a1.5 1.5 0 0 1-1.5 1.5h-17A1.5 1.5 0 0 1 2 18.5v-13zm2.2.5 7.8 5.6 7.8-5.6H4.2zM20 7.4l-7.5 5.4a1 1 0 0 1-1.16 0L4 7.4V18h16V7.4z"/></svg>
-        </a>
-      </div>
+  <!-- ===== 免許・資格 and 語学 ===== -->
+  <section class="pair" id="credentials" aria-label="Certifications and languages" data-i18n-label="credentials">
+    <div class="block">
+      <div class="block-head"><h2 class="lbl inline"><span class="lj" lang="ja">免許・資格</span><span class="le">Certifications</span></h2></div>
+      <table class="grid-table">
+        <thead><tr>
+          <th scope="col"><span class="lbl"><span class="lj" lang="ja">資格名</span><span class="le">Certification</span></span></th>
+          <th scope="col"><span class="lbl"><span class="lj" lang="ja">発行・区分</span><span class="le">Issuer or level</span></span></th>
+        </tr></thead>
+        <tbody data-i18n="certs">
+          <tr><td>Introduction to Cyber Security</td><td class="sub">Cisco Networking Academy</td></tr>
+          <tr><td>CyberOps Associate</td><td class="sub">Cisco Networking Academy</td></tr>
+          <tr><td>Cybersecurity Essentials</td><td class="sub">Cisco Networking Academy</td></tr>
+          <tr><td>Solid Edge Mechanical</td><td class="sub">Associate Level</td></tr>
+        </tbody>
+      </table>
     </div>
-  </aside>
+    <div class="block">
+      <div class="block-head"><h2 class="lbl inline"><span class="lj" lang="ja">語学</span><span class="le">Languages</span></h2></div>
+      <table class="grid-table">
+        <thead><tr>
+          <th scope="col"><span class="lbl"><span class="lj" lang="ja">言語</span><span class="le">Language</span></span></th>
+          <th scope="col"><span class="lbl"><span class="lj" lang="ja">レベル</span><span class="le">Level</span></span></th>
+        </tr></thead>
+        <tbody data-i18n="langs">
+          <tr><td>Khmer</td><td class="lvl">Native</td></tr>
+          <tr><td>English</td><td class="lvl">Advanced</td></tr>
+          <tr><td>Japanese</td><td class="lvl">Intermediate</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
 
-  <!-- ===== PANES ===== -->
-  <main class="panes" id="panes">
-
-    <!-- GET /about -->
-    <article class="resource" id="about" data-resource="about">
-      <div class="req">
-        <p class="endpoint"><span class="verb">GET</span> <span class="path">/about</span></p>
-        <h2 class="pane-title" id="i18n-about-title">Introduction</h2>
-        <div class="prose" id="i18n-about-body">
-          <p>I'm a <b>backend engineer at the National Bank of Cambodia</b>, the country's central bank, working on
-          <b>Bakong</b>, Cambodia's national payment system. I build <b>load-testing applications for its public API</b>
-          and test its mobile app with <b>Appium-based automated tests</b>.</p>
-          <p>Before the bank I built <b>payment and e-commerce APIs</b> in REST and GraphQL, including
-          <b>ABA Bank KHQR</b> integration. I hold a Bachelor of Computer Science (Software Engineering) from the
-          Cambodia Academy of Digital Technology (CADT), 2023–2026, and work from Phnom Penh.</p>
-          <p>I'm also enrolled in the <b>Japanese IT Pathway Program</b> (<span class="nw">2025–2027</span>), run by the American University of
-          Phnom Penh (AUPP) and NEXTMAKE Inc.</p>
-        </div>
-      </div>
-      <aside class="res">
-        <div class="res-inner">
-          <p class="res-label" id="i18n-res-label-1">Response</p>
-          <dl class="record" id="i18n-about-record">
-            <div><dt>name</dt><dd>Cheng Porchheng</dd></div>
-            <div><dt>role</dt><dd>Backend Engineer</dd></div>
-            <div><dt>employer</dt><dd>National Bank of Cambodia</dd></div>
-            <div><dt>location</dt><dd>Phnom Penh, Cambodia</dd></div>
-            <div><dt>email</dt><dd><a href="mailto:porchheng914@gmail.com">porchheng914@gmail.com</a></dd></div>
-          </dl>
-          <p class="avail" id="i18n-avail-1">Open to backend &amp; API development roles</p>
-        </div>
-      </aside>
-    </article>
-
-    <!-- GET /experience/nbc -->
-    <article class="resource" id="nbc" data-resource="nbc">
-      <div class="req">
-        <p class="endpoint"><span class="verb">GET</span> <span class="path">/experience/nbc</span></p>
-        <h2 class="pane-title" id="i18n-nbc-title">Bakong test and performance engineering</h2>
-        <p class="lede" id="i18n-nbc-lede">I'm a backend engineer at the National Bank of Cambodia, open to backend and API roles, and enrolled in the Japanese IT Pathway Program (<span class="nw">2025–2027</span>).</p>
-        <ul class="work" id="i18n-nbc-body">
-          <li>Test and performance engineering for <b>Bakong</b>, Cambodia's national payment system, operated by the central bank.</li>
-          <li>Design and build, largely on my own, a <b>load-benchmarking platform</b> for the <b>Bakong public API</b>. It turns API collections into <b>repeatable, graded load tests</b>, keeps results <b>comparable from one release to the next</b>, and lets QA staff run and read benchmarks without writing test code.</li>
-          <li>Built with <b>NestJS, Next.js, PostgreSQL and k6</b>, with automated tests, database migrations, CI and written architecture decision records.</li>
-          <li>Focused on <b>measurements you can trust</b>: each response's own result code is checked, not just its HTTP status, and a run whose measurements came back incomplete under load is flagged rather than read as a good result.</li>
-          <li>Test the <b>Bakong mobile application</b> using <b>Appium</b>-based automated tests.</li>
-        </ul>
-      </div>
-      <aside class="res">
-        <div class="res-inner">
-          <p class="res-label" id="i18n-res-label-2">Response</p>
-          <dl class="record" id="i18n-nbc-record">
-            <div><dt>employer</dt><dd>National Bank of Cambodia (NBC)</dd></div>
-            <div><dt>role</dt><dd>Backend Engineer</dd></div>
-            <div><dt>period</dt><dd>Aug 2026 – present</dd></div>
-            <div><dt>system</dt><dd>Bakong, Cambodia's national payment system</dd></div>
-            <div><dt>surface</dt><dd>public API, mobile application</dd></div>
-            <div><dt>stack</dt><dd>k6, NestJS, Next.js, PostgreSQL, Appium</dd></div>
-          </dl>
-        </div>
-      </aside>
-    </article>
-
-    <!-- GET /experience/ecommerce -->
-    <article class="resource" id="ecommerce" data-resource="ecommerce">
-      <div class="req">
-        <p class="endpoint"><span class="verb">GET</span> <span class="path">/experience/ecommerce</span></p>
-        <h2 class="pane-title" id="i18n-ecommerce-title">Multi-vendor e-commerce platform and KHQR payments</h2>
-        <ul class="work" id="i18n-ecommerce-body">
-          <li>Built <b>REST and GraphQL APIs</b> on the Vendure framework for a Khmer-language multi-vendor mobile e-commerce platform.</li>
-          <li>Integrated <b>KHQR</b>, Cambodia's national QR payment standard, through <b>ABA Bank's payment gateway</b>, with secure transaction flows and automated payment-status webhooks.</li>
-          <li>Improved speed and reliability with <b>Redis caching</b>, <b>Firebase Cloud Messaging</b> notifications, and <b>AWS CloudWatch</b> monitoring.</li>
-        </ul>
-      </div>
-      <aside class="res">
-        <div class="res-inner">
-          <p class="res-label" id="i18n-res-label-3">Response</p>
-          <dl class="record" id="i18n-ecommerce-record">
-            <div><dt>employer</dt><dd>Biz Solution Co., Ltd.</dd></div>
-            <div><dt>role</dt><dd>Backend Developer Intern</dd></div>
-            <div><dt>period</dt><dd>Jan 2026 – May 2026</dd></div>
-            <div><dt>product</dt><dd>Khmer-language multi-vendor e-commerce platform</dd></div>
-            <div><dt>payments</dt><dd>KHQR via ABA Bank</dd></div>
-            <div><dt>stack</dt><dd>Vendure, GraphQL, REST, Redis, FCM, AWS CloudWatch</dd></div>
-          </dl>
-        </div>
-      </aside>
-    </article>
-
-    <!-- GET /experience/biz-solution -->
-    <article class="resource" id="biz" data-resource="biz">
-      <div class="req">
-        <p class="endpoint"><span class="verb">GET</span> <span class="path">/experience/biz-solution</span></p>
-        <h2 class="pane-title" id="i18n-biz-title">E-commerce maintenance and Odoo integration</h2>
-        <ul class="work" id="i18n-biz-body">
-          <li>Maintained and extended <b>existing production e-commerce projects</b> on both the <b>frontend and the backend</b>, including their REST and GraphQL APIs.</li>
-          <li>Worked on <b>notifications</b> and <b>queue-based background jobs</b>.</li>
-          <li>Integrated the projects with the <b>Odoo</b> ERP.</li>
-        </ul>
-      </div>
-      <aside class="res">
-        <div class="res-inner">
-          <p class="res-label" id="i18n-res-label-5">Response</p>
-          <dl class="record" id="i18n-biz-record">
-            <div><dt>employer</dt><dd>Biz Solution Co., Ltd.</dd></div>
-            <div><dt>role</dt><dd>Junior Web Developer</dd></div>
-            <div><dt>period</dt><dd>May 2026 – July 2026</dd></div>
-            <div><dt>scope</dt><dd>frontend, backend, notifications, queues</dd></div>
-            <div><dt>stack</dt><dd>NestJS, REST, GraphQL, Odoo, Redis</dd></div>
-          </dl>
-        </div>
-      </aside>
-    </article>
-
-    <!-- GET /experience/cdc -->
-    <article class="resource" id="cdc" data-resource="cdc">
-      <div class="req">
-        <p class="endpoint"><span class="verb">GET</span> <span class="path">/experience/cdc</span></p>
-        <h2 class="pane-title" id="i18n-cdc-title">Meeting scheduling API and web portal</h2>
-        <ul class="work" id="i18n-cdc-body">
-          <li>Built a <b>NestJS REST API</b> powering a meeting scheduling system, serving the <b>mobile application</b>.</li>
-          <li>Developed a real-time <b>Next.js web portal</b> with live scheduling updates, shown on office LCD displays.</li>
-        </ul>
-      </div>
-      <aside class="res">
-        <div class="res-inner">
-          <p class="res-label" id="i18n-res-label-6">Response</p>
-          <dl class="record" id="i18n-cdc-record">
-            <div><dt>employer</dt><dd>The Council for the Development of Cambodia (CDC)</dd></div>
-            <div><dt>role</dt><dd>API &amp; Web Developer Intern</dd></div>
-            <div><dt>period</dt><dd>May 2025 – Aug 2025</dd></div>
-            <div><dt>clients</dt><dd>mobile application, web portal</dd></div>
-            <div><dt>stack</dt><dd>NestJS, Next.js, REST</dd></div>
-          </dl>
-        </div>
-      </aside>
-    </article>
-
-    <!-- GET /skills -->
-    <article class="resource" id="skills" data-resource="skills">
-      <div class="req">
-        <p class="endpoint"><span class="verb">GET</span> <span class="path">/skills</span></p>
-        <h2 class="pane-title" id="i18n-skills-title">Skills</h2>
-        <div class="groups">
-          <div>
-            <h3 class="sub" id="i18n-skill-programming">Programming</h3>
-            <div class="chips">
-              <span class="chip">TypeScript</span><span class="chip">JavaScript</span><span class="chip">Python</span>
-              <span class="chip">Dart</span><span class="chip">C++</span><span class="chip">Java</span><span class="chip">SQL</span>
-            </div>
+  <!-- ===== 本人希望記入欄 and 連絡先 ===== -->
+  <section class="block" id="contact" aria-labelledby="contact-title">
+    <div class="block-head"><h2 id="contact-title" class="lbl inline"><span class="lj" lang="ja">本人希望記入欄・連絡先</span><span class="le">Preferences and contact</span></h2></div>
+    <ul class="rows">
+      <li>
+        <span class="lbl"><span class="lj" lang="ja">本人希望</span><span class="le">Looking for</span></span>
+        <!-- Reserved: start date, location or remote go here once the owner decides. Nothing is stated until then. -->
+        <p class="v request ruled" data-i18n="avail">Backend and API development roles</p>
+      </li>
+      <li>
+        <span class="lbl"><span class="lj" lang="ja">連絡</span><span class="le">Get in touch</span></span>
+        <div class="v">
+          <div class="prose" data-i18n="contact-body">
+            <p>If my background fits a backend or API role on your team, I'd be glad to hear from you.
+            The button opens your mail app, or you can copy the address.</p>
           </div>
-          <div>
-            <h3 class="sub" id="i18n-skill-frameworks">Frameworks</h3>
-            <div class="chips">
-              <span class="chip">NestJS</span><span class="chip">Vendure</span><span class="chip">FastAPI</span>
-              <span class="chip">Node.js</span><span class="chip">Next.js</span><span class="chip">Flutter</span><span class="chip">Angular</span>
-            </div>
-          </div>
-          <div>
-            <h3 class="sub" id="i18n-skill-tools">Tools &amp; Platforms</h3>
-            <div class="chips">
-              <span class="chip">Git</span><span class="chip">Docker</span><span class="chip">Postgres</span>
-              <span class="chip">Postman</span><span class="chip">Jira</span><span class="chip">GraphQL</span>
-              <span class="chip">Jest</span><span class="chip">Automated Testing</span><span class="chip">Appium</span>
-              <span class="chip">Load Testing</span><span class="chip">k6</span>
-            </div>
-          </div>
-          <div>
-            <h3 class="sub" id="i18n-skill-cloud">Cloud &amp; DevOps</h3>
-            <div class="chips">
-              <span class="chip">AWS CloudWatch</span><span class="chip">Firebase (FCM)</span>
-              <span class="chip">Redis</span><span class="chip">Cloudflare</span><span class="chip">Digital Ocean</span>
-            </div>
-          </div>
-          <div>
-            <h3 class="sub" id="i18n-skill-fintech">FinTech</h3>
-            <div class="chips">
-              <span class="chip">KHQR Integration</span><span class="chip">ABA Payment Gateway</span>
-            </div>
-          </div>
-          <div>
-            <h3 class="sub" id="i18n-skill-soft">Soft Skills</h3>
-            <div class="chips" id="i18n-skill-soft-chips">
-              <span class="chip">Communication</span><span class="chip">Problem-Solving</span><span class="chip">Adaptability</span>
-            </div>
+          <div class="actions">
+            <a class="btn primary" href="mailto:porchheng914@gmail.com"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-mail"/></svg><span data-i18n="contact-btn">Email me</span></a>
+            <button type="button" class="btn copy-btn" data-copy="porchheng914@gmail.com">
+              <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-copy"/></svg>
+              <span class="addr">porchheng914@gmail.com</span>
+              <span class="copy-note" aria-live="polite"></span>
+            </button>
+            <a class="btn" href="Cheng_Porchheng_CV.pdf" download><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-down"/></svg><span data-i18n="cv-2">Download CV (PDF)</span></a>
           </div>
         </div>
-      </div>
-      <aside class="res">
-        <div class="res-inner">
-          <p class="res-label" id="i18n-res-label-7">Response</p>
-          <dl class="record" id="i18n-skills-record">
-            <div><dt>primary</dt><dd>TypeScript, NestJS, PostgreSQL</dd></div>
-            <div><dt>focus</dt><dd>backend APIs, payment integration, testing</dd></div>
-            <div><dt>apis</dt><dd>REST, GraphQL</dd></div>
-            <div><dt>testing</dt><dd>Jest, Appium, load testing</dd></div>
-          </dl>
-        </div>
-      </aside>
-    </article>
+      </li>
+    </ul>
+  </section>
 
-    <!-- GET /credentials -->
-    <article class="resource" id="credentials" data-resource="credentials">
-      <div class="req">
-        <p class="endpoint"><span class="verb">GET</span> <span class="path">/credentials</span></p>
-        <h2 class="pane-title" id="i18n-credentials-title">Credentials</h2>
-        <h3 class="sub" id="i18n-edu-title">Education</h3>
-        <ul class="rows" id="i18n-edu-body">
-          <li><span>Bachelor of Computer Science (Software Engineering) · CADT</span><span class="val">2023 – 2026</span></li>
-          <li><span>Japanese IT Pathway Program · American University of Phnom Penh (AUPP) and NEXTMAKE Inc.</span><span class="val">2025 – 2027</span></li>
-        </ul>
-        <h3 class="sub" id="i18n-certs-title">Certifications</h3>
-        <ul class="rows" id="i18n-certs-body">
-          <li><span>Introduction to Cyber Security · Cisco Networking Academy</span></li>
-          <li><span>CyberOps Associate · Cisco Networking Academy</span></li>
-          <li><span>Cybersecurity Essentials · Cisco Networking Academy</span></li>
-          <li><span>Solid Edge Mechanical · Associate Level</span></li>
-        </ul>
-        <h3 class="sub" id="i18n-langs-title">Languages</h3>
-        <ul class="rows" id="i18n-langs-body">
-          <li><span>Khmer</span><span class="val">NATIVE</span></li>
-          <li><span>English</span><span class="val">ADVANCED</span></li>
-          <li><span>Japanese</span><span class="val">INTERMEDIATE</span></li>
-        </ul>
-      </div>
-      <aside class="res">
-        <div class="res-inner">
-          <p class="res-label" id="i18n-res-label-8">Response</p>
-          <dl class="record" id="i18n-credentials-record">
-            <div><dt>degree</dt><dd>Bachelor of Computer Science (Software Engineering)</dd></div>
-            <div><dt>school</dt><dd>Cambodia Academy of Digital Technology (CADT)</dd></div>
-            <div><dt>graduated</dt><dd>2026</dd></div>
-            <div><dt>program</dt><dd>Japanese IT Pathway Program</dd></div>
-            <div><dt>partners</dt><dd>American University of Phnom Penh (AUPP), NEXTMAKE Inc.</dd></div>
-            <div><dt>enrolled</dt><dd>2025 – 2027, ongoing</dd></div>
-          </dl>
-        </div>
-      </aside>
-    </article>
-
-    <!-- GET /contact -->
-    <article class="resource" id="contact" data-resource="contact">
-      <div class="req">
-        <p class="endpoint"><span class="verb">GET</span> <span class="path">/contact</span></p>
-        <h2 class="pane-title" id="i18n-contact-title">Contact</h2>
-        <div class="prose" id="i18n-contact-body">
-          <p>If my background fits a backend or API role on your team, I'd be glad to hear from you.
-          The button opens your mail app, or you can copy the address.</p>
-        </div>
-        <div class="contact-actions">
-          <a class="send-btn" href="mailto:porchheng914@gmail.com">
-            <span id="i18n-contact-btn">Email me</span>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </a>
-          <button type="button" class="copy-btn" data-copy="porchheng914@gmail.com">
-            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-copy"/></svg>
-            <span>porchheng914@gmail.com</span>
-            <span class="copy-note" aria-live="polite"></span>
-          </button>
-        </div>
-        <footer id="i18n-footer">© 2026 Cheng Porchheng · Phnom Penh, Cambodia</footer>
-      </div>
-      <aside class="res">
-        <div class="res-inner">
-          <p class="res-label" id="i18n-res-label-9">Response</p>
-          <dl class="record" id="i18n-contact-record">
-            <div><dt>email</dt><dd><a href="mailto:porchheng914@gmail.com">porchheng914@gmail.com</a></dd></div>
-            <div><dt>linkedin</dt><dd><a href="https://linkedin.com/in/porchheng" target="_blank" rel="noopener">linkedin.com/in/porchheng<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-external"/></svg></a></dd></div>
-            <div><dt>location</dt><dd>Phnom Penh, Cambodia</dd></div>
-            <!-- Reserved: an availability row (start date, location or remote) goes here
-                 once the owner decides it. Nothing is stated until then. -->
-          </dl>
-          <p class="avail" id="i18n-avail-2">Open to backend &amp; API development roles</p>
-        </div>
-      </aside>
-    </article>
-
-  </main>
+</main>
+<footer class="foot" data-i18n="footer">© 2026 Cheng Porchheng · Phnom Penh, Cambodia</footer>
 </div>
 
 <script>
+  const root = document.documentElement;
+
   /* ===== Theme ===== */
-  function toggleTheme(){
-    const t = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
-    document.documentElement.dataset.theme = t;
+  document.querySelector('.theme-btn').addEventListener('click', () => {
+    const t = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = t;
     localStorage.setItem('theme', t);
+  });
+
+  /* ===== History rows: each role opens in place, inside the entry column ===== */
+  const jobs = Array.from(document.querySelectorAll('.hist-row.job'));
+  const toggleAll = document.querySelector('.toggle-all');
+  function setOpen(row, open){
+    row.classList.toggle('open', open);
+    row.querySelector('.row-btn').setAttribute('aria-expanded', String(open));
   }
-
-  /* ===== Resource selection: the rail drives both panes ===== */
-  const resources = Array.from(document.querySelectorAll('.resource'));
-  const railLinks = Array.from(document.querySelectorAll('.rail-link'));
-  const ids = resources.map(r => r.id);
-  const DEFAULT_RESOURCE = 'nbc';
-  let current = null;
-
-  function select(id, opts){
-    if (!ids.includes(id)) id = DEFAULT_RESOURCE;
-    if (id === current) return false;
-    const animate = !!(opts && opts.animate);
-    resources.forEach(r => {
-      const on = r.id === id;
-      r.classList.toggle('active', on);
-      r.classList.remove('swap');
-      if (on && animate){
-        void r.offsetWidth;          // restart the one authored moment
-        r.classList.add('swap');
-      }
+  function labelToggleAll(){
+    const ja = root.lang === 'ja';
+    const allOpen = jobs.every(r => r.classList.contains('open'));
+    toggleAll.textContent = allOpen ? (ja ? 'すべて閉じる' : 'Close all') : (ja ? 'すべて開く' : 'Open all');
+    toggleAll.setAttribute('aria-expanded', String(allOpen));
+  }
+  jobs.forEach(row => {
+    row.querySelector('.row-btn').addEventListener('click', () => {
+      setOpen(row, !row.classList.contains('open'));
+      labelToggleAll();
     });
-    railLinks.forEach(l => l.setAttribute('aria-current', String(l.dataset.target === id)));
-    current = id;
-    if (animate) window.scrollTo({ top: 0, behavior: 'auto' });
-    return true;
+  });
+  toggleAll.addEventListener('click', () => {
+    const allOpen = jobs.every(r => r.classList.contains('open'));
+    jobs.forEach(r => setOpen(r, !allOpen));
+    labelToggleAll();
+  });
+
+  /* Old links into roles (#nbc, #cdc, ...) still land: the row opens and comes into view. */
+  function openFromHash(){
+    const row = document.getElementById(location.hash.slice(1));
+    if (row && row.classList.contains('job')){
+      setOpen(row, true);
+      labelToggleAll();
+      requestAnimationFrame(() => row.scrollIntoView({ block: 'start' }));
+    }
   }
+  window.addEventListener('hashchange', openFromHash);
 
-  /* ===================================================================
-     The request lifecycle.
-
-     Selecting a resource is a request, and the response pane reports it
-     the way a client would: a status and a real elapsed time, labelled.
-
-     Every number here is measured, never authored. The latency is
-     performance.now() from the click to the frame where the first field
-     of the record is painted, the way a status line arrives before the
-     body has finished streaming. It stops before the page's own field
-     animation, so it moves with the machine and the browser, not with
-     the choreography. Nothing on this page invents data.
-     =================================================================== */
+  /* ===== Section band: mark the section being read ===== */
   const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const canMorph = typeof document.startViewTransition === 'function';
-  const served = new Set();          // resources already fetched this session
-
-  const STATUS_COPY = {
-    en: { cached: 'cached', timing: 'Display time in your browser' },
-    ja: { cached: 'キャッシュ', timing: 'お使いのブラウザで実測した表示時間' }
-  };
-  const copy = () => STATUS_COPY[document.documentElement.lang === 'ja' ? 'ja' : 'en'];
-
-  /* Build the status line once per pane. The i18n pass rewrites
-     the innerHTML of [id^="i18n-"] nodes, so nothing here may live inside one. */
-  function shellFor(res){
-    const inner = res.querySelector('.res-inner');
-    let head = inner.querySelector('.res-head');
-    if (!head){
-      const label = inner.querySelector('.res-label');
-      head = document.createElement('div');
-      head.className = 'res-head';
-      label.parentNode.insertBefore(head, label);
-      head.appendChild(label);
-      head.insertAdjacentHTML('beforeend',
-        '<span class="status" role="status"><span class="status-dot"></span>' +
-        '<span class="status-code"></span><span class="status-note"></span>' +
-        '<span class="status-time"></span></span><p class="status-cap"></p>');
-      inner.insertAdjacentHTML('afterbegin', '<span class="scan" aria-hidden="true"></span>');
-    }
-    return {
-      inner,
-      status: inner.querySelector('.status'),
-      code: inner.querySelector('.status-code'),
-      note: inner.querySelector('.status-note'),
-      time: inner.querySelector('.status-time'),
-      cap: inner.querySelector('.status-cap'),
-      scan: inner.querySelector('.scan')
-    };
-  }
-
-  function setStatus(ui, state, code, ms, cached){
-    ui.status.dataset.state = state;
-    ui.code.textContent = code;
-    ui.note.textContent = cached ? '· ' + copy().cached : '';
-    ui.time.textContent = ms == null ? '' : ms + 'ms';
-    ui.cap.textContent = ms == null ? '' : copy().timing;
-  }
-
-  /* A language switch must not strand English labels in a Japanese pane. */
-  const lastStatus = {};
-  function relabelLifecycle(){
-    if (!served.size) return;
-    Object.keys(lastStatus).forEach(id => {
-      const s = lastStatus[id];
-      setStatus(shellFor(document.getElementById(id)), 'ok', s.code, s.ms, s.cached);
-    });
-  }
-
-  /* The record arriving field by field, with one line sweeping the pane.
-     Resolves on the frame the first field is painted: the status reports
-     the response, and the rest of the record keeps streaming in behind it. */
-  function streamRecord(res, ui){
-    const rows = Array.from(res.querySelectorAll('.record > div'))
-      .concat(Array.from(ui.inner.querySelectorAll('.avail')));
-    if (!rows.length) return Promise.resolve();
-    const step = 38;
-    rows.forEach((row, i) => row.animate(
-      [{ opacity: 0, transform: 'translateY(5px)' }, { opacity: 1, transform: 'none' }],
-      { duration: 230, delay: i * step, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'both' }
-    ));
-    const span = rows.length * step + 230;
-    ui.scan.animate(
-      [{ opacity: 0, transform: 'translateY(0)' },
-       { opacity: .85, offset: .12 },
-       { opacity: 0, transform: 'translateY(' + Math.max(ui.inner.offsetHeight - 2, 40) + 'px)' }],
-      { duration: span, easing: 'cubic-bezier(.33,0,.2,1)' }
-    );
-    /* The first rAF runs before the frame that paints the first field;
-       the second runs once that frame is on screen. */
-    return new Promise(r => requestAnimationFrame(() => requestAnimationFrame(() => r())));
-  }
-
-  function request(id, opts){
-    const t0 = (opts && opts.t0 != null) ? opts.t0 : performance.now();
-    const res = document.getElementById(ids.includes(id) ? id : DEFAULT_RESOURCE);
-    const ui = shellFor(res);
-    const cached = served.has(res.id);
-    const still = motionQuery.matches;
-
-    if (!cached && !still) setStatus(ui, 'pending', '···', null, false);
-
-    const settle = () => {
-      const ms = Math.max(1, Math.round(performance.now() - t0));
-      setStatus(ui, 'ok', '200 OK', ms, cached);
-      lastStatus[res.id] = { code: '200 OK', ms, cached };
-      served.add(res.id);
-    };
-
-    if (cached || still){
-      /* Already fetched, or motion is off: the response is simply there. */
-      requestAnimationFrame(settle);
-    } else {
-      streamRecord(res, ui).then(settle);
+  const tabs = document.querySelector('.tabs');
+  const tabLinks = Array.from(tabs.querySelectorAll('a'));
+  const sections = tabLinks.map(a => document.getElementById(a.dataset.tab));
+  function markTab(id){
+    tabLinks.forEach(a => a.setAttribute('aria-current', String(a.dataset.tab === id)));
+    const link = tabLinks.find(a => a.dataset.tab === id);
+    if (link && tabs.scrollWidth > tabs.clientWidth){
+      const left = link.offsetLeft - (tabs.clientWidth - link.offsetWidth) / 2;
+      tabs.scrollTo({ left: Math.max(0, left), behavior: motionQuery.matches ? 'auto' : 'smooth' });
     }
   }
-
-  /* The verb flies from the rail item into the header it addresses. Only one
-     element may hold a view-transition-name at a time, so the name is handed
-     from the rail to the endpoint inside the update callback. */
-  function morphTo(id, update){
-    const link = document.querySelector('.rail-link[data-target="' + id + '"]');
-    const from = link && link.querySelector('.verb');
-    /* Below 900px the rail verb is display:none, so there is nothing to fly. */
-    if (!canMorph || motionQuery.matches || !from || !from.offsetParent){ update(); return; }
-    const to = document.getElementById(id).querySelector('.endpoint .verb');
-    from.style.viewTransitionName = 'vt-verb';
-    const t = document.startViewTransition(() => {
-      from.style.viewTransitionName = '';
-      update();
-      to.style.viewTransitionName = 'vt-verb';
-    });
-    t.finished.catch(() => {}).then(() => { to.style.viewTransitionName = ''; });
+  function currentSection(){
+    const line = 120;
+    let id = sections[0].id;
+    sections.forEach(s => { if (s.getBoundingClientRect().top - line <= 0) id = s.id; });
+    /* The last block may never reach the line: the page bottom counts as arriving. */
+    if (innerHeight + scrollY >= document.documentElement.scrollHeight - 4) id = sections[sections.length - 1].id;
+    return id;
   }
-
-  /* No blur() here: focus stays on the activated link so keyboard users keep
-     their place in the rail. :focus-visible already hides the ring for mice. */
-  function go(id, opts){
-    const t0 = performance.now();
-    morphTo(id, () => {
-      select(id, { animate: true });
-      request(id, { t0 });
+  let lastTab = null, ticking = false;
+  function onScroll(){
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      ticking = false;
+      const id = currentSection();
+      if (id !== lastTab){ lastTab = id; markTab(id); }
     });
-    revealTab(id);
-    /* Each resource is a history entry, so Back walks the reviewer's reading.
-       pushState throws on file:// in some browsers, and this page is opened that way. */
-    if (opts && opts.fromHistory) return;
-    if (location.hash !== '#' + id){
-      try { history.pushState(null, '', '#' + id); } catch (err) { /* no-op */ }
-    }
   }
+  window.addEventListener('scroll', onScroll, { passive: true });
 
-  /* Below 900px the rail is a scrolling tab strip: keep the open tab in view,
-     and fade whichever edge still has tabs beyond it. */
-  const railNav = document.querySelector('.rail-nav');
-  function stripScrolls(){ return getComputedStyle(railNav).overflowX === 'auto'; }
-  function markStripEdges(){
-    if (!stripScrolls()){ railNav.removeAttribute('data-more'); return; }
+  /* Below 720px the band scrolls sideways: fade whichever edge has more tabs. */
+  function markTabEdges(){
+    if (tabs.scrollWidth <= tabs.clientWidth + 2){ tabs.removeAttribute('data-more'); return; }
     const more = [];
-    if (railNav.scrollLeft > 4) more.push('start');
-    if (railNav.scrollLeft + railNav.clientWidth < railNav.scrollWidth - 4) more.push('end');
-    railNav.dataset.more = more.join(' ');
+    if (tabs.scrollLeft > 4) more.push('start');
+    if (tabs.scrollLeft + tabs.clientWidth < tabs.scrollWidth - 4) more.push('end');
+    tabs.dataset.more = more.join(' ');
   }
-  function revealTab(id){
-    if (!stripScrolls()) return;
-    const link = railNav.querySelector('.rail-link[data-target="' + id + '"]');
-    if (!link) return;
-    const left = link.getBoundingClientRect().left - railNav.getBoundingClientRect().left + railNav.scrollLeft;
-    const target = Math.max(0, left - (railNav.clientWidth - link.offsetWidth) / 2);
-    railNav.scrollTo({ left: target, behavior: motionQuery.matches ? 'auto' : 'smooth' });
-  }
-  railNav.addEventListener('scroll', markStripEdges, { passive: true });
-  window.addEventListener('resize', markStripEdges);
+  tabs.addEventListener('scroll', markTabEdges, { passive: true });
+  window.addEventListener('resize', () => { markTabEdges(); onScroll(); });
 
-  railLinks.forEach(link => {
-    link.addEventListener('click', e => {
-      e.preventDefault();
-      go(link.dataset.target);
-    });
-  });
-
-  document.querySelector('.panes').addEventListener('click', e => {
-    const next = e.target.closest('.next');
-    if (next){
-      e.preventDefault();
-      go(next.dataset.target);
-      return;
-    }
-    /* The mail link reports nothing: the page cannot know a mail client opened. */
-    const copyBtn = e.target.closest('.copy-btn');
-    if (copyBtn) copyAddress(copyBtn);
-  });
-
-  /* Copying the address is not a request, so it stays out of the status line. */
-  function copyAddress(btn){
-    const ja = document.documentElement.lang === 'ja';
+  /* ===== Copy the address, for reviewers whose mail runs in a browser tab ===== */
+  document.querySelector('.copy-btn').addEventListener('click', function(){
+    const btn = this;
+    const ja = root.lang === 'ja';
     const note = btn.querySelector('.copy-note');
-    const addr = btn.querySelector('span:not(.copy-note)');
+    const addr = btn.querySelector('.addr');
     const show = text => {
       note.textContent = text;
       clearTimeout(btn._t);
@@ -1390,46 +1333,7 @@
     } else {
       selectAddress();
     }
-  }
-
-  /* Build the "next resource" link from the rail, so it follows the active language. */
-  function renderNextLinks(lang){
-    const label = lang === 'ja' ? '次のリソース' : 'Next resource';
-    resources.forEach((res, i) => {
-      const nextId = ids[i + 1];
-      const host = res.querySelector('.req');
-      let el = res.querySelector('.next');
-      if (!nextId){ if (el) el.remove(); return; }
-      const link = document.querySelector('.rail-link[data-target="' + nextId + '"]');
-      const name = link.querySelector('.rail-name').textContent;
-      const ep = document.getElementById(nextId).querySelector('.endpoint');
-      const path = ep.querySelector('.verb').textContent + ' ' + ep.querySelector('.path').textContent;
-      if (!el){
-        el = document.createElement('a');
-        el.className = 'next';
-        el.href = '#' + nextId;
-        el.dataset.target = nextId;
-        host.appendChild(el);
-      }
-      el.innerHTML = '<span class="next-label"></span><span class="next-name"></span><span class="next-path"></span>'
-        + '<svg class="ico next-arrow" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg>';
-      el.children[0].textContent = label;
-      el.children[1].textContent = name;
-      el.children[2].textContent = path;
-    });
-  }
-
-  /* Only resource hashes drive the panes: #panes from the skip link must not reset the view. */
-  window.addEventListener('hashchange', () => {
-    const id = location.hash.slice(1);
-    if (ids.includes(id)) go(id, { fromHistory: true });
-    else if (!id) go(DEFAULT_RESOURCE, { fromHistory: true });   // Back to the bare URL
   });
-
-  /* The first request is the page load itself. performance.now() is measured
-     from navigation start, so t0 = 0 makes the opening number the real time
-     from opening the link to the first record being fully painted. */
-  select(location.hash.slice(1), { animate: false });
 
   /* ===== i18n ===== */
   const meta = {
@@ -1438,107 +1342,88 @@
       description: "Cheng Porchheng, backend engineer at the National Bank of Cambodia, working on load testing and automated testing for Bakong, Cambodia's national payment system, with a background in KHQR payment and e-commerce APIs."
     },
     ja: {
-      title: 'チェン・ポーチェン (Cheng Porchheng) | バックエンドエンジニア',
+      title: 'チェン・ポーチェン（Cheng Porchheng） | バックエンドエンジニア',
       description: 'チェン・ポーチェン。カンボジア国立銀行のバックエンドエンジニア。国家決済システムBakongの負荷テストと、Appiumを用いたモバイルアプリのテストを担当。KHQR決済およびEC向けAPI開発の経験があります。'
     }
   };
 
-  const translations = {
-    ja: {
-      'i18n-skip': '本文へスキップ',
-      'i18n-name': 'チェン・ポーチェン',
-      'i18n-role': 'バックエンドエンジニア',
-      'i18n-cv': '英文CVをダウンロード',
-      'i18n-grp-intro': 'はじめに',
-      'i18n-grp-work': '職務経歴',
-      'i18n-grp-ref': 'リファレンス',
-      'i18n-rail-about': '概要',
-      'i18n-rail-nbc': 'NBC / Bakong',
-      'i18n-rail-ecommerce': 'EC / KHQR',
-      'i18n-rail-biz': 'EC / Odoo',
-      'i18n-when-nbc': '2026年8月〜現在',
-      'i18n-when-ecommerce': 'インターン・2026年1〜5月',
-      'i18n-when-biz': 'ジュニア・2026年5〜7月',
-      'i18n-when-cdc': '2025年5〜8月',
-      'i18n-rail-cdc': 'CDC',
-      'i18n-rail-skills': 'スキル',
-      'i18n-rail-credentials': '資格・学歴',
-      'i18n-rail-contact': '連絡先',
-      'i18n-address': 'プノンペン、カンボジア<br/><a href="mailto:porchheng914@gmail.com">porchheng914@gmail.com</a>',
-
-      'i18n-about-title': '概要',
-      'i18n-about-body': '<p>カンボジアの中央銀行である<b>カンボジア国立銀行(NBC)のバックエンドエンジニア</b>として、国家決済システム<b>Bakong</b>に携わっています。<b>Bakong公開API向けの負荷テストアプリケーション</b>を開発し、モバイルアプリを<b>Appiumによる自動テスト</b>で検証しています。</p><p>それ以前は、REST・GraphQLによる<b>決済・EC向けAPI</b>を開発し、<b>ABA銀行のKHQR決済</b>を統合しました。カンボジアデジタル技術アカデミー(CADT)で<b>コンピュータサイエンス学士(ソフトウェアエンジニアリング専攻)</b>を取得し、2026年に卒業しました(2023年〜2026年)。プノンペンを拠点としています。</p><p>また、American University of Phnom Penh (AUPP)とNEXTMAKE Inc.による<b>日本ITパスウェイプログラム</b>(2025年〜2027年)を受講しています。</p>',
-      'i18n-about-record': '<div><dt>name</dt><dd>チェン・ポーチェン (Cheng Porchheng)</dd></div><div><dt>role</dt><dd>バックエンドエンジニア</dd></div><div><dt>employer</dt><dd>カンボジア国立銀行</dd></div><div><dt>location</dt><dd>プノンペン、カンボジア</dd></div><div><dt>email</dt><dd><a href="mailto:porchheng914@gmail.com">porchheng914@gmail.com</a></dd></div>',
-
-      'i18n-nbc-title': 'Bakongの<wbr>テスト・<wbr>パフォーマンス<wbr>エンジニアリング',
-      'i18n-nbc-lede': 'カンボジア国立銀行のバックエンドエンジニアです。バックエンド・API開発のポジションを希望しており、日本ITパスウェイプログラム(2025年〜2027年)を受講しています。',
-      'i18n-nbc-body': '<li>中央銀行が運営するカンボジアの国家決済システム<b>Bakong</b>のテスト・パフォーマンスエンジニアリングを担当。</li><li><b>Bakong公開API</b>向けの<b>負荷ベンチマーク基盤</b>を、ほぼ単独で設計・開発。APIコレクションを<b>再現性のある評価付き負荷テスト</b>に変換し、結果を<b>リリース間で比較可能</b>な形で保持。QA担当者はテストコードを書かずにベンチマークを実行・確認可能。</li><li><b>NestJS・Next.js・PostgreSQL・k6</b>で構築し、自動テスト、DBマイグレーション、CI、アーキテクチャ決定記録(ADR)を整備。</li><li><b>信頼できる計測</b>を重視。HTTPステータスだけでなく各レスポンスの結果コードを検証し、高負荷時に計測が欠けた実行は、良好な結果と誤認されないよう明示。</li><li><b>Bakongモバイルアプリ</b>を<b>Appium</b>による自動テストで検証。</li>',
-      'i18n-nbc-record': '<div><dt>employer</dt><dd>カンボジア国立銀行 (NBC)</dd></div><div><dt>role</dt><dd>バックエンドエンジニア</dd></div><div><dt>period</dt><dd>2026年8月 〜 現在</dd></div><div><dt>system</dt><dd>Bakong(カンボジアの国家決済システム)</dd></div><div><dt>surface</dt><dd>公開API、モバイルアプリ</dd></div><div><dt>stack</dt><dd>k6、NestJS、Next.js、PostgreSQL、Appium</dd></div>',
-
-      'i18n-ecommerce-title': 'マルチベンダー型<wbr>EC<wbr>プラットフォームと<wbr>KHQR決済',
-      'i18n-ecommerce-body': '<li>Vendureフレームワーク上で、クメール語対応のマルチベンダー型モバイルECプラットフォーム向け<b>REST・GraphQL API</b>を構築。</li><li>カンボジアの統一QR決済規格<b>KHQR</b>を<b>ABA銀行の決済ゲートウェイ</b>経由で統合し、安全な取引フローと決済ステータスの自動Webhookを実装。</li><li><b>Redisキャッシュ</b>、<b>Firebase Cloud Messaging</b>通知、<b>AWS CloudWatch</b>監視により、速度と信頼性を向上。</li>',
-      'i18n-ecommerce-record': '<div><dt>employer</dt><dd>Biz Solution Co., Ltd.</dd></div><div><dt>role</dt><dd>バックエンド開発者インターン</dd></div><div><dt>period</dt><dd>2026年1月 〜 2026年5月</dd></div><div><dt>product</dt><dd>クメール語対応マルチベンダー型ECプラットフォーム</dd></div><div><dt>payments</dt><dd>KHQR(ABA銀行経由)</dd></div><div><dt>stack</dt><dd>Vendure, GraphQL, REST, Redis, FCM, AWS CloudWatch</dd></div>',
-
-      'i18n-biz-title': '既存EC<wbr>プロジェクトの<wbr>保守と<wbr>Odoo連携',
-      'i18n-biz-body': '<li><b>既存の本番ECプロジェクト</b>を、<b>フロントエンドとバックエンドの両面</b>で保守・拡張。REST・GraphQL APIも担当。</li><li><b>通知</b>機能と、<b>キュー</b>を用いたバックグラウンド処理を担当。</li><li>ERPの<b>Odoo</b>との連携を実装。</li>',
-      'i18n-biz-record': '<div><dt>employer</dt><dd>Biz Solution Co., Ltd.</dd></div><div><dt>role</dt><dd>ジュニアWeb開発者</dd></div><div><dt>period</dt><dd>2026年5月 〜 2026年7月</dd></div><div><dt>scope</dt><dd>フロントエンド、バックエンド、通知、キュー</dd></div><div><dt>stack</dt><dd>NestJS, REST, GraphQL, Odoo, Redis</dd></div>',
-
-      'i18n-cdc-title': '会議<wbr>スケジューリング<wbr>APIと<wbr>Webポータル',
-      'i18n-cdc-body': '<li>会議スケジューリングシステムを支える<b>NestJS製REST API</b>を構築し、<b>モバイルアプリ</b>に提供。</li><li>リアルタイムに更新される<b>Next.js製Webポータル</b>を開発し、オフィスのLCDディスプレイに表示。</li>',
-      'i18n-cdc-record': '<div><dt>employer</dt><dd>カンボジア開発評議会 (CDC)</dd></div><div><dt>role</dt><dd>API・Web開発者インターン</dd></div><div><dt>period</dt><dd>2025年5月 〜 2025年8月</dd></div><div><dt>clients</dt><dd>モバイルアプリ、Webポータル</dd></div><div><dt>stack</dt><dd>NestJS, Next.js, REST</dd></div>',
-
-      'i18n-skills-title': 'スキル',
-      'i18n-skill-programming': 'プログラミング',
-      'i18n-skill-frameworks': 'フレームワーク',
-      'i18n-skill-tools': 'ツール・プラットフォーム',
-      'i18n-skill-cloud': 'クラウド・DevOps',
-      'i18n-skill-fintech': 'フィンテック',
-      'i18n-skill-soft': 'ソフトスキル',
-      'i18n-skill-soft-chips': '<span class="chip">コミュニケーション</span><span class="chip">問題解決力</span><span class="chip">適応力</span>',
-      'i18n-skills-record': '<div><dt>primary</dt><dd>TypeScript, NestJS, PostgreSQL</dd></div><div><dt>focus</dt><dd>バックエンドAPI、決済連携、テスト</dd></div><div><dt>apis</dt><dd>REST, GraphQL</dd></div><div><dt>testing</dt><dd>Jest, Appium, 負荷テスト</dd></div>',
-
-      'i18n-credentials-title': '資格・学歴',
-      'i18n-edu-title': '学歴',
-      'i18n-edu-body': '<li><span>コンピュータサイエンス学士(ソフトウェアエンジニアリング専攻)・CADT</span><span class="val">2023 – 2026</span></li><li><span>日本ITパスウェイプログラム・American University of Phnom Penh (AUPP)、NEXTMAKE Inc.</span><span class="val">2025 – 2027</span></li>',
-      'i18n-certs-title': '資格・認定',
-      'i18n-certs-body': '<li><span>サイバーセキュリティ入門 ・ Cisco Networking Academy</span></li><li><span>CyberOps Associate ・ Cisco Networking Academy</span></li><li><span>サイバーセキュリティ基礎 ・ Cisco Networking Academy</span></li><li><span>Solid Edge Mechanical ・ アソシエイトレベル</span></li>',
-      'i18n-langs-title': '言語',
-      'i18n-langs-body': '<li><span>クメール語</span><span class="val">母語</span></li><li><span>英語</span><span class="val">上級</span></li><li><span>日本語</span><span class="val">中級</span></li>',
-      'i18n-credentials-record': '<div><dt>degree</dt><dd>コンピュータサイエンス学士(ソフトウェアエンジニアリング専攻)</dd></div><div><dt>school</dt><dd>カンボジアデジタル技術アカデミー (CADT)</dd></div><div><dt>graduated</dt><dd>2026年</dd></div><div><dt>program</dt><dd>日本ITパスウェイプログラム</dd></div><div><dt>partners</dt><dd>American University of Phnom Penh (AUPP)、NEXTMAKE Inc.</dd></div><div><dt>enrolled</dt><dd>2025年 〜 2027年、在籍中</dd></div>',
-
-      'i18n-contact-title': '連絡先',
-      'i18n-contact-body': '<p>私の経歴が貴社のバックエンド・APIポジションに合うようでしたら、ぜひご連絡ください。ボタンからメールアプリが開きます。アドレスをコピーしてお使いいただくこともできます。</p>',
-      'i18n-contact-btn': 'メールで連絡する',
-      'i18n-contact-record': '<div><dt>email</dt><dd><a href="mailto:porchheng914@gmail.com">porchheng914@gmail.com</a></dd></div><div><dt>linkedin</dt><dd><a href="https://linkedin.com/in/porchheng" target="_blank" rel="noopener">linkedin.com/in/porchheng<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-external"/></svg></a></dd></div><div><dt>location</dt><dd>プノンペン、カンボジア</dd></div>',
-      'i18n-footer': '© 2026 チェン・ポーチェン ・ プノンペン、カンボジア',
-
-      'i18n-res-label-1': 'レスポンス', 'i18n-res-label-2': 'レスポンス', 'i18n-res-label-3': 'レスポンス',
-      'i18n-res-label-5': 'レスポンス', 'i18n-res-label-6': 'レスポンス',
-      'i18n-res-label-7': 'レスポンス', 'i18n-res-label-8': 'レスポンス', 'i18n-res-label-9': 'レスポンス',
-      'i18n-avail-1': 'バックエンド・<wbr>API開発の<wbr>機会を<wbr>歓迎しています',
-      'i18n-avail-2': 'バックエンド・<wbr>API開発の<wbr>機会を<wbr>歓迎しています'
-    }
+  const labels = {
+    en: { theme: 'Toggle dark mode', seal: 'Currently employed', credentials: 'Certifications and languages', lang: 'Language' },
+    ja: { theme: 'ダークモード切り替え', seal: '在職中', credentials: '免許・資格と語学', lang: '言語' }
   };
 
-  const originals = {};
-  document.querySelectorAll('[id^="i18n-"]').forEach(el => { originals[el.id] = el.innerHTML; });
+  const ja = {
+    'skip': '学歴・職歴へスキップ',
+    'asof': '2026年10月現在',
+    'position': '<b>バックエンドエンジニア</b>・カンボジア国立銀行（中央銀行）',
+    'address': 'プノンペン、カンボジア',
+    'cv': '英文CVをダウンロード',
+    'cv-2': '英文CVをダウンロード（PDF）',
+
+    'nbc-entry': '<span class="org">カンボジア国立銀行（NBC）</span><span class="role">バックエンドエンジニア</span><span class="period">2026年8月 〜 現在</span>',
+    'nbc-title': 'Bakongの<wbr>テスト・<wbr>パフォーマンス<wbr>エンジニアリング',
+    'nbc-body': '<li>中央銀行が運営するカンボジアの国家決済システム<b>Bakong</b>のテスト・パフォーマンスエンジニアリングを担当。</li><li><b>Bakong公開API</b>向けの<b>負荷ベンチマーク基盤</b>を、ほぼ単独で設計・開発。APIコレクションを<b>再現性のある評価付き負荷テスト</b>に変換し、結果を<b>リリース間で比較可能</b>な形で保持。QA担当者はテストコードを書かずにベンチマークを実行・確認可能。</li><li><b>NestJS・Next.js・PostgreSQL・k6</b>で構築し、自動テスト、DBマイグレーション、CI、アーキテクチャ決定記録（ADR）を整備。</li><li><b>信頼できる計測</b>を重視。HTTPステータスだけでなく各レスポンスの結果コードを検証し、高負荷時に計測が欠けた実行は、良好な結果と誤認されないよう明示。</li><li><b>Bakongモバイルアプリ</b>を<b>Appium</b>による自動テストで検証。</li>',
+    'nbc-facts': '<div><dt>所属</dt><dd>カンボジア国立銀行（NBC）</dd></div><div><dt>職種</dt><dd>バックエンドエンジニア</dd></div><div><dt>期間</dt><dd>2026年8月 〜 現在</dd></div><div><dt>対象</dt><dd>Bakong（カンボジアの国家決済システム）</dd></div><div><dt>範囲</dt><dd>公開API、モバイルアプリ</dd></div><div><dt>技術</dt><dd>k6、NestJS、Next.js、PostgreSQL、Appium</dd></div>',
+
+    'biz-entry': '<span class="org">Biz Solution Co., Ltd.</span><span class="role">ジュニアWeb開発者・EC / Odoo</span><span class="period">2026年5月 〜 2026年7月</span>',
+    'biz-title': '既存EC<wbr>プロジェクトの<wbr>保守と<wbr>Odoo連携',
+    'biz-body': '<li><b>既存の本番ECプロジェクト</b>を、<b>フロントエンドとバックエンドの両面</b>で保守・拡張。REST・GraphQL APIも担当。</li><li><b>通知</b>機能と、<b>キュー</b>を用いたバックグラウンド処理を担当。</li><li>ERPの<b>Odoo</b>との連携を実装。</li>',
+    'biz-facts': '<div><dt>所属</dt><dd>Biz Solution Co., Ltd.</dd></div><div><dt>職種</dt><dd>ジュニアWeb開発者</dd></div><div><dt>期間</dt><dd>2026年5月 〜 2026年7月</dd></div><div><dt>範囲</dt><dd>フロントエンド、バックエンド、通知、キュー</dd></div><div><dt>技術</dt><dd>NestJS, REST, GraphQL, Odoo, Redis</dd></div>',
+
+    'ecommerce-entry': '<span class="org">Biz Solution Co., Ltd.</span><span class="role">バックエンド開発者インターン・EC / KHQR決済</span><span class="period">2026年1月 〜 2026年5月</span>',
+    'ecommerce-title': 'マルチベンダー型<wbr>EC<wbr>プラットフォームと<wbr>KHQR決済',
+    'ecommerce-body': '<li>Vendureフレームワーク上で、クメール語対応のマルチベンダー型モバイルECプラットフォーム向け<b>REST・GraphQL API</b>を構築。</li><li>カンボジアの統一QR決済規格<b>KHQR</b>を<b>ABA銀行の決済ゲートウェイ</b>経由で統合し、安全な取引フローと決済ステータスの自動Webhookを実装。</li><li><b>Redisキャッシュ</b>、<b>Firebase Cloud Messaging</b>通知、<b>AWS CloudWatch</b>監視により、速度と信頼性を向上。</li>',
+    'ecommerce-facts': '<div><dt>所属</dt><dd>Biz Solution Co., Ltd.</dd></div><div><dt>職種</dt><dd>バックエンド開発者インターン</dd></div><div><dt>期間</dt><dd>2026年1月 〜 2026年5月</dd></div><div><dt>製品</dt><dd>クメール語対応マルチベンダー型ECプラットフォーム</dd></div><div><dt>決済</dt><dd>KHQR（ABA銀行経由）</dd></div><div><dt>技術</dt><dd>Vendure, GraphQL, REST, Redis, FCM, AWS CloudWatch</dd></div>',
+
+    'cdc-entry': '<span class="org">カンボジア開発評議会（CDC）</span><span class="role">API・Web開発者インターン</span><span class="period">2025年5月 〜 2025年8月</span>',
+    'cdc-title': '会議<wbr>スケジューリング<wbr>APIと<wbr>Webポータル',
+    'cdc-body': '<li>会議スケジューリングシステムを支える<b>NestJS製REST API</b>を構築し、<b>モバイルアプリ</b>に提供。</li><li>リアルタイムに更新される<b>Next.js製Webポータル</b>を開発し、オフィスのLCDディスプレイに表示。</li>',
+    'cdc-facts': '<div><dt>所属</dt><dd>カンボジア開発評議会（CDC）</dd></div><div><dt>職種</dt><dd>API・Web開発者インターン</dd></div><div><dt>期間</dt><dd>2025年5月 〜 2025年8月</dd></div><div><dt>利用先</dt><dd>モバイルアプリ、Webポータル</dd></div><div><dt>技術</dt><dd>NestJS, Next.js, REST</dd></div>',
+
+    'edu-grad': '<span class="org">カンボジアデジタル技術アカデミー（CADT） 卒業</span><span class="role">コンピュータサイエンス学士（ソフトウェアエンジニアリング専攻）</span>',
+    'edu-jit': '<span class="org">日本ITパスウェイプログラム 受講開始（2025年〜2027年、在籍中）</span><span class="role">American University of Phnom Penh（AUPP）、NEXTMAKE Inc.</span>',
+    'edu-enter': '<span class="org">カンボジアデジタル技術アカデミー（CADT） 入学</span><span class="role">コンピュータサイエンス学士（ソフトウェアエンジニアリング専攻）</span>',
+
+    'about': '<p>カンボジアの中央銀行である<b>カンボジア国立銀行（NBC）のバックエンドエンジニア</b>として、国家決済システム<b>Bakong</b>に携わっています。<b>Bakong公開API向けの負荷テストアプリケーション</b>を開発し、モバイルアプリを<b>Appiumによる自動テスト</b>で検証しています。</p><p>それ以前は、REST・GraphQLによる<b>決済・EC向けAPI</b>を開発し、<b>ABA銀行のKHQR決済</b>を統合しました。カンボジアデジタル技術アカデミー（CADT）で<b>コンピュータサイエンス学士（ソフトウェアエンジニアリング専攻）</b>を取得し、2026年に卒業しました（2023年〜2026年）。プノンペンを拠点としています。</p><p>また、American University of Phnom Penh（AUPP）とNEXTMAKE Inc.による<b>日本ITパスウェイプログラム</b>（2025年〜2027年）を受講しています。</p>',
+
+    'skill-programming': 'プログラミング',
+    'skill-frameworks': 'フレームワーク',
+    'skill-tools': 'ツール・プラットフォーム',
+    'skill-cloud': 'クラウド・DevOps',
+    'skill-fintech': 'フィンテック',
+    'skill-soft': 'ソフトスキル',
+    'skill-soft-items': '<li>コミュニケーション</li><li>問題解決力</li><li>適応力</li>',
+
+    'certs': '<tr><td>サイバーセキュリティ入門</td><td class="sub">Cisco Networking Academy</td></tr><tr><td>CyberOps Associate</td><td class="sub">Cisco Networking Academy</td></tr><tr><td>サイバーセキュリティ基礎</td><td class="sub">Cisco Networking Academy</td></tr><tr><td>Solid Edge Mechanical</td><td class="sub">アソシエイトレベル</td></tr>',
+    'langs': '<tr><td>クメール語</td><td class="lvl">母語</td></tr><tr><td>英語</td><td class="lvl">上級</td></tr><tr><td>日本語</td><td class="lvl">中級</td></tr>',
+
+    'avail': 'バックエンド・<wbr>API開発の<wbr>機会を<wbr>歓迎しています',
+    'contact-body': '<p>私の経歴が貴社のバックエンド・APIポジションに合うようでしたら、ぜひご連絡ください。ボタンからメールアプリが開きます。アドレスをコピーしてお使いいただくこともできます。</p>',
+    'contact-btn': 'メールで連絡する',
+    'footer': '© 2026 チェン・ポーチェン ・ プノンペン、カンボジア'
+  };
+
+  const i18nNodes = Array.from(document.querySelectorAll('[data-i18n]'));
+  const originals = new Map(i18nNodes.map(n => [n, n.innerHTML]));
 
   function setLang(lang){
     if (lang !== 'ja') lang = 'en';
-    document.documentElement.lang = lang;
-    document.querySelectorAll('[id^="i18n-"]').forEach(el => {
-      el.innerHTML = lang === 'en' ? originals[el.id] : (translations.ja[el.id] || originals[el.id]);
+    root.lang = lang;
+    i18nNodes.forEach(n => {
+      n.innerHTML = lang === 'ja' && ja[n.dataset.i18n] != null ? ja[n.dataset.i18n] : originals.get(n);
     });
+    document.querySelectorAll('[data-i18n-label]').forEach(n => {
+      n.setAttribute('aria-label', labels[lang][n.dataset.i18nLabel]);
+    });
+    document.querySelector('.seg').setAttribute('aria-label', labels[lang].lang);
     document.title = meta[lang].title;
-    const desc = document.querySelector('meta[name="description"]');
-    if (desc) desc.setAttribute('content', meta[lang].description);
-    document.querySelectorAll('.lang-switch button').forEach(btn => {
-      btn.setAttribute('aria-pressed', String(btn.dataset.lang === lang));
-    });
-    renderNextLinks(lang);
-    relabelLifecycle();
+    document.querySelector('meta[name="description"]').setAttribute('content', meta[lang].description);
+    document.querySelectorAll('.seg button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
+    labelToggleAll();
     localStorage.setItem('lang', lang);
+    markTabEdges();
   }
+  document.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
 
   /* Japanese is the primary reading path: detect it, then honour an explicit choice. */
   (function(){
@@ -1547,12 +1432,17 @@
     setLang(saved || (prefs.some(l => String(l).toLowerCase().startsWith('ja')) ? 'ja' : 'en'));
   })();
 
-  /* The opening request runs last, after the language pass has settled the
-     record it is about to stream. t0 = 0 is navigation start, so the number
-     the reviewer first sees is the real time from opening the link. */
-  request(current, { t0: 0 });
-  revealTab(current);
-  markStripEdges();
+  openFromHash();
+  lastTab = currentSection();
+  markTab(lastTab);
+  markTabEdges();
+
+  /* ===== The one authored moment: the seal is pressed on the current post ===== */
+  const seal = document.querySelector('.seal');
+  const press = () => seal.classList.add('stamped');
+  const fontsReady = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
+  Promise.race([fontsReady, new Promise(r => setTimeout(r, 700))])
+    .then(() => setTimeout(press, motionQuery.matches ? 0 : 380));
 </script>
 </body>
 </html>
