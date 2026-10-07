@@ -45,7 +45,8 @@
     --on-accent:#0E1330;
     --ok:#3FBE8B;
     --line:#2C2823;
-    --code-bg:#0E0D0B;
+    /* Cool and a step lighter than the warm page, so the record still reads as its own pane. */
+    --code-bg:#171A22;
   }
   *{box-sizing:border-box;}
   body{
@@ -177,6 +178,32 @@
     letter-spacing:.02em;
     flex:none;
   }
+  .rail-text{display:flex;flex-direction:column;min-width:0;}
+  /* The period under each role, so the timeline reads without opening a pane. */
+  .rail-when{
+    margin-top:2px;
+    font-family:'JetBrains Mono','Noto Sans JP',monospace;
+    font-variant-numeric:tabular-nums;
+    font-size:12px;
+    line-height:1.3;
+    color:var(--muted);
+    font-weight:400;
+  }
+  .rail-link[aria-current="true"] .rail-when{color:inherit;}
+  /* Two roles at one employer: the company heads them, the roles sit under it. */
+  .rail-org-name{
+    display:block;
+    padding:9px 11px 4px;
+    font-size:13px;
+    color:var(--muted);
+  }
+  .rail-sub{
+    list-style:none;
+    margin:0 0 0 11px;
+    padding:0;
+    border-left:1px solid var(--line);
+  }
+  .rail-sub .rail-link{padding-left:10px;border-radius:0 8px 8px 0;}
   .rail-link:hover{color:var(--ink);}
   /* The one reserved accent: spent only on the resource under load. */
   .rail-link[aria-current="true"]{
@@ -291,24 +318,6 @@
     letter-spacing:.04em;
     color:var(--ink);
   }
-  /* Mirrors the response pane's status line where that pane sits below the fold. */
-  .status-mini{
-    display:none;
-    align-items:center;
-    gap:7px;
-    margin-left:auto;
-    font-size:12px;
-    white-space:nowrap;
-    color:var(--muted);
-  }
-  .status-mini::before{
-    content:'';
-    width:6px;height:6px;
-    border-radius:50%;
-    background:var(--ok);
-  }
-  .status-mini b{color:var(--ok);font-weight:500;}
-  .status-mini:empty{display:none!important;}
   .pane-title{
     font-size:30px;
     line-height:1.22;
@@ -364,7 +373,7 @@
     background:var(--line);
   }
   .work b{color:var(--ink);font-weight:600;}
-  /* The landing pane's plain answer for a reader who does not speak HTTP. */
+  /* The landing pane's plain answer: who he is, before what he does. */
   .lede{
     margin:18px 0 0;
     max-width:58ch;
@@ -579,12 +588,24 @@
   /* Status line: the response reports its own code and its own measured time. */
   .res-head{
     display:flex;
+    flex-wrap:wrap;
     align-items:baseline;
     justify-content:space-between;
-    gap:16px;
+    gap:6px 16px;
     margin:0 0 20px;
     min-height:17px;
   }
+  /* The time is labelled where it is shown, not in a tooltip. */
+  .status-cap{
+    flex-basis:100%;
+    margin:0;
+    font-family:'JetBrains Mono','Noto Sans JP',monospace;
+    font-size:12px;
+    line-height:1.4;
+    text-align:right;
+    color:var(--record-key);
+  }
+  .status-cap:empty{display:none;}
   .res-head .res-label{margin:0;}
   .status{
     display:inline-flex;
@@ -626,54 +647,6 @@
     pointer-events:none;
   }
 
-  /* Session log: the reviewer's own reading, kept as a request record. */
-  .log{
-    margin-top:34px;
-    padding-top:17px;
-    border-top:1px solid rgba(255,255,255,.07);
-  }
-  .log-label{
-    margin:0 0 11px;
-    font-family:'JetBrains Mono','Noto Sans JP',monospace;
-    font-size:12px;
-    letter-spacing:.06em;
-    text-transform:uppercase;
-    color:var(--record-key);
-  }
-  .log-list{
-    margin:0;padding:0;
-    list-style:none;
-    font-family:'JetBrains Mono',monospace;
-    font-variant-numeric:tabular-nums;
-    font-size:12px;
-    line-height:1.5;
-  }
-  .log-list li{
-    display:grid;
-    grid-template-columns:auto minmax(0,1fr) auto auto;
-    align-items:baseline;
-    gap:9px;
-    padding:3.5px 0;
-    color:var(--record-key);
-  }
-  .log-list .l-verb{color:var(--record-val);}
-  .log-list .l-path{
-    color:var(--record-key);
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
-  }
-  /* Each row is its own grid, so the two right-hand columns are sized rather
-     than fitted: otherwise a 28ms entry shifts its status out of the column. */
-  .log-list .l-code{color:var(--code-text);width:3ch;text-align:right;}
-  .log-list .l-ms{width:6ch;text-align:right;}
-  .log-list li[data-latest="true"] .l-path{color:var(--record-val);}
-  .log-list li[data-latest="true"]{animation:log-in .45s var(--ease) both;}
-  @keyframes log-in{
-    from{opacity:0;transform:translateY(-3px);}
-    to{opacity:1;transform:none;}
-  }
-
   /* View Transitions: the verb flies from the rail into the header it addresses.
      The root snap is deliberate; only the object that moved should animate. */
   @media (prefers-reduced-motion: no-preference){
@@ -694,9 +667,8 @@
     /* Relative, not static, so .scan has a containing block; top:auto undoes
        the sticky offset that relative positioning would otherwise apply. */
     .res-inner{position:relative;top:auto;}
-    .record, .log{max-width:520px;}
+    .record{max-width:520px;}
     .scan{left:0;right:0;}
-    .status-mini{display:inline-flex;}
   }
   @media (max-width: 900px){
     .app{grid-template-columns:minmax(0,1fr);padding-top:64px;}
@@ -737,6 +709,9 @@
     .rail-group{flex:none;}
     .rail-group-title{display:none;}
     .rail-list{display:flex;}
+    /* The strip is one row of tabs: the employer heading and periods stay in the records. */
+    .rail-org, .rail-sub{display:contents;}
+    .rail-org-name, .rail-when{display:none;}
     .rail-link{
       min-height:50px;
       align-items:center;
@@ -771,7 +746,7 @@
     /* A narrow measure cannot justify without rivers: set it ragged. */
     .prose p, .work li{text-align:start;-webkit-hyphens:manual;hyphens:manual;}
     .record > div{grid-template-columns:72px minmax(0,1fr);}
-    .res-head{flex-wrap:wrap;gap:6px 14px;}
+    .res-head{gap:6px 14px;}
     .groups{gap:28px;}
     footer{margin-top:48px;}
   }
@@ -780,7 +755,6 @@
   }
   @media (prefers-reduced-motion: reduce){
     html.js .resource.swap .req > *{animation:none;}
-    .log-list li[data-latest="true"]{animation:none;}
     .status[data-state="pending"] .status-dot{animation:none;}
     .scan{display:none;}
     *{transition-duration:.01ms!important;}
@@ -842,24 +816,29 @@
       <div class="rail-group">
         <p class="rail-group-title" id="grp-intro"><span id="i18n-grp-intro">Introduction</span></p>
         <ul class="rail-list" aria-labelledby="grp-intro">
-          <li><a class="rail-link" href="#about" data-target="about"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-about"/></svg><span class="verb">GET</span><span id="i18n-rail-about">About</span></a></li>
+          <li><a class="rail-link" href="#about" data-target="about"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-about"/></svg><span class="verb">GET</span><span class="rail-name" id="i18n-rail-about">About</span></a></li>
         </ul>
       </div>
       <div class="rail-group">
         <p class="rail-group-title" id="grp-work"><span id="i18n-grp-work">Work</span></p>
         <ul class="rail-list" aria-labelledby="grp-work">
-          <li><a class="rail-link" href="#nbc" data-target="nbc"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-nbc"/></svg><span class="verb">GET</span><span id="i18n-rail-nbc">NBC / Bakong</span></a></li>
-          <li><a class="rail-link" href="#ecommerce" data-target="ecommerce"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ecommerce"/></svg><span class="verb">GET</span><span id="i18n-rail-ecommerce">E-commerce / KHQR</span></a></li>
-          <li><a class="rail-link" href="#biz" data-target="biz"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-biz"/></svg><span class="verb">GET</span><span id="i18n-rail-biz">Biz Solution</span></a></li>
-          <li><a class="rail-link" href="#cdc" data-target="cdc"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-cdc"/></svg><span class="verb">GET</span><span id="i18n-rail-cdc">CDC</span></a></li>
+          <li><a class="rail-link" href="#nbc" data-target="nbc"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-nbc"/></svg><span class="verb">GET</span><span class="rail-text"><span class="rail-name" id="i18n-rail-nbc">NBC / Bakong</span><span class="rail-when" id="i18n-when-nbc">Aug 2026–now</span></span></a></li>
+          <li class="rail-org">
+            <span class="rail-org-name">Biz Solution Co., Ltd.</span>
+            <ul class="rail-sub">
+              <li><a class="rail-link" href="#ecommerce" data-target="ecommerce"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ecommerce"/></svg><span class="verb">GET</span><span class="rail-text"><span class="rail-name" id="i18n-rail-ecommerce">E-commerce / KHQR</span><span class="rail-when" id="i18n-when-ecommerce">Intern · Jan–May 2026</span></span></a></li>
+              <li><a class="rail-link" href="#biz" data-target="biz"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-biz"/></svg><span class="verb">GET</span><span class="rail-text"><span class="rail-name" id="i18n-rail-biz">E-commerce / Odoo</span><span class="rail-when" id="i18n-when-biz">Junior · May–Jul 2026</span></span></a></li>
+            </ul>
+          </li>
+          <li><a class="rail-link" href="#cdc" data-target="cdc"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-cdc"/></svg><span class="verb">GET</span><span class="rail-text"><span class="rail-name" id="i18n-rail-cdc">CDC</span><span class="rail-when" id="i18n-when-cdc">May–Aug 2025</span></span></a></li>
         </ul>
       </div>
       <div class="rail-group">
         <p class="rail-group-title" id="grp-ref"><span id="i18n-grp-ref">Reference</span></p>
         <ul class="rail-list" aria-labelledby="grp-ref">
-          <li><a class="rail-link" href="#skills" data-target="skills"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-skills"/></svg><span class="verb">GET</span><span id="i18n-rail-skills">Skills</span></a></li>
-          <li><a class="rail-link" href="#credentials" data-target="credentials"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-credentials"/></svg><span class="verb">GET</span><span id="i18n-rail-credentials">Credentials</span></a></li>
-          <li><a class="rail-link" href="#contact" data-target="contact"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-contact"/></svg><span class="verb">POST</span><span id="i18n-rail-contact">Contact</span></a></li>
+          <li><a class="rail-link" href="#skills" data-target="skills"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-skills"/></svg><span class="verb">GET</span><span class="rail-name" id="i18n-rail-skills">Skills</span></a></li>
+          <li><a class="rail-link" href="#credentials" data-target="credentials"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-credentials"/></svg><span class="verb">GET</span><span class="rail-name" id="i18n-rail-credentials">Credentials</span></a></li>
+          <li><a class="rail-link" href="#contact" data-target="contact"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-contact"/></svg><span class="verb">GET</span><span class="rail-name" id="i18n-rail-contact">Contact</span></a></li>
         </ul>
       </div>
     </nav>
@@ -919,7 +898,7 @@
       <div class="req">
         <p class="endpoint"><span class="verb">GET</span> <span class="path">/experience/nbc</span></p>
         <h2 class="pane-title" id="i18n-nbc-title">Bakong test and performance engineering</h2>
-        <p class="lede" id="i18n-nbc-lede">I'm a backend engineer at the National Bank of Cambodia, open to backend and API roles, and enrolled in the Japanese IT Pathway Program (<span class="nw">2025–2027</span>). Each item in the menu opens one part of my record; the dark panel shows it as an API response, with the time your browser took to display it.</p>
+        <p class="lede" id="i18n-nbc-lede">I'm a backend engineer at the National Bank of Cambodia, open to backend and API roles, and enrolled in the Japanese IT Pathway Program (<span class="nw">2025–2027</span>).</p>
         <ul class="work" id="i18n-nbc-body">
           <li>Test and performance engineering for <b>Bakong</b>, Cambodia's national payment system, operated by the central bank.</li>
           <li>Design and build, largely on my own, a <b>load-benchmarking platform</b> for the <b>Bakong public API</b>. It turns API collections into <b>repeatable, graded load tests</b>, keeps results <b>comparable from one release to the next</b>, and lets QA staff run and read benchmarks without writing test code.</li>
@@ -950,7 +929,7 @@
         <h2 class="pane-title" id="i18n-ecommerce-title">Multi-vendor e-commerce platform and KHQR payments</h2>
         <ul class="work" id="i18n-ecommerce-body">
           <li>Built <b>REST and GraphQL APIs</b> on the Vendure framework for a Khmer-language multi-vendor mobile e-commerce platform.</li>
-          <li>Integrated the <b>ABA Bank KHQR payment gateway</b> with secure transaction flows and automated payment-status webhooks.</li>
+          <li>Integrated <b>KHQR</b>, Cambodia's national QR payment standard, through <b>ABA Bank's payment gateway</b>, with secure transaction flows and automated payment-status webhooks.</li>
           <li>Improved speed and reliability with <b>Redis caching</b>, <b>Firebase Cloud Messaging</b> notifications, and <b>AWS CloudWatch</b> monitoring.</li>
         </ul>
       </div>
@@ -962,7 +941,7 @@
             <div><dt>role</dt><dd>Backend Developer Intern</dd></div>
             <div><dt>period</dt><dd>Jan 2026 – May 2026</dd></div>
             <div><dt>product</dt><dd>Khmer-language multi-vendor e-commerce platform</dd></div>
-            <div><dt>payments</dt><dd>ABA Bank KHQR</dd></div>
+            <div><dt>payments</dt><dd>KHQR via ABA Bank</dd></div>
             <div><dt>stack</dt><dd>Vendure, GraphQL, REST, Redis, FCM, AWS CloudWatch</dd></div>
           </dl>
         </div>
@@ -973,11 +952,11 @@
     <article class="resource" id="biz" data-resource="biz">
       <div class="req">
         <p class="endpoint"><span class="verb">GET</span> <span class="path">/experience/biz-solution</span></p>
-        <h2 class="pane-title" id="i18n-biz-title">E-commerce APIs, Odoo and PayWay integration</h2>
+        <h2 class="pane-title" id="i18n-biz-title">E-commerce maintenance and Odoo integration</h2>
         <ul class="work" id="i18n-biz-body">
-          <li>Developed <b>REST and GraphQL APIs</b> for e-commerce platforms serving web and mobile clients.</li>
-          <li>Maintained and extended <b>existing production e-commerce projects</b>, integrating services such as <b>Odoo</b>, the <b>PayWay</b> payment gateway, and <b>Redis</b> caching.</li>
-          <li>Kept releases stable through thorough automated testing and performance tuning.</li>
+          <li>Maintained and extended <b>existing production e-commerce projects</b> on both the <b>frontend and the backend</b>, including their REST and GraphQL APIs.</li>
+          <li>Worked on <b>notifications</b> and <b>queue-based background jobs</b>.</li>
+          <li>Integrated the projects with the <b>Odoo</b> ERP.</li>
         </ul>
       </div>
       <aside class="res">
@@ -987,7 +966,7 @@
             <div><dt>employer</dt><dd>Biz Solution Co., Ltd.</dd></div>
             <div><dt>role</dt><dd>Junior Web Developer</dd></div>
             <div><dt>period</dt><dd>May 2026 – July 2026</dd></div>
-            <div><dt>payments</dt><dd>PayWay</dd></div>
+            <div><dt>scope</dt><dd>frontend, backend, notifications, queues</dd></div>
             <div><dt>stack</dt><dd>NestJS, REST, GraphQL, Odoo, Redis</dd></div>
           </dl>
         </div>
@@ -1120,10 +1099,10 @@
       </aside>
     </article>
 
-    <!-- POST /contact -->
+    <!-- GET /contact -->
     <article class="resource" id="contact" data-resource="contact">
       <div class="req">
-        <p class="endpoint"><span class="verb">POST</span> <span class="path">/contact</span></p>
+        <p class="endpoint"><span class="verb">GET</span> <span class="path">/contact</span></p>
         <h2 class="pane-title" id="i18n-contact-title">Contact</h2>
         <div class="prose" id="i18n-contact-body">
           <p>If my background fits a backend or API role on your team, I'd be glad to hear from you.
@@ -1198,7 +1177,7 @@
      The request lifecycle.
 
      Selecting a resource is a request, and the response pane reports it
-     the way a client would: a status, a real elapsed time, and a log.
+     the way a client would: a status and a real elapsed time, labelled.
 
      Every number here is measured, never authored. The latency is
      performance.now() from the click to the frame where the first field
@@ -1210,16 +1189,14 @@
   const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
   const canMorph = typeof document.startViewTransition === 'function';
   const served = new Set();          // resources already fetched this session
-  const sessionLog = [];             // {verb, path, code, ms, cached}
-  const LOG_MAX = 6;
 
-  const LOG_COPY = {
-    en: { label: 'Session log', cached: 'cached', timing: 'Display time, measured in your browser' },
-    ja: { label: 'セッションログ', cached: 'キャッシュ', timing: 'お使いのブラウザで実測した表示時間' }
+  const STATUS_COPY = {
+    en: { cached: 'cached', timing: 'Display time in your browser' },
+    ja: { cached: 'キャッシュ', timing: 'お使いのブラウザで実測した表示時間' }
   };
-  const copy = () => LOG_COPY[document.documentElement.lang === 'ja' ? 'ja' : 'en'];
+  const copy = () => STATUS_COPY[document.documentElement.lang === 'ja' ? 'ja' : 'en'];
 
-  /* Build the status line and log shell once per pane. The i18n pass rewrites
+  /* Build the status line once per pane. The i18n pass rewrites
      the innerHTML of [id^="i18n-"] nodes, so nothing here may live inside one. */
   function shellFor(res){
     const inner = res.querySelector('.res-inner');
@@ -1233,21 +1210,17 @@
       head.insertAdjacentHTML('beforeend',
         '<span class="status" role="status"><span class="status-dot"></span>' +
         '<span class="status-code"></span><span class="status-note"></span>' +
-        '<span class="status-time"></span></span>');
-      inner.insertAdjacentHTML('beforeend', '<div class="log"><p class="log-label"></p><ul class="log-list"></ul></div>');
+        '<span class="status-time"></span></span><p class="status-cap"></p>');
       inner.insertAdjacentHTML('afterbegin', '<span class="scan" aria-hidden="true"></span>');
-      res.querySelector('.endpoint').insertAdjacentHTML('beforeend', '<span class="status-mini" aria-hidden="true"></span>');
     }
     return {
       inner,
-      mini: res.querySelector('.status-mini'),
       status: inner.querySelector('.status'),
       code: inner.querySelector('.status-code'),
       note: inner.querySelector('.status-note'),
       time: inner.querySelector('.status-time'),
-      scan: inner.querySelector('.scan'),
-      logLabel: inner.querySelector('.log-label'),
-      logList: inner.querySelector('.log-list')
+      cap: inner.querySelector('.status-cap'),
+      scan: inner.querySelector('.scan')
     };
   }
 
@@ -1256,32 +1229,13 @@
     ui.code.textContent = code;
     ui.note.textContent = cached ? '· ' + copy().cached : '';
     ui.time.textContent = ms == null ? '' : ms + 'ms';
-    ui.status.title = ms == null ? '' : copy().timing;
-    /* The compact copy beside the endpoint shows settled responses only. */
-    ui.mini.innerHTML = state === 'ok' ? '<b>' + code + '</b>' + (ms == null ? '' : ' · ' + ms + 'ms') : '';
-    ui.mini.title = ui.status.title;
+    ui.cap.textContent = ms == null ? '' : copy().timing;
   }
-
-  function renderLog(ui){
-    ui.logLabel.textContent = copy().label;
-    const rows = sessionLog.slice(-LOG_MAX);
-    ui.logList.innerHTML = rows.map((e, i) =>
-      '<li' + (i === rows.length - 1 ? ' data-latest="true"' : '') + '>' +
-      '<span class="l-verb">' + e.verb + '</span>' +
-      '<span class="l-path">' + e.path + '</span>' +
-      '<span class="l-code">' + e.code + '</span>' +
-      '<span class="l-ms">' + e.ms + 'ms</span></li>'
-    ).join('');
-  }
-
-  /* Repaint every pane's log so switching back shows the same history. */
-  function renderAllLogs(){ resources.forEach(r => renderLog(shellFor(r))); }
 
   /* A language switch must not strand English labels in a Japanese pane. */
   const lastStatus = {};
   function relabelLifecycle(){
     if (!served.size) return;
-    renderAllLogs();
     Object.keys(lastStatus).forEach(id => {
       const s = lastStatus[id];
       setStatus(shellFor(document.getElementById(id)), 'ok', s.code, s.ms, s.cached);
@@ -1316,9 +1270,6 @@
     const t0 = (opts && opts.t0 != null) ? opts.t0 : performance.now();
     const res = document.getElementById(ids.includes(id) ? id : DEFAULT_RESOURCE);
     const ui = shellFor(res);
-    const endpoint = res.querySelector('.endpoint');
-    const verb = endpoint.querySelector('.verb').textContent.trim();
-    const path = endpoint.querySelector('.path').textContent.trim();
     const cached = served.has(res.id);
     const still = motionQuery.matches;
 
@@ -1329,8 +1280,6 @@
       setStatus(ui, 'ok', '200 OK', ms, cached);
       lastStatus[res.id] = { code: '200 OK', ms, cached };
       served.add(res.id);
-      sessionLog.push({ verb, path, code: '200', ms, cached });
-      renderAllLogs();
     };
 
     if (cached || still){
@@ -1365,7 +1314,7 @@
     const t0 = performance.now();
     morphTo(id, () => {
       select(id, { animate: true });
-      request(id, { t0 });   // re-requesting the open resource still logs a hit
+      request(id, { t0 });
     });
     revealTab(id);
     /* Each resource is a history entry, so Back walks the reviewer's reading.
@@ -1412,24 +1361,12 @@
       go(next.dataset.target);
       return;
     }
-    /* Handing the message off to the mail client is a real accepted request,
-       and 202 is the honest code: taken, not yet known to have been read. */
+    /* The mail link reports nothing: the page cannot know a mail client opened. */
     const copyBtn = e.target.closest('.copy-btn');
-    if (copyBtn){ copyAddress(copyBtn); return; }
-    if (e.target.closest('.send-btn')){
-      const t0 = performance.now();
-      const entry = { verb: 'POST', path: '/contact', code: '202', ms: 1, cached: false };
-      sessionLog.push(entry);
-      requestAnimationFrame(() => {
-        entry.ms = Math.max(1, Math.round(performance.now() - t0));
-        lastStatus.contact = { code: '202 Accepted', ms: entry.ms, cached: false };
-        setStatus(shellFor(document.getElementById('contact')), 'ok', '202 Accepted', entry.ms, false);
-        renderAllLogs();
-      });
-    }
+    if (copyBtn) copyAddress(copyBtn);
   });
 
-  /* Copying the address is not a request, so it stays out of the lifecycle. */
+  /* Copying the address is not a request, so it stays out of the status line. */
   function copyAddress(btn){
     const ja = document.documentElement.lang === 'ja';
     const note = btn.querySelector('.copy-note');
@@ -1464,7 +1401,7 @@
       let el = res.querySelector('.next');
       if (!nextId){ if (el) el.remove(); return; }
       const link = document.querySelector('.rail-link[data-target="' + nextId + '"]');
-      const name = link.lastElementChild.textContent;
+      const name = link.querySelector('.rail-name').textContent;
       const ep = document.getElementById(nextId).querySelector('.endpoint');
       const path = ep.querySelector('.verb').textContent + ' ' + ep.querySelector('.path').textContent;
       if (!el){
@@ -1518,7 +1455,11 @@
       'i18n-rail-about': '概要',
       'i18n-rail-nbc': 'NBC / Bakong',
       'i18n-rail-ecommerce': 'EC / KHQR',
-      'i18n-rail-biz': 'Biz Solution',
+      'i18n-rail-biz': 'EC / Odoo',
+      'i18n-when-nbc': '2026年8月〜現在',
+      'i18n-when-ecommerce': 'インターン・2026年1〜5月',
+      'i18n-when-biz': 'ジュニア・2026年5〜7月',
+      'i18n-when-cdc': '2025年5〜8月',
       'i18n-rail-cdc': 'CDC',
       'i18n-rail-skills': 'スキル',
       'i18n-rail-credentials': '資格・学歴',
@@ -1530,17 +1471,17 @@
       'i18n-about-record': '<div><dt>name</dt><dd>チェン・ポーチェン (Cheng Porchheng)</dd></div><div><dt>role</dt><dd>バックエンドエンジニア</dd></div><div><dt>employer</dt><dd>カンボジア国立銀行</dd></div><div><dt>location</dt><dd>プノンペン、カンボジア</dd></div><div><dt>email</dt><dd><a href="mailto:porchheng914@gmail.com">porchheng914@gmail.com</a></dd></div>',
 
       'i18n-nbc-title': 'Bakongの<wbr>テスト・<wbr>パフォーマンス<wbr>エンジニアリング',
-      'i18n-nbc-lede': 'カンボジア国立銀行のバックエンドエンジニアです。バックエンド・API開発のポジションを希望しており、日本ITパスウェイプログラム(2025年〜2027年)を受講しています。メニューの各項目で経歴の一部を開くと、濃い色のパネルにAPIレスポンスの形で内容と、お使いのブラウザで表示にかかった時間が示されます。',
+      'i18n-nbc-lede': 'カンボジア国立銀行のバックエンドエンジニアです。バックエンド・API開発のポジションを希望しており、日本ITパスウェイプログラム(2025年〜2027年)を受講しています。',
       'i18n-nbc-body': '<li>中央銀行が運営するカンボジアの国家決済システム<b>Bakong</b>のテスト・パフォーマンスエンジニアリングを担当。</li><li><b>Bakong公開API</b>向けの<b>負荷ベンチマーク基盤</b>を、ほぼ単独で設計・開発。APIコレクションを<b>再現性のある評価付き負荷テスト</b>に変換し、結果を<b>リリース間で比較可能</b>な形で保持。QA担当者はテストコードを書かずにベンチマークを実行・確認可能。</li><li><b>NestJS・Next.js・PostgreSQL・k6</b>で構築し、自動テスト、DBマイグレーション、CI、アーキテクチャ決定記録(ADR)を整備。</li><li><b>信頼できる計測</b>を重視。HTTPステータスだけでなく各レスポンスの結果コードを検証し、高負荷時に計測が欠けた実行は、良好な結果と誤認されないよう明示。</li><li><b>Bakongモバイルアプリ</b>を<b>Appium</b>による自動テストで検証。</li>',
       'i18n-nbc-record': '<div><dt>employer</dt><dd>カンボジア国立銀行 (NBC)</dd></div><div><dt>role</dt><dd>バックエンドエンジニア</dd></div><div><dt>period</dt><dd>2026年8月 〜 現在</dd></div><div><dt>system</dt><dd>Bakong(カンボジアの国家決済システム)</dd></div><div><dt>surface</dt><dd>公開API、モバイルアプリ</dd></div><div><dt>stack</dt><dd>k6、NestJS、Next.js、PostgreSQL、Appium</dd></div>',
 
       'i18n-ecommerce-title': 'マルチベンダー型<wbr>EC<wbr>プラットフォームと<wbr>KHQR決済',
-      'i18n-ecommerce-body': '<li>Vendureフレームワーク上で、クメール語対応のマルチベンダー型モバイルECプラットフォーム向け<b>REST・GraphQL API</b>を構築。</li><li><b>ABA銀行のKHQR決済ゲートウェイ</b>を統合し、安全な取引フローと決済ステータスの自動Webhookを実装。</li><li><b>Redisキャッシュ</b>、<b>Firebase Cloud Messaging</b>通知、<b>AWS CloudWatch</b>監視により、速度と信頼性を向上。</li>',
-      'i18n-ecommerce-record': '<div><dt>employer</dt><dd>Biz Solution Co., Ltd.</dd></div><div><dt>role</dt><dd>バックエンド開発者インターン</dd></div><div><dt>period</dt><dd>2026年1月 〜 2026年5月</dd></div><div><dt>product</dt><dd>クメール語対応マルチベンダー型ECプラットフォーム</dd></div><div><dt>payments</dt><dd>ABA銀行 KHQR</dd></div><div><dt>stack</dt><dd>Vendure, GraphQL, REST, Redis, FCM, AWS CloudWatch</dd></div>',
+      'i18n-ecommerce-body': '<li>Vendureフレームワーク上で、クメール語対応のマルチベンダー型モバイルECプラットフォーム向け<b>REST・GraphQL API</b>を構築。</li><li>カンボジアの統一QR決済規格<b>KHQR</b>を<b>ABA銀行の決済ゲートウェイ</b>経由で統合し、安全な取引フローと決済ステータスの自動Webhookを実装。</li><li><b>Redisキャッシュ</b>、<b>Firebase Cloud Messaging</b>通知、<b>AWS CloudWatch</b>監視により、速度と信頼性を向上。</li>',
+      'i18n-ecommerce-record': '<div><dt>employer</dt><dd>Biz Solution Co., Ltd.</dd></div><div><dt>role</dt><dd>バックエンド開発者インターン</dd></div><div><dt>period</dt><dd>2026年1月 〜 2026年5月</dd></div><div><dt>product</dt><dd>クメール語対応マルチベンダー型ECプラットフォーム</dd></div><div><dt>payments</dt><dd>KHQR(ABA銀行経由)</dd></div><div><dt>stack</dt><dd>Vendure, GraphQL, REST, Redis, FCM, AWS CloudWatch</dd></div>',
 
-      'i18n-biz-title': 'EC向け<wbr>API開発と<wbr>Odoo・<wbr>PayWay連携',
-      'i18n-biz-body': '<li>Web・モバイル両対応のECプラットフォーム向けに<b>REST・GraphQL API</b>を開発。</li><li><b>既存の本番ECプロジェクト</b>を保守・拡張し、<b>Odoo</b>連携、<b>PayWay</b>決済ゲートウェイ、<b>Redis</b>キャッシュなどを統合。</li><li>徹底した自動テストとパフォーマンスチューニングにより、安定したリリースを維持。</li>',
-      'i18n-biz-record': '<div><dt>employer</dt><dd>Biz Solution Co., Ltd.</dd></div><div><dt>role</dt><dd>ジュニアWeb開発者</dd></div><div><dt>period</dt><dd>2026年5月 〜 2026年7月</dd></div><div><dt>payments</dt><dd>PayWay</dd></div><div><dt>stack</dt><dd>NestJS, REST, GraphQL, Odoo, Redis</dd></div>',
+      'i18n-biz-title': '既存EC<wbr>プロジェクトの<wbr>保守と<wbr>Odoo連携',
+      'i18n-biz-body': '<li><b>既存の本番ECプロジェクト</b>を、<b>フロントエンドとバックエンドの両面</b>で保守・拡張。REST・GraphQL APIも担当。</li><li><b>通知</b>機能と、<b>キュー</b>を用いたバックグラウンド処理を担当。</li><li>ERPの<b>Odoo</b>との連携を実装。</li>',
+      'i18n-biz-record': '<div><dt>employer</dt><dd>Biz Solution Co., Ltd.</dd></div><div><dt>role</dt><dd>ジュニアWeb開発者</dd></div><div><dt>period</dt><dd>2026年5月 〜 2026年7月</dd></div><div><dt>scope</dt><dd>フロントエンド、バックエンド、通知、キュー</dd></div><div><dt>stack</dt><dd>NestJS, REST, GraphQL, Odoo, Redis</dd></div>',
 
       'i18n-cdc-title': '会議<wbr>スケジューリング<wbr>APIと<wbr>Webポータル',
       'i18n-cdc-body': '<li>会議スケジューリングシステムを支える<b>NestJS製REST API</b>を構築し、<b>モバイルアプリ</b>に提供。</li><li>リアルタイムに更新される<b>Next.js製Webポータル</b>を開発し、オフィスのLCDディスプレイに表示。</li>',

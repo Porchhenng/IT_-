@@ -31,7 +31,7 @@ The incumbent visual world is **inherited, not replaced**: cream `#F6F1E7`, ink 
 
 1. **NBC / Bakong** — load testing, Appium; public information only
 2. **E-commerce / KHQR** — an ordinary pane, not a depth pane (see Memorable moment)
-3. **Biz Solution** — Odoo, PayWay, Redis
+3. **Biz Solution** (junior): existing e-commerce projects, frontend and backend, notifications, queues, Odoo. *PayWay removed 2026-10-07 by the owner.*
 4. **CDC** — NestJS scheduling API, Next.js LCD portal
 5. Skills, credentials, contact
 
@@ -51,9 +51,9 @@ The incumbent visual world is **inherited, not replaced**: cream `#F6F1E7`, ink 
 
 - Selecting a resource is a request. The response pane shows `200 OK` with a latency, the record streams in field by field under a sweeping scan line, and the `GET`/`POST` verb flies from the rail item into the endpoint header via View Transitions.
 - **Every number is measured, never authored.** Latency is `performance.now()` from the click to the frame where the **first** record field is painted, so it varies with the machine and the browser. *Changed 2026-10-05 after the critique found the old end point (last field painted) mostly measured the page's own 38ms-per-field stagger; the status now arrives like a status line, before the record finishes streaming.* The opening request uses `t0 = 0` (navigation start), making the first number the real time from opening the link. This is what keeps the moment inside PRODUCT.md's ban on invented metrics; a future edit must not swap in a fixed or random number.
-- A **session log** accumulates at the foot of the response pane, so a reviewer who reads every resource ends holding a request log of their own reading. Capped at the last 6 entries; shared across panes; re-labelled on language switch (`Session log` / `セッションログ`).
+- ~~A **session log** accumulates at the foot of the response pane, so a reviewer who reads every resource ends holding a request log of their own reading. Capped at the last 6 entries; shared across panes; re-labelled on language switch (`Session log` / `セッションログ`).~~ **Removed 2026-10-07** (critique: it told a reviewer nothing about Cheng; the user chose "keep the record, trim the log"). The time is now labelled in place by a visible `.status-cap` line (`Display time in your browser` / `お使いのブラウザで実測した表示時間`), not a tooltip; the mobile `.status-mini` mirror is gone.
 - Repeat visits resolve instantly and are marked `· cached` (`· キャッシュ`), which is both true to HTTP and the thing that stops the effect becoming tiresome on the eighth click.
-- The send button logs `202 Accepted`: the mail client took the message, which is all the page can honestly claim.
+- ~~The send button logs `202 Accepted`.~~ **Removed 2026-10-07:** the page cannot know a mail client opened. Contact is `GET /contact`; nothing on the page is a POST.
 
 Degradation, all verified: no JS renders all eight resources with no lifecycle UI at all (it is JS-built); `prefers-reduced-motion` skips the stream, the morph and the scan but keeps the status and log; below 900px the rail verb is `display:none`, so `morphTo` detects the missing source element and falls back to the existing stagger.
 
@@ -98,6 +98,8 @@ Measured after the pass, at both widths and both themes: no horizontal overflow;
 9. **P1 — contrast:** white on dark-mode accent `#7C96FF` is **2.74:1** and hits `.send-btn`, `.cv-btn:hover`, `.tag:hover`. Add an `--on-accent` token (dark ink ≈ `#0E1330` in dark mode). Green `#1E9E6B` is **3.03:1** as 11px status text on cream and **3.10:1** on the POST badge — darken the light-mode green to ≈ `#147A52` and raise mono text to ≥12px.
 
 Deferred P2s, out of this pass: heading structure (one h1, no h2; sections are spans, card titles are divs), and the decoration/false-affordance cleanup (five infinite animations, bounce easing ×6 at lines 181/259/278/415/440/508, glow and halo, hover states on non-links).
+
+**Pass of 2026-10-07 (critique 22/32, P1s only):** landing lede reduced to who he is (UI-instruction sentence cut, EN + JA); dark `--code-bg` is now a cool `#171A22` so the record reads as its own pane; KHQR glossed as Cambodia's national QR payment standard, Odoo as an ERP (EN + JA, owner to approve wording); rail order **kept by the user**, but the two Biz Solution roles now sit under a `Biz Solution Co., Ltd.` heading (labels `E-commerce / KHQR` and `E-commerce / Odoo`) and every work item carries a mono period line (role word only where two roles share an employer). Below 900px the heading and periods are hidden and the strip stays one row.
 
 ## Unresolved decisions — a builder must not invent these
 
