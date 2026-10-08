@@ -28,7 +28,7 @@ Central-bank payment-infrastructure experience at this career stage is the part 
 
 ## Operating Context
 
-- The page is sent directly to reviewers, who read it alongside the CV (`CHHENG_PORCHHENG_CV.pdf`).
+- The page is sent directly to reviewers, who read it alongside the CV (`assets/Cheng_Porchheng_CV.pdf`).
 - Reviewers are overseas. Cambodian context (KHQR, Bakong, ABA, CDC, CADT) cannot be assumed known to them.
 - **Current employment (confirmed by the owner, missing from the site entirely): Backend Engineer, National Bank of Cambodia (NBC), since August 2026.** The work is test and performance engineering against Bakong, Cambodia's national payment system: building **load-testing applications for the Bakong public API**, and **testing the Bakong mobile application with Appium-based automated tests**. *Corrected by the owner 2026-09-25: he used and tested with Appium; he did not build the test suite. Never write "build" for the Appium work.* The Biz Solution role has **ended**; the site's "May 2026 – Present" for it is now wrong.
 - Owner has **graduated** from CADT. **Degree title as awarded, confirmed by the owner 2026-09-21: "Bachelor of Computer Science", with Software Engineering named on the diploma as the major.** Write it out in full. Never abbreviate to **"BSc"**: that expands to *Bachelor of Science*, a different award from a *Bachelor of Computer Science*, and the site and CV both carried that error until 2026-09-21. The correct abbreviation would be BCompSc, rejected as too obscure for the audience. The owner asked for BSc, was shown the mismatch against his school's own degree description, and chose the full form. Do not reintroduce "BSc". The site's "expected 2023–2026" wording at `index.html:641`, and its Japanese counterpart in the `ja` translation table, are now stale and must be corrected to reflect completion.
@@ -57,7 +57,6 @@ Consequence: **the site has no Projects section at all.** It carries four employ
 **Open decisions (not answered; do not assume):**
 - **Biz Solution end date.** NBC started **August 2026** (confirmed). The Biz Solution end date is still unstated; if the roles ran back to back it is July 2026, but that is an inference and a job application must state it exactly.
 - **NBC job title wording.** Recorded as "Backend Engineer" from the owner's own phrasing; the official title on his contract was not confirmed.
-- **CV spelling.** The CV file is named `CHHENG_PORCHHENG_CV.pdf` ("Chheng"), which disagrees with the confirmed name below. The CV's own text was not checked (no PDF text extractor available in that session).
 - **Status for Japan-based or Japan-facing roles.** Relocation, visa or work authorization, remote/timezone availability and target start date are unstated. The site says only "open to backend & API development opportunities." The owner is applying full time to Japanese companies, so these are the questions a reviewer there will ask first.
 - **Public street address.** The site prints a full street address; whether that stays is undecided.
 
@@ -71,8 +70,8 @@ Consequence: **the site has no Projects section at all.** It carries four employ
 - **Written content only.** Confirmed by the owner: "the contents written is basically it." The site's content is in `index.html`: **four roles** (NBC backend engineer, Biz Solution junior developer and backend intern, CDC API & web intern), **no projects**, skills, three Cisco certifications plus Solid Edge Associate, and languages.
 - **NBC copy updated 2026-09-25** from the owner's own git history of the benchmark platform, kept within the disclosure limit: kind of engineering, stack and principles only, with no internal names, architecture, metrics or commit counts. Superseded note below:
 - **The NBC role has no written copy yet.** It exists only as the facts recorded above and must be written from scratch, within the disclosure limit. This is the single biggest content gap on the site: its strongest credential is the one thing currently missing.
-- **CV:** `CHHENG_PORCHHENG_CV.pdf`.
-- **Photos:** `pf.jpeg` (1290×2293, used as the avatar), `IMG_8347.jpeg` (4032×3024, unreferenced), `_MG_2004.png` (a Canon CR2 raw file with a `.png` extension, unreferenced).
+- **CV:** `assets/Cheng_Porchheng_CV.pdf`, printed from `cv.html` (build note at the foot of that file).
+- **Photo:** `assets/cv-photo-print.jpg` (622×800), the only raster the site and CV ship. Unused originals were moved out of the repo to `../portfolio-originals/`.
 - **Confirmed absent; future work must not fabricate:** public repositories, live demos, screenshots, metrics or performance numbers, testimonials, case studies, and client or customer proof.
 
 ## Product Principles
